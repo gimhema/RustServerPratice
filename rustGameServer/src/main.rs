@@ -1,3 +1,14 @@
+// mod ArenaServerModule; TEST
+
+// use ArenaServerModule::{ArenaServerCoreModule};
+
+
+//  fn main() {
+//     ArenaServerCoreModule::Create();
+
+// }
+
+
 // You can run this example from the root of the mio repo:
 // cargo run --example tcp_server --features="os-poll net"
 use mio::event::Event;
