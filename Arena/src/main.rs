@@ -1,13 +1,6 @@
-// mod ArenaServerModule; TEST
-
-// use ArenaServerModule::{ArenaServerCoreModule};
-
-
-//  fn main() {
-//     ArenaServerCoreModule::Create();
-
-// }
-
+// My Custom Modules
+mod ArenaServerModule;
+use ArenaServerModule::{ArenaMessageModule, ArenaServerCoreModule, ArenaWorldModule, ArenaNetworkModule};
 
 // You can run this example from the root of the mio repo:
 // cargo run --example tcp_server --features="os-poll net"
@@ -214,4 +207,16 @@ fn interrupted(err: &io::Error) -> bool {
 #[cfg(target_os = "wasi")]
 fn main() {
     panic!("can't bind to an address with wasi")
+}
+
+fn SendMessageAll()
+{
+    // Send the message to all
+    // 접속중인 모든 유저에게 메세지를 전송합니다
+}
+
+fn SendMessageToTarget()
+{
+    // Send the message to user as given paramter
+    // 정해진 유저에게 메세지를 전송합니다.
 }

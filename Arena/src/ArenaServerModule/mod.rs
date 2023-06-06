@@ -45,10 +45,9 @@ pub mod ArenaWorldModule {
 pub mod ArenaMessageModule {
     pub fn Initialize() {
         println!("Message Module Initialize . . . .");
-
+        
     }
 }
-
 
 
 
