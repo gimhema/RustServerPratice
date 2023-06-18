@@ -17,6 +17,7 @@ const SERVER: Token = Token(0);
 // Some data we'll send over the connection.
 // 언리얼 클라이언트에게 아래와 같은 메세지를 보낼것이다.
 const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
+const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 
 #[cfg(not(target_os = "wasi"))]
@@ -54,7 +55,7 @@ fn main() -> io::Result<()> {
                     // Received an event for the TCP server socket, which
                     // indicates we can accept an connection.
                     let (mut connection, address) = match server.accept() {
-                        Ok((connection, address)) => (connection, address),
+                        Ok((connection, address)) =>  (connection, address),
                         Err(e) if e.kind() == io::ErrorKind::WouldBlock => {
                             // If we get a `WouldBlock` error we know our
                             // listener has no more incoming connections queued,
@@ -69,7 +70,7 @@ fn main() -> io::Result<()> {
                         }
                     };
 
-                    // 함수화
+                    // 함수화 테스트
                     println!("Accepted connection from: {}", address);
 
                     let token = next(&mut unique_token);
@@ -78,13 +79,16 @@ fn main() -> io::Result<()> {
                         token,
                         Interest::READABLE.add(Interest::WRITABLE),
                     )?;
+                    let mut sendConnect = connection;
+                    sendConnect.write(DATA2);
+                    AddClientToContainer(&mut connections, sendConnect, &token);
                     
-                    AddClientToContainer(&mut connections, connection, &token);
 //                  connections.insert(token, connection); 
                 },
                 token => {
                     // Maybe received an event for a TCP connection.
                      // 함수화
+                     
                     let done = if let Some(connection) = connections.get_mut(&token) {
                         handle_connection_event(poll.registry(), connection, event)?
                     } else {
@@ -114,6 +118,8 @@ fn handle_connection_event(
     connection: &mut TcpStream,
     event: &Event,
 ) -> io::Result<bool> {
+    println!("Handle Connection Event Start . . ");
+
     if event.is_writable() {
         // We can (maybe) write to the connection.
         match connection.write(DATA) {
@@ -196,7 +202,7 @@ fn handle_connection_event(
             return Ok(true);
         }
     }
-
+    println!("Handle Connection Event End . . ");
     Ok(false)
 }
 
@@ -218,13 +224,13 @@ fn AddClientToContainer(connections: &mut HashMap<Token, TcpStream>, connection:
     connections.insert(*token, connection); 
 }
 
-fn SendMessageAll(connection: &mut TcpStream)
+fn SendMessageAll(connections: &mut HashMap<Token, TcpStream>)
 {
     // Send the message to all
     // 접속중인 모든 유저에게 메세지를 전송합니다
 }
 
-fn SendMessageToTarget(connections: &mut HashMap<Token, TcpStream>)
+fn SendMessageToTarget()
 {
     // Send the message to user as given paramter
     // 정해진 유저에게 메세지를 전송합니다.
