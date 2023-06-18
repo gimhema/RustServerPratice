@@ -18,6 +18,7 @@ const SERVER: Token = Token(0);
 // 언리얼 클라이언트에게 아래와 같은 메세지를 보낼것이다.
 const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 
+
 #[cfg(not(target_os = "wasi"))]
 fn main() -> io::Result<()> {
     env_logger::init();
@@ -68,6 +69,7 @@ fn main() -> io::Result<()> {
                         }
                     };
 
+                    // 함수화
                     println!("Accepted connection from: {}", address);
 
                     let token = next(&mut unique_token);
@@ -76,11 +78,13 @@ fn main() -> io::Result<()> {
                         token,
                         Interest::READABLE.add(Interest::WRITABLE),
                     )?;
-
-                    connections.insert(token, connection);
+                    
+                    AddClientToContainer(&mut connections, connection, &token);
+//                  connections.insert(token, connection); 
                 },
                 token => {
                     // Maybe received an event for a TCP connection.
+                     // 함수화
                     let done = if let Some(connection) = connections.get_mut(&token) {
                         handle_connection_event(poll.registry(), connection, event)?
                     } else {
@@ -209,14 +213,22 @@ fn main() {
     panic!("can't bind to an address with wasi")
 }
 
-fn SendMessageAll()
+fn AddClientToContainer(connections: &mut HashMap<Token, TcpStream>, connection: TcpStream, token: &Token)
+{
+    connections.insert(*token, connection); 
+}
+
+fn SendMessageAll(connection: &mut TcpStream)
 {
     // Send the message to all
     // 접속중인 모든 유저에게 메세지를 전송합니다
 }
 
-fn SendMessageToTarget()
+fn SendMessageToTarget(connections: &mut HashMap<Token, TcpStream>)
 {
     // Send the message to user as given paramter
     // 정해진 유저에게 메세지를 전송합니다.
 }
+
+
+
