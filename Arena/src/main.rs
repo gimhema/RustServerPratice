@@ -1,6 +1,7 @@
 // My Custom Modules
 mod ArenaServerModule;
 use ArenaServerModule::{ArenaMessageModule, ArenaServerCoreModule, ArenaWorldModule, ArenaNetworkModule};
+use ArenaServerModule::{ArenaClientModule};
 
 // You can run this example from the root of the mio repo:
 // cargo run --example tcp_server --features="os-poll net"
@@ -22,6 +23,8 @@ const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 #[cfg(not(target_os = "wasi"))]
 fn main() -> io::Result<()> {
+    use crate::ArenaServerModule::ArenaClientModule::ArenaClient;
+
     env_logger::init();
 
     // Create a poll instance.
@@ -39,6 +42,10 @@ fn main() -> io::Result<()> {
 
     // Map of `Token` -> `TcpStream`.
     let mut connections = HashMap::new();
+
+    let mut cltManager = ArenaClientModule::ArenaClientManager::new();
+    cltManager.Initialize();
+
     // Unique token for each incoming connection.
     let mut unique_token = Token(SERVER.0 + 1);
 
@@ -81,7 +88,19 @@ fn main() -> io::Result<()> {
                     )?;
                     let mut sendConnect = connection;
                     sendConnect.write(DATA2);
-                    AddClientToContainer(&mut connections, sendConnect, &token);
+                    // token, connetcion
+
+                    let addedConnect = sendConnect;
+                    cltManager.AddNewUserToContainer(token, 
+                        ArenaClient{
+                            userID: 0, userPW: "Test".to_string(), 
+                            userName: "TestName".to_string(), connectedIPAddress: "TESTIP".to_string(), 
+                            connectToken: token, connectStream: addedConnect
+                        }
+                    );
+
+//                    let _connection = addedConnect;
+//                    AddClientToContainer(&mut connections, _connection, &token);
                     
 //                  connections.insert(token, connection); 
                 },

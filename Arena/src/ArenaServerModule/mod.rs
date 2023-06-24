@@ -1,5 +1,5 @@
-mod ArenaClientModule;
-mod ArenaCommonModule;
+pub mod ArenaClientModule;
+pub mod ArenaCommonModule;
 
 pub mod ArenaServerCoreModule {
     use crate::ArenaServerModule::ArenaCommonModule;
