@@ -21,11 +21,15 @@ const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 
+
 #[cfg(not(target_os = "wasi"))]
 fn main() -> io::Result<()> {
     use crate::ArenaServerModule::ArenaClientModule::ArenaClient;
+    use crate::ArenaServerModule::ArenaClientModule::ArenaClientNetworkInfo;
 
     env_logger::init();
+
+    let mut userCount: i64 = 0;
 
     // Create a poll instance.
     let mut poll = Poll::new()?;
@@ -90,18 +94,19 @@ fn main() -> io::Result<()> {
                     sendConnect.write(DATA2);
                     // token, connetcion
 
-                    let addedConnect = sendConnect;
-                    cltManager.AddNewUserToContainer(token, 
-                        ArenaClient{
-                            userID: 0, userPW: "Test".to_string(), 
-                            userName: "TestName".to_string(), connectedIPAddress: "TESTIP".to_string(), 
-                            connectToken: token, connectStream: addedConnect
-                        }
-                    );
+                    cltManager.AddNetUserConnetion(userCount, sendConnect, &token);
 
-//                    let _connection = addedConnect;
-//                    AddClientToContainer(&mut connections, _connection, &token);
-                    
+                    cltManager.AddNewUserToContainer(userCount, ArenaClient{
+                        userID: userCount,
+                        userPW: "".to_string(),
+                        userName: "".to_string()
+                    });
+
+
+                    let mut _tempConnection = cltManager.GetUserConnectStreamByID(userCount);
+                    AddClientToContainer(&mut connections, _tempConnection, &token);
+                    userCount += 1;
+
 //                  connections.insert(token, connection); 
                 },
                 token => {
