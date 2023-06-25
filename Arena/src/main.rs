@@ -24,6 +24,8 @@ const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 #[cfg(not(target_os = "wasi"))]
 fn main() -> io::Result<()> {
+    use tokio::time::error::Elapsed;
+
     use crate::ArenaServerModule::ArenaClientModule::ArenaClient;
     use crate::ArenaServerModule::ArenaClientModule::ArenaClientNetworkInfo;
 
@@ -45,7 +47,7 @@ fn main() -> io::Result<()> {
         .register(&mut server, SERVER, Interest::READABLE)?;
 
     // Map of `Token` -> `TcpStream`.
-    let mut connections = HashMap::new();
+//    let mut connections = HashMap::new();
 
     let mut cltManager = ArenaClientModule::ArenaClientManager::new();
     cltManager.Initialize();
@@ -96,15 +98,15 @@ fn main() -> io::Result<()> {
 
                     cltManager.AddNetUserConnetion(userCount, sendConnect, &token);
 
-                    cltManager.AddNewUserToContainer(userCount, ArenaClient{
-                        userID: userCount,
-                        userPW: "".to_string(),
-                        userName: "".to_string()
-                    });
+//                    cltManager.AddNewUserToContainer(userCount, ArenaClient{
+//                        userID: userCount,
+//                        userPW: "".to_string(),
+//                        userName: "".to_string()
+//                    });
 
 
-                    let mut _tempConnection = cltManager.GetUserConnectStreamByID(userCount);
-                    AddClientToContainer(&mut connections, _tempConnection, &token);
+//                    let mut _tempConnection = cltManager.GetUserConnectStreamByID(userCount);
+  //                  AddClientToContainer(&mut connections, _tempConnection, &token);
                     userCount += 1;
 
 //                  connections.insert(token, connection); 
@@ -112,18 +114,34 @@ fn main() -> io::Result<()> {
                 token => {
                     // Maybe received an event for a TCP connection.
                      // 함수화
-                     
-                    let done = if let Some(connection) = connections.get_mut(&token) {
-                        handle_connection_event(poll.registry(), connection, event)?
+
+                    let done = if cltManager.CheckValidConnection(&token) {
+                        handle_connection_event(poll.registry(),
+                        &mut cltManager.GetUserConnectStreamByToken(&token),
+                          event)?
                     } else {
-                        // Sporadic events happen, we can safely ignore them.
                         false
                     };
+
                     if done {
-                        if let Some(mut connection) = connections.remove(&token) {
-                            poll.registry().deregister(&mut connection)?;
-                        }
+                        let __done = if cltManager.CheckValidConnection(&token) {
+                            cltManager.RemoveConnectionUseToken(&token);
+                            poll.registry().deregister(cltManager.GetUserConnectStreamByToken(&token))?
+                        };
                     }
+
+//                    let done = if let Some(connection) = connections.get_mut(&token) {
+//                        handle_connection_event(poll.registry(), connection, event)?
+//                    } else {
+//                        // Sporadic events happen, we can safely ignore them.
+//                        false
+//                    };
+//
+//                    if done {
+//                        if let Some(mut connection) = connections.remove(&token) {
+//                            poll.registry().deregister(&mut connection)?;
+//                        }
+//                    }
                 }
             }
         }

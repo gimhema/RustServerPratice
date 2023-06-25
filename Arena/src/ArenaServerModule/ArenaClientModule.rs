@@ -27,7 +27,8 @@ pub struct ArenaClient {
 
 pub struct ArenaClientNetworkInfo {
     userToken: Token,
-    userConnectStream: TcpStream
+    userConnectStream: TcpStream,
+    userIdentify: i64
 }
 
 impl  ArenaClient {
@@ -43,7 +44,7 @@ impl  ArenaClient {
 
 pub struct ArenaClientManager {
     clientContainer: HashMap<i64, ArenaClient>, // ID, Client Information
-    clientNetworkContainer: HashMap<i64, ArenaClientNetworkInfo> // ID, Arena Network Information
+    clientNetworkContainer: HashMap<Token, ArenaClientNetworkInfo> // ID, Arena Network Information
 }
 
 impl ArenaClientManager {
@@ -68,10 +69,11 @@ impl ArenaClientManager {
     {
         let _connectionInfoRef = ArenaClientNetworkInfo{
             userToken: *token,
-            userConnectStream: connection
+            userConnectStream: connection,
+            userIdentify: id
         };
 
-        self.clientNetworkContainer.insert(id, _connectionInfoRef);
+        self.clientNetworkContainer.insert(*token, _connectionInfoRef);
     }
 
     pub fn GetUserInformationByID(&mut self, id: i64) -> Option<&ArenaClient>
@@ -79,14 +81,30 @@ impl ArenaClientManager {
         self.clientContainer.get(&id)
     }
 
-    pub fn GetUserConnectionByID(&mut self, id: i64) -> Option<&ArenaClientNetworkInfo>
+    pub fn GetUserConnectionByToken(&mut self, token: &Token) -> Option<&ArenaClientNetworkInfo>
     {
-        self.clientNetworkContainer.get(&id)
+        self.clientNetworkContainer.get(token)
     }
 
-    pub fn GetUserConnectStreamByID(&mut self, id: i64) -> &TcpStream
+    pub fn GetUserConnectStreamByToken(&mut self, token: &Token) -> &mut TcpStream
     {
-        &self.clientNetworkContainer.get(&id).unwrap().userConnectStream
+        &mut self.clientNetworkContainer.get_mut(token).unwrap().userConnectStream
+    }
+
+    pub fn RemoveConnectionUseToken(&mut self, token: &Token)
+    {
+        self.clientNetworkContainer.remove(token);
+    }
+
+    pub fn CheckValidConnection(&mut self, token: &Token) -> bool
+    {
+        let mut result = false;
+        if let Some(_conn) = self.clientNetworkContainer.get_mut(token){
+            result = true;
+        }else {
+            result = false;
+        }
+        result
     }
 
 }
