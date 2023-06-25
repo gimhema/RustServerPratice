@@ -124,10 +124,14 @@ fn main() -> io::Result<()> {
                     };
 
                     if done {
+                        let mut _b: bool = false;
                         let __done = if cltManager.CheckValidConnection(&token) {
-                            cltManager.RemoveConnectionUseToken(&token);
+                            _b = true;
                             poll.registry().deregister(cltManager.GetUserConnectStreamByToken(&token))?
                         };
+                        if _b == true {
+                            cltManager.RemoveConnectionUseToken(&token);
+                        }
                     }
 
 //                    let done = if let Some(connection) = connections.get_mut(&token) {
