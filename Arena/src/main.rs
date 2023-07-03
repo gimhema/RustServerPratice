@@ -73,7 +73,10 @@ fn main() -> io::Result<()> {
     let sendHandle = thread::spawn(|| {
         loop{
             println!("Thread Test . . . .");
-            thread::sleep(Duration::from_millis(5000));
+
+            
+
+            thread::sleep(Duration::from_millis(1000));
         }
     });
 
@@ -110,12 +113,13 @@ fn main() -> io::Result<()> {
                         token,
                         Interest::READABLE.add(Interest::WRITABLE),
                     )?;
+
                     let mut sendConnect = connection;
                     sendConnect.write(DATA2);
                     // token, connetcion
 
                     cltManager.AddNetUserConnetion(userCount, sendConnect, &token);
-
+                    cltManager.AddNewTokenToVec(token);
 //                    cltManager.AddNewUserToContainer(userCount, ArenaClient{
 //                        userID: userCount,
 //                        userPW: "".to_string(),

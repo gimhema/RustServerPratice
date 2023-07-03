@@ -1,6 +1,9 @@
 use std::collections::HashMap;
+use std::io::Write;
 use mio::net::{TcpListener, TcpStream};
 use mio::{Token};
+
+const SENDTEST: &[u8] = b"Hi Unreal This Message Is Update Loop\n";
 
 pub fn Initailize() {
     println!("Arena Client Initialize");
@@ -44,7 +47,8 @@ impl  ArenaClient {
 
 pub struct ArenaClientManager {
     clientContainer: HashMap<i64, ArenaClient>, // ID, Client Information
-    clientNetworkContainer: HashMap<Token, ArenaClientNetworkInfo> // ID, Arena Network Information
+    clientNetworkContainer: HashMap<Token, ArenaClientNetworkInfo>, // ID, Arena Network Information
+    clientTokenVec: Vec<Token>
 }
 
 impl ArenaClientManager {
@@ -57,8 +61,14 @@ impl ArenaClientManager {
     pub fn new() -> ArenaClientManager {
         ArenaClientManager { 
             clientContainer: HashMap::new(),
-            clientNetworkContainer: HashMap::new()
+            clientNetworkContainer: HashMap::new(),
+            clientTokenVec: Vec::new()
         }
+    }
+
+    pub fn AddNewTokenToVec(&mut self, token: Token)
+    {
+        self.clientTokenVec.push(token);
     }
 
     pub fn AddNewUserToContainer(&mut self, id: i64, newClient: ArenaClient)
@@ -105,6 +115,18 @@ impl ArenaClientManager {
             result = false;
         }
         result
+    }
+
+    pub fn SendTestMessage(&mut self, token: Token)
+    {
+        self.GetUserConnectStreamByToken(&token).write(SENDTEST);
+    }
+
+    pub fn SendUpdateLoop(&mut self)
+    {
+        loop {
+
+        }
     }
 
 }
