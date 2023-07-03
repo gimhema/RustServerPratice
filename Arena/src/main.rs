@@ -11,6 +11,8 @@ use mio::{Events, Interest, Poll, Registry, Token};
 use std::collections::HashMap;
 use std::io::{self, Read, Write};
 use std::str::from_utf8;
+use std::thread;
+use std::time::Duration;
 
 // Setup some tokens to allow us to identify which event is for which socket.
 const SERVER: Token = Token(0);
@@ -58,6 +60,22 @@ fn main() -> io::Result<()> {
     println!("You can connect to the server using `nc`:");
     println!(" $ nc 127.0.0.1 9000");
     println!("You'll see our welcome message and anything you type will be printed here.");
+
+    //  여기에 스레드 루프를 하나 생성 . . .
+    // loop 
+    // {
+    //      for ~ cltManager 크기만큼
+    //      Sleep(5초)            
+    //      cltManager에서 특정 Connect를 꺼내고
+    //          SomeConnect.write(DATA2);        
+    // }
+    //  일단 루프는 . . .5초에 한번씩 특정 메세지를 보내는걸로 하자
+    let sendHandle = thread::spawn(|| {
+        loop{
+            println!("Thread Test . . . .");
+            thread::sleep(Duration::from_millis(5000));
+        }
+    });
 
     loop {
         poll.poll(&mut events, None)?;
@@ -150,6 +168,8 @@ fn main() -> io::Result<()> {
             }
         }
     }
+
+    sendHandle.join().unwrap();
 }
 
 fn next(current: &mut Token) -> Token {
