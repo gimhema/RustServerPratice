@@ -26,6 +26,7 @@ const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 #[cfg(not(target_os = "wasi"))]
 fn main() -> io::Result<()> {
+    use mio::event;
     use tokio::time::error::Elapsed;
 
     use crate::ArenaServerModule::ArenaClientModule::ArenaClient;
@@ -46,13 +47,16 @@ fn main() -> io::Result<()> {
 
     // Register the server with poll we can receive events for it.
     poll.registry()
-        .register(&mut server, SERVER, Interest::READABLE)?;
+        .register(&mut server, SERVER, Interest::READABLE | Interest::WRITABLE)?;
 
     // Map of `Token` -> `TcpStream`.
 //    let mut connections = HashMap::new();
 
     let mut cltManager = ArenaClientModule::ArenaClientManager::new();
     cltManager.Initialize();
+
+    let mut cltUpdateManager = ArenaClientModule::ArenaClientManager::new();
+    cltUpdateManager.Initialize();
 
     // Unique token for each incoming connection.
     let mut unique_token = Token(SERVER.0 + 1);
@@ -70,21 +74,21 @@ fn main() -> io::Result<()> {
     //          SomeConnect.write(DATA2);        
     // }
     //  일단 루프는 . . .5초에 한번씩 특정 메세지를 보내는걸로 하자
-    let sendHandle = thread::spawn(move || {
-        loop{
-            println!("Thread Test . . . .");
-            
-//            cltManager.SendUpdateLoop();
-            
+    
+//    let _sender = events.channel();
 
-            thread::sleep(Duration::from_millis(5000));
-        }
-    });
+    
 
     loop {
-        poll.poll(&mut events, None)?;
+        println!("Set Poll");
+        poll.poll(&mut events, Some(Duration::from_millis(500)))?;
 
+        println!("Iterate Event For Loop");
         for event in events.iter() {
+            if event.token() == Token(0) && event.is_writable() {
+                println!("Writeable Event . . .");
+            }
+
             match event.token() {
                 SERVER => loop {
                     // Received an event for the TCP server socket, which
@@ -174,7 +178,7 @@ fn main() -> io::Result<()> {
         }
     }
 
-    sendHandle.join().unwrap();
+//    sendHandle.join().unwrap();
 }
 
 fn next(current: &mut Token) -> Token {

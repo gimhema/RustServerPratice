@@ -5,7 +5,7 @@ use mio::{Token};
 
 const SENDTEST: &[u8] = b"Hi Unreal This Message Is Update Loop\n";
 
-pub fn SendTestFunction(connectionStream: &TcpStream)
+pub fn SendTestFunction(connectionStream: &mut TcpStream)
 {
     connectionStream.write(SENDTEST);
 }
@@ -132,7 +132,7 @@ impl ArenaClientManager {
         loop {
             for (key, value) in &self.clientNetworkContainer{
                 let _token = key.clone();
-                SendTestFunction(&value.userConnectStream);
+//                SendTestFunction(value.userConnectStream);
             }
         }
     }
