@@ -70,13 +70,14 @@ fn main() -> io::Result<()> {
     //          SomeConnect.write(DATA2);        
     // }
     //  일단 루프는 . . .5초에 한번씩 특정 메세지를 보내는걸로 하자
-    let sendHandle = thread::spawn(|| {
+    let sendHandle = thread::spawn(move || {
         loop{
             println!("Thread Test . . . .");
-
+            
+//            cltManager.SendUpdateLoop();
             
 
-            thread::sleep(Duration::from_millis(1000));
+            thread::sleep(Duration::from_millis(5000));
         }
     });
 
