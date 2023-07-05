@@ -132,9 +132,14 @@ impl ArenaClientManager {
         loop {
             for (key, value) in &self.clientNetworkContainer{
                 let _token = key.clone();
-//                SendTestFunction(value.userConnectStream);
+ //               SendTestFunction(value.userConnectStream);
             }
         }
+    }
+
+    pub fn GetClientNetworkContainer(&mut self) -> &HashMap<Token, ArenaClientNetworkInfo>
+    {
+        &self.clientNetworkContainer
     }
 
 }

@@ -21,6 +21,7 @@ const SERVER: Token = Token(0);
 // 언리얼 클라이언트에게 아래와 같은 메세지를 보낼것이다.
 const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
+const DATA3: &[u8] = b"Hi Unreal This Message Update\n";
 
 
 
@@ -50,13 +51,13 @@ fn main() -> io::Result<()> {
         .register(&mut server, SERVER, Interest::READABLE | Interest::WRITABLE)?;
 
     // Map of `Token` -> `TcpStream`.
-//    let mut connections = HashMap::new();
+    let mut connections = HashMap::new();
 
-    let mut cltManager = ArenaClientModule::ArenaClientManager::new();
-    cltManager.Initialize();
+//    let mut cltManager = ArenaClientModule::ArenaClientManager::new();
+//    cltManager.Initialize();
 
-    let mut cltUpdateManager = ArenaClientModule::ArenaClientManager::new();
-    cltUpdateManager.Initialize();
+//    let mut cltUpdateManager = ArenaClientModule::ArenaClientManager::new();
+//    cltUpdateManager.Initialize();
 
     // Unique token for each incoming connection.
     let mut unique_token = Token(SERVER.0 + 1);
@@ -123,8 +124,8 @@ fn main() -> io::Result<()> {
                     sendConnect.write(DATA2);
                     // token, connetcion
 
-                    cltManager.AddNetUserConnetion(userCount, sendConnect, &token);
-                    cltManager.AddNewTokenToVec(token);
+//                    cltManager.AddNetUserConnetion(userCount, sendConnect, &token);
+//                    cltManager.AddNewTokenToVec(token);
 //                    cltManager.AddNewUserToContainer(userCount, ArenaClient{
 //                        userID: userCount,
 //                        userPW: "".to_string(),
@@ -133,48 +134,53 @@ fn main() -> io::Result<()> {
 
 
 //                    let mut _tempConnection = cltManager.GetUserConnectStreamByID(userCount);
-  //                  AddClientToContainer(&mut connections, _tempConnection, &token);
+//                    AddClientToContainer(&mut connections, sendConnect, &token);
                     userCount += 1;
 
-//                  connections.insert(token, connection); 
+                  connections.insert(token, sendConnect); 
                 },
                 token => {
                     // Maybe received an event for a TCP connection.
                      // 함수화
 
-                    let done = if cltManager.CheckValidConnection(&token) {
-                        handle_connection_event(poll.registry(),
-                        &mut cltManager.GetUserConnectStreamByToken(&token),
-                          event)?
-                    } else {
-                        false
-                    };
+                    // let done = if cltManager.CheckValidConnection(&token) {
+                    //     handle_connection_event(poll.registry(),
+                    //     &mut cltManager.GetUserConnectStreamByToken(&token),
+                    //       event)?
+                    // } else {
+                    //     false
+                    // };
 
-                    if done {
-                        let mut _b: bool = false;
-                        let __done = if cltManager.CheckValidConnection(&token) {
-                            _b = true;
-                            poll.registry().deregister(cltManager.GetUserConnectStreamByToken(&token))?
-                        };
-                        if _b == true {
-                            cltManager.RemoveConnectionUseToken(&token);
-                        }
-                    }
+                    // if done {
+                    //     let mut _b: bool = false;
+                    //     let __done = if cltManager.CheckValidConnection(&token) {
+                    //         _b = true;
+                    //         poll.registry().deregister(cltManager.GetUserConnectStreamByToken(&token))?
+                    //     };
+                    //     if _b == true {
+                    //         cltManager.RemoveConnectionUseToken(&token);
+                    //     }
+                    // }
 
-//                    let done = if let Some(connection) = connections.get_mut(&token) {
-//                        handle_connection_event(poll.registry(), connection, event)?
-//                    } else {
-//                        // Sporadic events happen, we can safely ignore them.
-//                        false
-//                    };
-//
-//                    if done {
-//                        if let Some(mut connection) = connections.remove(&token) {
-//                            poll.registry().deregister(&mut connection)?;
-//                        }
-//                    }
+                   let done = if let Some(connection) = connections.get_mut(&token) {
+                       handle_connection_event(poll.registry(), connection, event)?
+                   } else {
+                       // Sporadic events happen, we can safely ignore them.
+                       false
+                   };
+
+                   if done {
+                       if let Some(mut connection) = connections.remove(&token) {
+                           poll.registry().deregister(&mut connection)?;
+                       }
+                   }
                 }
             }
+            println!("For Loop End");
+        }
+        println!("Set Poll End");
+        for (key, value) in &mut connections{
+           value.write(DATA3);
         }
     }
 
