@@ -1,3 +1,11 @@
+
+use std::collections::VecDeque;
+use std::sync::Mutex;
+
+static sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
+static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
+
+
 pub enum MessageUnique {
     NONE,
     REQUEST_SEND_ONE,

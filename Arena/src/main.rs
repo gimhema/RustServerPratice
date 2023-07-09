@@ -13,7 +13,6 @@ use std::io::{self, Read, Write};
 use std::str::from_utf8;
 use std::thread;
 use std::time::Duration;
-use std::collections::VecDeque;
 
 // Setup some tokens to allow us to identify which event is for which socket.
 const SERVER: Token = Token(0);
@@ -25,6 +24,10 @@ const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 const DATA3: &[u8] = b"Hi Unreal This Message Update\n";
 
 
+// let mut sendMessageBuffer: VecDeque<String> = VecDeque::new();
+// let mut recvMessageBuffer: VecDeque<String> = VecDeque::new();
+
+// static ARRAY: Mutex<Vec<i32>> = Mutex::new(Vec::new());
 
 #[cfg(not(target_os = "wasi"))]
 fn main() -> io::Result<()> {
@@ -53,9 +56,6 @@ fn main() -> io::Result<()> {
 
     // Map of `Token` -> `TcpStream`.
     let mut connections = HashMap::new();
-
-    let mut sendMessageBuffer: VecDeque<String> = VecDeque::new();
-    let mut recvMessageBuffer: VecDeque<String> = VecDeque::new();
 
 
     // Unique token for each incoming connection.
