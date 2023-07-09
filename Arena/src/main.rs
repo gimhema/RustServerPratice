@@ -13,6 +13,7 @@ use std::io::{self, Read, Write};
 use std::str::from_utf8;
 use std::thread;
 use std::time::Duration;
+use std::collections::VecDeque;
 
 // Setup some tokens to allow us to identify which event is for which socket.
 const SERVER: Token = Token(0);
@@ -53,11 +54,9 @@ fn main() -> io::Result<()> {
     // Map of `Token` -> `TcpStream`.
     let mut connections = HashMap::new();
 
-//    let mut cltManager = ArenaClientModule::ArenaClientManager::new();
-//    cltManager.Initialize();
+    let mut sendMessageBuffer: VecDeque<String> = VecDeque::new();
+    let mut recvMessageBuffer: VecDeque<String> = VecDeque::new();
 
-//    let mut cltUpdateManager = ArenaClientModule::ArenaClientManager::new();
-//    cltUpdateManager.Initialize();
 
     // Unique token for each incoming connection.
     let mut unique_token = Token(SERVER.0 + 1);
@@ -66,19 +65,6 @@ fn main() -> io::Result<()> {
     println!(" $ nc 127.0.0.1 9000");
     println!("You'll see our welcome message and anything you type will be printed here.");
 
-    //  여기에 스레드 루프를 하나 생성 . . .
-    // loop 
-    // {
-    //      for ~ cltManager 크기만큼
-    //      Sleep(5초)            
-    //      cltManager에서 특정 Connect를 꺼내고
-    //          SomeConnect.write(DATA2);        
-    // }
-    //  일단 루프는 . . .5초에 한번씩 특정 메세지를 보내는걸로 하자
-    
-//    let _sender = events.channel();
-
-    
 
     loop {
         println!("Set Poll");
@@ -124,15 +110,6 @@ fn main() -> io::Result<()> {
                     sendConnect.write(DATA2);
                     // token, connetcion
 
-//                    cltManager.AddNetUserConnetion(userCount, sendConnect, &token);
-//                    cltManager.AddNewTokenToVec(token);
-//                    cltManager.AddNewUserToContainer(userCount, ArenaClient{
-//                        userID: userCount,
-//                        userPW: "".to_string(),
-//                        userName: "".to_string()
-//                    });
-
-
 //                    let mut _tempConnection = cltManager.GetUserConnectStreamByID(userCount);
 //                    AddClientToContainer(&mut connections, sendConnect, &token);
                     userCount += 1;
@@ -140,27 +117,7 @@ fn main() -> io::Result<()> {
                   connections.insert(token, sendConnect); 
                 },
                 token => {
-                    // Maybe received an event for a TCP connection.
-                     // 함수화
-
-                    // let done = if cltManager.CheckValidConnection(&token) {
-                    //     handle_connection_event(poll.registry(),
-                    //     &mut cltManager.GetUserConnectStreamByToken(&token),
-                    //       event)?
-                    // } else {
-                    //     false
-                    // };
-
-                    // if done {
-                    //     let mut _b: bool = false;
-                    //     let __done = if cltManager.CheckValidConnection(&token) {
-                    //         _b = true;
-                    //         poll.registry().deregister(cltManager.GetUserConnectStreamByToken(&token))?
-                    //     };
-                    //     if _b == true {
-                    //         cltManager.RemoveConnectionUseToken(&token);
-                    //     }
-                    // }
+                    
 
                    let done = if let Some(connection) = connections.get_mut(&token) {
                        handle_connection_event(poll.registry(), connection, event)?
