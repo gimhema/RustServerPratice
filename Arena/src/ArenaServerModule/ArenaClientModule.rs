@@ -38,9 +38,8 @@ impl ConnectInfo {
 }
 
 
-pub struct ArenaClient {
+pub struct ArenaPlayer {
     userID: i64,
-    userPW: String,
     userName: String
 }
 
@@ -50,10 +49,9 @@ pub struct ArenaClientNetworkInfo {
     userIdentify: i64
 }
 
-impl  ArenaClient {
-    pub fn Create(&mut self, ID: i64, Password: String, userName: String, IP: String) {
+impl  ArenaPlayer {
+    pub fn Create(&mut self, ID: i64, userName: String, IP: String) {
         self.userID = ID;
-        self.userPW = Password;
         self.userName = userName;
     }
     pub fn Connect() {
@@ -62,7 +60,7 @@ impl  ArenaClient {
 }
 
 pub struct ArenaClientManager {
-    clientContainer: HashMap<i64, ArenaClient>, // ID, Client Information
+    clientContainer: HashMap<i64, ArenaPlayer>, // ID, Client Information
     clientNetworkContainer: HashMap<Token, ArenaClientNetworkInfo>, // ID, Arena Network Information
     clientTokenVec: Vec<Token>
 }

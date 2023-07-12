@@ -3,9 +3,6 @@ pub mod ArenaCommonModule;
 
 pub mod ArenaServerCoreModule {
     use crate::ArenaServerModule::ArenaCommonModule;
-    use crate::ArenaServerModule::ArenaNetworkModule;
-    use crate::ArenaServerModule::ArenaWorldModule;
-    use crate::ArenaServerModule::ArenaMessageModule;
     use crate::ArenaServerModule::ArenaClientModule;
 
     use super::ArenaCommonModule::MessageUnique;
@@ -13,9 +10,6 @@ pub mod ArenaServerCoreModule {
     pub fn Create() {
         println!("Server Core Create");
         ArenaCommonModule::Initialize();
-        ArenaNetworkModule::Initialize();
-        ArenaWorldModule::Initialize();
-        ArenaMessageModule::Initialize();
         ArenaClientModule::Initailize();
     }
 
@@ -27,27 +21,53 @@ pub mod ArenaServerCoreModule {
     }
 }
 
+pub mod ArenaGameCommon {
 
-pub mod ArenaNetworkModule {
-    pub fn Initialize() {
-        println!("Network Module Initialize . . . .");
+    use crate::sendMessageBuffer;
 
+    use super::ArenaClientModule::ArenaPlayer; 
+
+    pub struct InstanceGame {
+        gameID: i32,
+        players: Vec<ArenaPlayer>
     }
-}
 
-pub mod ArenaWorldModule {
-    pub fn Initialize() {
-        println!("Message Module Initialize . . . .");
-
-    }    
-}
-
-pub mod ArenaMessageModule {
-    pub fn Initialize() {
-        println!("Message Module Initialize . . . .");
-        
+    impl InstanceGame {
+        pub fn GameCreate() {
+            // 게임 생성
+        }
+    
+        pub fn GameWait() {
+            // 게임 생성 후 플레이어의 준비 대기
+        }
+    
+        pub fn GameStart() {
+            // 게임 시작
+        }
+    
+        pub fn GameAction() {
+            // 루프를 돌면서 게임의 로직을 실행
+            loop {
+                sendMessageBuffer.lock().unwrap().push_back("test".to_string());
+            }
+        }
+    
+        pub fn GameEnd() {
+            // 게임을 끝내고 결과를 플레이어들에게 전송한다.
+        }
+    
+        pub fn GameClose() {
+            // 게임을 닫고 대기상태로 돌아간다.
+        }
+    
+        pub fn GameDestroy() {
+            // 인스턴스 게임을 파괴한다.
+        }
     }
+
+
 }
+
 
 
 
