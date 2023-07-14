@@ -152,6 +152,10 @@ fn main() -> io::Result<()> {
             println!("For Loop End");
         }
         println!("Set Poll End");
+
+        // sendBuffer에 저장되어 있는 메세지를 확인하고 있을때마다 
+        // 정해진 header로 메세지를 보낸다
+        // 메세지용 클래스도 하나 필요하겠네..
         for (key, value) in &mut connections{
            value.write(DATA3);
         }
