@@ -1,11 +1,14 @@
 pub mod ArenaClientModule;
 pub mod ArenaCommonModule;
 
+use crate::GameLogicCore;
+
 pub mod ArenaServerCoreModule {
     use crate::ArenaServerModule::ArenaCommonModule;
     use crate::ArenaServerModule::ArenaClientModule;
-
     use super::ArenaCommonModule::MessageUnique;
+
+    use super::GameLogicCore::GameLogicCore;
 
     pub fn Create() {
         println!("Server Core Create");
@@ -13,11 +16,13 @@ pub mod ArenaServerCoreModule {
         ArenaClientModule::Initailize();
     }
 
-    pub fn FunctionTest(){
+    pub fn ServerCoreFunctionTest(){
         let mut _unique:MessageUnique = MessageUnique::NONE;
         let mut _str:String = ArenaCommonModule::ConvertUniqueToData(_unique);
 
         println!("Result : {}", _str);
+
+        GameLogicCore::GameLogicCoreFunctionTest();
     }
 }
 
@@ -27,7 +32,6 @@ pub mod ArenaGameCommon {
 
     use super::ArenaClientModule::ArenaPlayer; 
     use super::ArenaCommonModule::{self, MakeSendMessage};
-
 
     pub struct InstanceGame {
         gameID: i32,
@@ -53,8 +57,6 @@ pub mod ArenaGameCommon {
         // sendBuffer에 메세지를 저장한다.
 
     }
-
-
 
     impl InstanceGame {
         
@@ -92,8 +94,6 @@ pub mod ArenaGameCommon {
 
 
     }
-
-
 }
 
 

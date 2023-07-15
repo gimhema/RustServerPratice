@@ -1,7 +1,10 @@
 // My Custom Modules
 mod ArenaServerModule;
+mod GameLogicCore;
+
 use ArenaServerModule::{ArenaServerCoreModule};
 use ArenaServerModule::{ArenaClientModule};
+
 
 
 // You can run this example from the root of the mio repo:
