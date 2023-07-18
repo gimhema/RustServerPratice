@@ -1,6 +1,7 @@
 // My Custom Modules
 mod ArenaServerModule;
 mod GameLogicCore;
+mod CommonModule;
 
 use ArenaServerModule::{ArenaServerCoreModule};
 use ArenaServerModule::{ArenaClientModule};
