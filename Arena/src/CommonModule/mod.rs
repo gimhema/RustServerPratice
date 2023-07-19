@@ -5,6 +5,9 @@ pub mod Mediator;
 
 pub mod CommonModule {
     use crate::CommonModule::FSM;
+    use crate::CommonModule::Factory;
+    use crate::CommonModule::Manager;
+    use crate::CommonModule::Mediator;
 
     pub fn Create()
     {

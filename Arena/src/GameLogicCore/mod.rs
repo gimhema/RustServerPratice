@@ -3,6 +3,8 @@ pub mod GameUnitModule;
 pub mod GmaeResourceSystemModule;
 
 use crate::ArenaServerModule;
+use crate::CommonModule;
+use crate::CommonModule::Manager::{Manager};
 
 
 pub mod GameLogicCore {
@@ -13,15 +15,38 @@ pub mod GameLogicCore {
     use super::GameStructureModule::GameStructureManager;
     use super::GameUnitModule::GameUnitManager;
     use super::GmaeResourceSystemModule::GameResourceSysManager;
+    use super::CommonModule::Manager::{Manager};
 
     use super::ArenaServerModule::ArenaServerCoreModule;
 
-    pub fn Initialize() {
+    pub fn ModInitialize() {
         ArenaServerCoreModule::ServerCoreFunctionTest();
      }
 
      pub fn GameLogicCoreFunctionTest() {
         println!("TEST");
      }
+
+   pub struct GameMainLogic {
+      id : i64,
+      gameStructureManager : GameStructureManager,
+      gmaeUnitManager : GameUnitManager,
+      gameResourcrSysManager : GameResourceSysManager
+   }
+
+   impl Manager for GameMainLogic {
+      fn Initialize(&self) {
+         println!("Initailize Game Main Logic . . . ");
+     }
+     fn Update(&self) {
+         println!("Game Main Logic Update");
+         self.gameStructureManager.Update();
+         self.gmaeUnitManager.Update();
+         self.gameResourcrSysManager.Update();
+
+     }
+   }
+
+
 
 }
