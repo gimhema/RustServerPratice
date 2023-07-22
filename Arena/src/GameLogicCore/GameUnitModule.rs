@@ -3,7 +3,10 @@ use std::collections::VecDeque;
 
 use crate::CommonModule;
 
+use crate::CommonModule::GameActor::Actor;
+use crate::CommonModule::GameActor::ActorStatus;
 use crate::CommonModule::Manager::{Manager};
+use crate::CommonModule::GameActor;
 
 pub struct GameUnitManager {
     id : i64
@@ -18,3 +21,33 @@ impl Manager for GameUnitManager {
         println!("Game Unit Manager Update");
     }
 }
+
+pub struct GamePlayerUnit {
+    id : i64,
+    UnitStatus : ActorStatus
+}
+
+impl Actor for GamePlayerUnit {
+    fn Create(&self) {
+        
+    }
+    
+    fn Update(&self) {
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

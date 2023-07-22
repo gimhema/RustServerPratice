@@ -3,8 +3,25 @@ use std::collections::VecDeque;
 
 use crate::CommonModule;
 
+use crate::CommonModule::GameActor::Actor;
+use crate::CommonModule::GameActor::ActorStatus;
 use crate::CommonModule::Manager::{Manager};
+use crate::CommonModule::FSM;
+use crate::CommonModule::GameActor;
 
+pub struct GameNPCUnit {
+    id : i64,
+    NPCStatus : ActorStatus
+}
+
+impl Actor for GameNPCUnit {
+    fn Create(&self) {
+        
+    }
+    fn Update(&self) {
+        
+    }
+}
 
 pub struct GameNPCManager {
     id : i64
