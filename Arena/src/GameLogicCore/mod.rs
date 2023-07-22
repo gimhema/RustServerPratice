@@ -1,6 +1,7 @@
 pub mod GameStructureModule;
 pub mod GameUnitModule;
 pub mod GmaeResourceSystemModule;
+pub mod GameNonPlayerableModules;
 
 use crate::ArenaServerModule;
 use crate::CommonModule;
@@ -11,7 +12,10 @@ pub mod GameLogicCore {
     use crate::GameLogicCore::GameStructureModule;
     use crate::GameLogicCore::GameUnitModule;
     use crate::GameLogicCore::GmaeResourceSystemModule;
+    use crate::GameLogicCore::GameNonPlayerableModules;
 
+    use super::GameNonPlayerableModules::GameNPCManager;
+    use super::GameNonPlayerableModules::GameNonPlayerableEcoSystem;
     use super::GameStructureModule::GameStructureManager;
     use super::GameUnitModule::GameUnitManager;
     use super::GmaeResourceSystemModule::GameResourceSysManager;
@@ -45,6 +49,35 @@ pub mod GameLogicCore {
          self.gameResourcrSysManager.Update();
 
      }
+   }
+
+   pub struct GamePlayer {
+      id : i64,
+      gameMainLogic : GameMainLogic
+   }
+
+   impl Manager for GamePlayer {
+      fn Initialize(&self) {
+          
+      }
+      fn Update(&self) {
+          
+      }
+   }
+
+   pub struct GameEnvironment {
+      id : i64,
+      gameNPCManager : GameNPCManager,
+      gameEcosystem : GameNonPlayerableEcoSystem
+   }
+
+   impl Manager for GameEnvironment {
+      fn Initialize(&self) {
+          
+      }
+      fn Update(&self) {
+          
+      }
    }
 
 
