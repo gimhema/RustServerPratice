@@ -41,6 +41,9 @@ pub mod GameLogicCore {
    impl Manager for GameMainLogic {
       fn Initialize(&self) {
          println!("Initailize Game Main Logic . . . ");
+         self.gameStructureManager.Initialize();
+         self.gmaeUnitManager.Initialize();
+         self.gameResourcrSysManager.Initialize();
      }
      fn Update(&self) {
          println!("Game Main Logic Update");
@@ -58,10 +61,10 @@ pub mod GameLogicCore {
 
    impl Manager for GamePlayer {
       fn Initialize(&self) {
-          
+          self.gameMainLogic.Initialize();
       }
       fn Update(&self) {
-          
+          self.gameMainLogic.Update();
       }
    }
 

@@ -16,6 +16,12 @@ impl Manager for GameStructureManager {
     }
     fn Update(&self) {
         println!("Game Structure Update");
+       // Structure Status Update By Player(=Client)'s Action
+
+        // Get Status of Game Structure Object
+
+        // and Push Status of Game Structure Object to Send Buffer
+
     }
 }
 

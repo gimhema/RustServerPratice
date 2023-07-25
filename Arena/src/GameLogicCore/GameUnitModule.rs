@@ -9,7 +9,8 @@ use crate::CommonModule::Manager::{Manager};
 use crate::CommonModule::GameActor;
 
 pub struct GameUnitManager {
-    id : i64
+    id : i64,
+    gameUnitContainer : Vec<GamePlayerUnit>
 }
 
 
@@ -19,6 +20,12 @@ impl Manager for GameUnitManager {
     }
     fn Update(&self) {
         println!("Game Unit Manager Update");
+       // Units Status Update By Player(=Client)'s Action
+
+       // Get Units Status
+
+        // and push Units Status to Send Buffer
+
     }
 }
 
