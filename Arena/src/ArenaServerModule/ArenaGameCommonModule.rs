@@ -13,6 +13,7 @@ pub struct InstanceGame {
     gameID: i32,
     players: Vec<ArenaPlayer>
 }
+
 impl InstanceGame {
     // 게임 흐름
     pub fn GameCreate(&mut self) {
