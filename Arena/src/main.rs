@@ -32,7 +32,7 @@ const SERVER: Token = Token(0);
 const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 const DATA3: &[u8] = b"Hi Unreal This Message Update\n";
-
+type ArenaEventAction = fn(String) -> i64;
 
 // lazy_static!{
 //     static ref sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
@@ -40,6 +40,11 @@ const DATA3: &[u8] = b"Hi Unreal This Message Update\n";
 // }
 static sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
+
+lazy_static!{
+    static ref serverActionMap: Mutex<HashMap<String, ArenaEventAction>> = Mutex::new(HashMap::new());
+}
+
 
 // let mut sendMessageBuffer: VecDeque<String> = VecDeque::new();
 // let mut recvMessageBuffer: VecDeque<String> = VecDeque::new();
