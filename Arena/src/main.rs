@@ -42,7 +42,8 @@ static sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 
 lazy_static!{
-    static ref serverActionMap: Mutex<HashMap<String, ArenaEventAction>> = Mutex::new(HashMap::new());
+    // 생각해보니까 굳이 문자열일 필요는 없는것같다...
+    static ref serverActionMap: Mutex<HashMap<i64, ArenaEventAction>> = Mutex::new(HashMap::new());
 }
 
 

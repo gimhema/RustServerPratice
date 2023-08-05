@@ -26,6 +26,7 @@ pub fn MakeSendMessage(_header : i64, _command : i64, _param : String) -> ArenaM
 }
 
 pub enum MessageUnique {
+    CONSOLE_WRITE_LINE,
     NONE,
     REQUEST_SEND_ONE,
     REQUEST_SEND_ALL,
@@ -40,6 +41,7 @@ pub fn Initialize() {
 
 pub fn ConvertDataToUnique(_data: &str) -> MessageUnique {
     match _data {
+        "CONSOLE_WRITE_LINE" => MessageUnique::CONSOLE_WRITE_LINE,
         "NONE" => MessageUnique::NONE,
         "REQUEST_SEND_ONE" => MessageUnique::REQUEST_SEND_ONE,
         "REQUEST_SEND_ALL" => MessageUnique::REQUEST_SEND_ALL,
@@ -52,7 +54,7 @@ pub fn ConvertDataToUnique(_data: &str) -> MessageUnique {
 pub fn ConvertUniqueToData(_unique: MessageUnique) -> String {
     let mut result: &str = "";
     match _unique {
-        MessageUnique::NONE => result = "NONE",
+        MessageUnique::CONSOLE_WRITE_LINE => result = "CONSOLE_WRITE_LINE",
         MessageUnique::REQUEST_SEND_ONE => result = "REQUEST_SEND_ONE",
         MessageUnique::REQUEST_SEND_ALL => result = "REQUEST_SEND_ALL",
         MessageUnique::RESPONSE_SEND_ALL => result = "RESPONSE_SEND_ALL",

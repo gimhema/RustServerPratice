@@ -2,6 +2,7 @@ pub mod ArenaClientModule;
 pub mod ArenaMessageModule;
 pub mod ArenaGameCommonModule;
 pub mod ArenaServerActionModule;
+pub mod ArenaServerActionMappingModule;
 
 use crate::GameLogicCore;
 
