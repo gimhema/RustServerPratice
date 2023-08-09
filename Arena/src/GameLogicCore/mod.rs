@@ -9,6 +9,7 @@ use crate::CommonModule::Manager::{Manager};
 
 
 pub mod GameLogicCore {
+    use crate::ArenaServerModule::ArenaServerActionMappingModule::ServerActionMappingInitialize;
     use crate::GameLogicCore::GameStructureModule;
     use crate::GameLogicCore::GameUnitModule;
     use crate::GameLogicCore::GmaeResourceSystemModule;
@@ -24,7 +25,8 @@ pub mod GameLogicCore {
     use super::ArenaServerModule::ArenaServerCoreModule;
 
     pub fn ModInitialize() {
-        ArenaServerCoreModule::ServerCoreFunctionTest();
+        
+
      }
 
      pub fn GameLogicCoreFunctionTest() {
