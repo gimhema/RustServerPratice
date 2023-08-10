@@ -14,8 +14,18 @@ pub struct InstanceGame {
     players: Vec<ArenaPlayer>
 }
 
+
 impl InstanceGame {
     // 게임 흐름
+
+    pub fn new() -> InstanceGame {
+        let mut _players : Vec<ArenaPlayer> = Vec::new();   
+        InstanceGame { 
+            gameID: 0, 
+            players: _players
+        }
+    }
+
     pub fn GameCreate(&mut self) {
         // 게임 생성
     }

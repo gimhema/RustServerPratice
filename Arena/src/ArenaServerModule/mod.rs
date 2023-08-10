@@ -4,6 +4,7 @@ pub mod ArenaGameCommonModule;
 pub mod ArenaServerActionModule;
 pub mod ArenaServerActionMappingModule;
 
+
 use crate::GameLogicCore;
 
 pub mod ArenaServerCoreModule {
@@ -14,6 +15,7 @@ pub mod ArenaServerCoreModule {
     use super::GameLogicCore::GameLogicCore;
     use super::ArenaServerActionMappingModule;
     use super::ArenaGameCommonModule::InstanceGame;
+    use super::ArenaClientModule::ArenaPlayer;
 
     pub fn Create() {
         println!("Server Core Create");
@@ -22,13 +24,12 @@ pub mod ArenaServerCoreModule {
         ArenaClientModule::Initailize();
         
         // 초기화가 끝난 다음에 . . .
-        
-//        let mut instanceGame = InstanceGame{
-//            0, 인스턴스 게임 ID
-//              플레이어 리스트 . . 
-//        }
+         
+            
+        let mut instanceGame = InstanceGame::new();
 
-//        instanceGame.GameCreate(); 게임 초기화하고  . . 
+        instanceGame.GameCreate();
+        instanceGame.GameWait();
     }
 
     pub fn ServerCoreFunctionTest(){
