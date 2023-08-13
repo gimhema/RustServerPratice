@@ -39,6 +39,7 @@ type ArenaEventAction = fn(String) -> i64;
 //     static ref recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());    
 // }
 static sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
+const RECV_LIMIT: usize = 10000;
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 
 lazy_static!{
@@ -241,28 +242,40 @@ fn handle_connection_event(
         }
 
         if bytes_read != 0 {
+
             let received_data = &received_data[..bytes_read];
             if let Ok(str_buf) = from_utf8(received_data) {
                 println!("Received data: {}", str_buf.trim_end());
+                // 받은 데이터 처리
+                // 데이터를 수신전용 버퍼에 추가한다.
+                let recvMsg = String::from(from_utf8(received_data).unwrap());        
+                if(recvMessageBuffer.lock().unwrap().capacity() < RECV_LIMIT)
+                {
+                    recvMessageBuffer.lock().unwrap().push_back(recvMsg);                
+                }
+                
             } else {
                 println!("Received (none UTF-8) data: {:?}", received_data);
             }
-            
+        
+
             // 여기서부터 내가 수정한 부분
             // 데이터를 받았을 때 다시 전송할 수 있도록 추가만 해두었다.
             // event.is_writable() 아래 부분의 소스를 복붙했다.
-            match connection.write(DATA) {
-                Ok(n) if n < DATA.len() => return Err(io::ErrorKind::WriteZero.into()),
-                Ok(_) => {
 
-                    registry.reregister(connection, event.token(), Interest::READABLE)?
-                }
-                Err(ref err) if would_block(err) => {}
-                Err(ref err) if interrupted(err) => {
-                    return handle_connection_event(registry, connection, event)
-                }
-                Err(err) => return Err(err),
-            }
+            // 테스트용 Echo 부분 이제는 주석처리한다.
+            // match connection.write(DATA) {
+            //     Ok(n) if n < DATA.len() => return Err(io::ErrorKind::WriteZero.into()),
+            //     Ok(_) => {
+
+            //         registry.reregister(connection, event.token(), Interest::READABLE)?
+            //     }
+            //     Err(ref err) if would_block(err) => {}
+            //     Err(ref err) if interrupted(err) => {
+            //         return handle_connection_event(registry, connection, event)
+            //     }
+            //     Err(err) => return Err(err),
+            // }
         }
 
         if connection_closed {
