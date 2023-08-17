@@ -86,7 +86,7 @@ impl ArenaClientManager {
     pub fn testMethod() {
 //        someGlobal = 3;
 //        sendMessageBuffer.lock().unwrap().push_back("test");
-        sendMessageBuffer.lock().unwrap().push_back("value".to_string());
+        sendMessageBuffer.lock().unwrap().push_back("value");
     }
 
 }

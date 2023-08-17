@@ -41,7 +41,7 @@ impl InstanceGame {
     pub fn GameAction(&mut self) {
         // 루프를 돌면서 게임의 로직을 실행
         loop {
-            sendMessageBuffer.lock().unwrap().push_back("test".to_string());
+            sendMessageBuffer.lock().unwrap().push_back("test");
         }
     }
 

@@ -35,6 +35,8 @@ pub mod ArenaServerCoreModule {
         instanceGame.GameWait();
     }
 
+//    pub fn 
+
     pub fn ServerCoreFunctionTest(){
         let mut _unique:MessageUnique = MessageUnique::NONE;
         let mut _str:String = ArenaMessageModule::ConvertUniqueToData(_unique);

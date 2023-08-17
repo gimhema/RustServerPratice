@@ -38,7 +38,7 @@ type ArenaEventAction = fn(String) -> i64;
 //     static ref sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 //     static ref recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());    
 // }
-static sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
+static sendMessageBuffer: Mutex<VecDeque<&str>> = Mutex::new(VecDeque::new());
 const RECV_LIMIT: usize = 10000;
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 
@@ -168,7 +168,12 @@ fn main() -> io::Result<()> {
         // 정해진 header로 메세지를 보낸다
         // 메세지용 클래스도 하나 필요하겠네..
         for (key, value) in &mut connections{
-           value.write(DATA3);
+            if(sendMessageBuffer.lock().unwrap().capacity() > 0)
+            {
+                // 메세지 버퍼가 비어있지 않다면
+                let sendData = sendMessageBuffer.lock().unwrap().pop_back();
+                value.write(sendData.unwrap().as_bytes());
+            }
         }
     }
 
