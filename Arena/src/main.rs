@@ -61,9 +61,7 @@ fn main() -> io::Result<()> {
     use mio::event;
     use tokio::time::error::Elapsed;
 
-//    use crate::ArenaServerModule::ArenaClientModule::ArenaClient;
-    use crate::ArenaServerModule::ArenaClientModule::ArenaClientNetworkInfo;
-
+    // Server Network Setting
     env_logger::init();
 
     let mut userCount: i64 = 0;
@@ -92,6 +90,8 @@ fn main() -> io::Result<()> {
     println!(" $ nc 127.0.0.1 9000");
     println!("You'll see our welcome message and anything you type will be printed here.");
 
+
+    ArenaServerCoreModule::ArenaServerInitialize(); // Server Initialize 
 
     loop {
         println!("Set Poll");

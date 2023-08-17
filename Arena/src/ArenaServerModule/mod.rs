@@ -17,10 +17,13 @@ pub mod ArenaServerCoreModule {
     use super::ArenaGameCommonModule::InstanceGame;
     use super::ArenaClientModule::ArenaPlayer;
 
-    pub fn Create() {
+    pub fn ArenaServerInitialize() {
         println!("Server Core Create");
-        ServerActionMappingInitialize();        
+
+        ServerActionMappingInitialize();    
+
         ArenaMessageModule::Initialize();
+
         ArenaClientModule::Initailize();
         
         // 초기화가 끝난 다음에 . . .
