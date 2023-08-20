@@ -6,7 +6,7 @@ use crate::GameLogicCore;
 use crate::{sendMessageBuffer, recvMessageBuffer};
 
 use super::ArenaClientModule::ArenaPlayer;
-use super::ArenaMessageModule::{self, MakeSendMessage};
+use super::ArenaMessageModule::{self};
 
 
 pub struct InstanceGame {
@@ -41,7 +41,7 @@ impl InstanceGame {
     pub fn GameAction(&mut self) {
         // 루프를 돌면서 게임의 로직을 실행
         loop {
-            sendMessageBuffer.lock().unwrap().push_back("test");
+//            sendMessageBuffer.lock().unwrap().push_back("test".to_string());
         }
     }
 

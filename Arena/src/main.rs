@@ -5,6 +5,7 @@ mod CommonModule;
 
 use ArenaServerModule::{ArenaServerCoreModule};
 use ArenaServerModule::{ArenaClientModule};
+use ArenaServerModule::ArenaMessageModule::{ArenaMessage};
 
 
 
@@ -38,7 +39,8 @@ type ArenaEventAction = fn(String) -> i64;
 //     static ref sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 //     static ref recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());    
 // }
-static sendMessageBuffer: Mutex<VecDeque<&str>> = Mutex::new(VecDeque::new());
+// static sendMessageBuffer: Mutex<VecDeque<&str>> = Mutex::new(VecDeque::new());
+static sendMessageBuffer: Mutex<VecDeque<ArenaMessage>> = Mutex::new(VecDeque::new());
 const RECV_LIMIT: usize = 10000;
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 
@@ -167,18 +169,22 @@ fn main() -> io::Result<()> {
         // sendBuffer에 저장되어 있는 메세지를 확인하고 있을때마다 
         // 정해진 header로 메세지를 보낸다
         // 메세지용 클래스도 하나 필요하겠네..
-        for (key, value) in &mut connections{
-            if(sendMessageBuffer.lock().unwrap().capacity() > 0)
-            {
-                // 메세지 버퍼가 비어있지 않다면
-                let sendData = sendMessageBuffer.lock().unwrap().pop_back();
-
-                // message의 토큰을 보고
-
-                // 같은 토큰인 경우에만 메세지를 보낸다.
-                // 아.. 여기서 토큰별로 이벤트를 걸어야하는구나...
-
-                value.write(sendData.unwrap().as_bytes());
+        for (key, value) in &mut connections {
+            let mut send_data_buffer = sendMessageBuffer.lock().unwrap();
+            
+            // 메세지 버퍼가 비어있지 않다면
+            if send_data_buffer.capacity() > 0 {
+                if let Some(send_data) = send_data_buffer.pop_back() {
+                    let destination = send_data.get_header();
+                    let send_msg = send_data.get_msg().as_bytes();
+                   
+                   // message의 토큰을 보고
+                   // 같은 토큰인 경우에만 메세지를 보낸다.
+                   // 어떤 토큰에 보낼것인가? << 즉 모두에게 보내야하는지, 특정유저에게만 보내야하는지는 송신전처리에서 봐야한다.
+                    if key == destination {
+                        value.write(send_msg);
+                    }
+                }
             }
         }
     }
