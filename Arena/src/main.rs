@@ -6,7 +6,7 @@ mod CommonModule;
 use ArenaServerModule::{ArenaServerCoreModule};
 use ArenaServerModule::{ArenaClientModule};
 use ArenaServerModule::ArenaMessageModule::{ArenaMessage};
-
+use ArenaServerModule::ArenaClientModule::{ArenaPlayer};
 
 
 // You can run this example from the root of the mio repo:
@@ -47,6 +47,10 @@ static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 lazy_static!{
     // 생각해보니까 굳이 문자열일 필요는 없는것같다...
     static ref serverActionMap: Mutex<HashMap<i64, ArenaEventAction>> = Mutex::new(HashMap::new());
+
+    // 토큰을 키로 괸리하는 유저 관리 컨테이너
+    // 이러면 전반적인 구조 수정이 좀 필요하다..
+    static ref gUserContainer: Mutex<HashMap<Token, ArenaPlayer>> = Mutex::new(HashMap::new());
 }
 
 
