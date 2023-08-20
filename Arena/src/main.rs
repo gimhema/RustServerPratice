@@ -172,6 +172,12 @@ fn main() -> io::Result<()> {
             {
                 // 메세지 버퍼가 비어있지 않다면
                 let sendData = sendMessageBuffer.lock().unwrap().pop_back();
+
+                // message의 토큰을 보고
+
+                // 같은 토큰인 경우에만 메세지를 보낸다.
+                // 아.. 여기서 토큰별로 이벤트를 걸어야하는구나...
+
                 value.write(sendData.unwrap().as_bytes());
             }
         }
@@ -305,22 +311,6 @@ fn main() {
     panic!("can't bind to an address with wasi")
 }
 
-fn AddClientToContainer(connections: &mut HashMap<Token, TcpStream>, connection: TcpStream, token: &Token)
-{
-    connections.insert(*token, connection); 
-}
-
-fn SendMessageAll(connections: &mut HashMap<Token, TcpStream>)
-{
-    // Send the message to all
-    // 접속중인 모든 유저에게 메세지를 전송합니다
-}
-
-fn SendMessageToTarget()
-{
-    // Send the message to user as given paramter
-    // 정해진 유저에게 메세지를 전송합니다.
-}
 
 
 
