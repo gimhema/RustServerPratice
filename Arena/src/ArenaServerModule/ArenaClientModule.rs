@@ -8,7 +8,7 @@ use mio::{Token};
 use std::sync::Mutex;
 use lazy_static::lazy_static;
 
-use crate::GameLogicCore::GameLogicCore::GamePlayer;
+use crate::GameLogicCore::GameLogicCore::GamePlayerLogic;
 use crate::sendMessageBuffer;
 // use crate::someGlobal;
 use crate::GameLogicCore;
@@ -29,7 +29,7 @@ pub fn Initailize() {
 pub struct ArenaPlayer {
     userID: i64,
     userName: String,
-    playerLogic: GamePlayer
+    playerLogic: GamePlayerLogic
 }
 
 pub struct ArenaClientNetworkInfo {

@@ -56,12 +56,12 @@ pub mod GameLogicCore {
      }
    }
 
-   pub struct GamePlayer {
+   pub struct GamePlayerLogic {
       id : i64,
       gameMainLogic : GameMainLogic
    }
 
-   impl Manager for GamePlayer {
+   impl Manager for GamePlayerLogic {
       fn Initialize(&self) {
           self.gameMainLogic.Initialize();
       }
