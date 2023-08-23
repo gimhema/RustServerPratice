@@ -278,25 +278,6 @@ fn handle_connection_event(
             } else {
                 println!("Received (none UTF-8) data: {:?}", received_data);
             }
-        
-
-            // 여기서부터 내가 수정한 부분
-            // 데이터를 받았을 때 다시 전송할 수 있도록 추가만 해두었다.
-            // event.is_writable() 아래 부분의 소스를 복붙했다.
-
-            // 테스트용 Echo 부분 이제는 주석처리한다.
-            // match connection.write(DATA) {
-            //     Ok(n) if n < DATA.len() => return Err(io::ErrorKind::WriteZero.into()),
-            //     Ok(_) => {
-
-            //         registry.reregister(connection, event.token(), Interest::READABLE)?
-            //     }
-            //     Err(ref err) if would_block(err) => {}
-            //     Err(ref err) if interrupted(err) => {
-            //         return handle_connection_event(registry, connection, event)
-            //     }
-            //     Err(err) => return Err(err),
-            // }
         }
 
         if connection_closed {

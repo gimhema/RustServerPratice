@@ -26,19 +26,6 @@ pub fn Initailize() {
     println!("Arena Client Initialize");
 }
 
-pub struct ConnectInfo {
-    connectToken: Token,
-    connectStream: TcpStream
-}
-
-impl ConnectInfo {
-    pub fn Create(&mut self, token: Token, stream: TcpStream) 
-    {
-        self.connectToken = token;
-    }
-}
-
-
 pub struct ArenaPlayer {
     userID: i64,
     userName: String,
@@ -47,7 +34,6 @@ pub struct ArenaPlayer {
 
 pub struct ArenaClientNetworkInfo {
     userToken: Token,
-    userConnectStream: TcpStream,
     userIdentify: i64
 }
 
@@ -62,32 +48,4 @@ impl  ArenaPlayer {
 
 }
 
-pub struct ArenaClientManager {
-    clientContainer: HashMap<i64, ArenaPlayer>, // ID, Client Information
-    clientNetworkContainer: HashMap<Token, ArenaClientNetworkInfo>, // ID, Arena Network Information
-    clientTokenVec: Vec<Token>
-}
-
-impl ArenaClientManager {
-    pub fn Initialize(&mut self)
-    {
-        println!("Arena Client Manager Initialize");
-        
-    }
-
-    pub fn new() -> ArenaClientManager {
-        ArenaClientManager { 
-            clientContainer: HashMap::new(),
-            clientNetworkContainer: HashMap::new(),
-            clientTokenVec: Vec::new()
-        }
-    }
-
-    pub fn testMethod() {
-//        someGlobal = 3;
-//        sendMessageBuffer.lock().unwrap().push_back("test");
-//        sendMessageBuffer.lock().unwrap().push_back("value");
-    }
-
-}
 
