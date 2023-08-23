@@ -38,14 +38,10 @@ pub struct ArenaClientNetworkInfo {
 }
 
 impl  ArenaPlayer {
-    pub fn Create(&mut self, ID: i64, userName: String, IP: String) {
+    pub fn Initialize(&mut self, ID: i64, userName: String, IP: String) {
         self.userID = ID;
         self.userName = userName;
     }
-    pub fn Connect(&mut self) {
-
-    }
-
 }
 
 
