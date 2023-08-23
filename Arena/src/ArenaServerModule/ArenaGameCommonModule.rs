@@ -11,7 +11,6 @@ use super::ArenaMessageModule::{self};
 
 pub struct InstanceGame {
     gameID: i32,
-    players: Vec<ArenaPlayer>
 }
 
 
@@ -19,10 +18,8 @@ impl InstanceGame {
     // 게임 흐름
 
     pub fn new() -> InstanceGame {
-        let mut _players : Vec<ArenaPlayer> = Vec::new();   
         InstanceGame { 
-            gameID: 0, 
-            players: _players
+            gameID: 0,
         }
     }
 

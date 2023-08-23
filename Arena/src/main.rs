@@ -35,11 +35,6 @@ const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 const DATA3: &[u8] = b"Hi Unreal This Message Update\n";
 type ArenaEventAction = fn(String) -> i64;
 
-// lazy_static!{
-//     static ref sendMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
-//     static ref recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());    
-// }
-// static sendMessageBuffer: Mutex<VecDeque<&str>> = Mutex::new(VecDeque::new());
 static sendMessageBuffer: Mutex<VecDeque<ArenaMessage>> = Mutex::new(VecDeque::new());
 const RECV_LIMIT: usize = 10000;
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
@@ -53,11 +48,6 @@ lazy_static!{
     static ref gUserContainer: Mutex<HashMap<Token, ArenaPlayer>> = Mutex::new(HashMap::new());
 }
 
-
-// let mut sendMessageBuffer: VecDeque<String> = VecDeque::new();
-// let mut recvMessageBuffer: VecDeque<String> = VecDeque::new();
-
-// static ARRAY: Mutex<Vec<i32>> = Mutex::new(Vec::new());
 
 #[cfg(not(target_os = "wasi"))]
 fn main() -> io::Result<()> {
