@@ -29,13 +29,10 @@ pub fn Initailize() {
 pub struct ArenaPlayer {
     userID: i64,
     userName: String,
-    playerLogic: GamePlayerLogic
+    playerLogic: GamePlayerLogic,
+    userToken: Token
 }
 
-pub struct ArenaClientNetworkInfo {
-    userToken: Token,
-    userIdentify: i64
-}
 
 impl  ArenaPlayer {
     pub fn Initialize(&mut self, ID: i64, userName: String, IP: String) {
