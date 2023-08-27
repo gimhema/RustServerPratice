@@ -119,8 +119,6 @@ fn main() -> io::Result<()> {
                             return Err(e);
                         }
                     };
-
-                    // 함수화 테스트
                     println!("Accepted connection from: {}", address);
 
                     let token = next(&mut unique_token);
@@ -132,13 +130,13 @@ fn main() -> io::Result<()> {
 
                     let mut sendConnect = connection;
                     sendConnect.write(DATA2);
-                    // token, connetcion
 
-//                    let mut _tempConnection = cltManager.GetUserConnectStreamByID(userCount);
-//                    AddClientToContainer(&mut connections, sendConnect, &token);
                     userCount += 1;
-
-                  connections.insert(token, sendConnect); 
+                
+                  connections.insert(token, sendConnect);
+                  ArenaClientModule::AddNewUserToContainer(userCount,
+                     token, "test".to_string());
+                  
                 },
                 token => {
                     
