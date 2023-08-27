@@ -35,6 +35,7 @@ const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 const DATA3: &[u8] = b"Hi Unreal This Message Update\n";
 type ArenaEventAction = fn(String) -> i64;
 
+static gUserIndex: i64 = 0;
 static sendMessageBuffer: Mutex<VecDeque<ArenaMessage>> = Mutex::new(VecDeque::new());
 const RECV_LIMIT: usize = 10000;
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());

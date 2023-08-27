@@ -13,6 +13,17 @@ pub struct GameUnitManager {
     gameUnitContainer : Vec<GamePlayerUnit>
 }
 
+impl GameUnitManager {
+    pub fn new(gid: i64) -> Self {
+        // init gameUnitContainer
+        let game_unit_container = vec![];
+        GameUnitManager {
+            id: gid,
+            gameUnitContainer: game_unit_container,
+        }
+    }
+}
+
 
 impl Manager for GameUnitManager {
     fn Initialize(&self) {

@@ -9,6 +9,12 @@ pub struct GameStructureManager {
     id : i64
 }
 
+impl GameStructureManager {
+    pub fn new(gid: i64) -> GameStructureManager {
+        GameStructureManager { id:gid }
+    }
+}
+
 
 impl Manager for GameStructureManager {
     fn Initialize(&self) {

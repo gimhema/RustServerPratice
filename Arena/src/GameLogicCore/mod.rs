@@ -40,6 +40,22 @@ pub mod GameLogicCore {
       gameResourcrSysManager : GameResourceSysManager
    }
 
+   impl GameMainLogic {
+      pub fn new(gid: i64) -> Self {
+         // GameUnitManager 초기화
+         let game_unit_manager = GameUnitManager::new(gid); // GameUnitManager 생성
+         let game_struture_manager = GameStructureManager::new(gid);
+         let game_resource_sys_manager = GameResourceSysManager::new(gid);
+         // GameMainLogic 구조체 생성 및 반환
+         GameMainLogic {
+             id: gid,
+             gameStructureManager: game_struture_manager,
+             gmaeUnitManager: game_unit_manager,
+             gameResourcrSysManager: game_resource_sys_manager
+         }
+     }
+   }
+
    impl Manager for GameMainLogic {
       fn Initialize(&self) {
          println!("Initailize Game Main Logic . . . ");
@@ -59,6 +75,16 @@ pub mod GameLogicCore {
    pub struct GamePlayerLogic {
       id : i64,
       gameMainLogic : GameMainLogic
+   }
+
+   impl GamePlayerLogic {
+      pub fn new(gid: i64) -> GamePlayerLogic {
+         let game_main_logic = GameMainLogic::new(gid);
+         GamePlayerLogic {
+            id: gid,
+            gameMainLogic: game_main_logic
+         }
+      }
    }
 
    impl Manager for GamePlayerLogic {

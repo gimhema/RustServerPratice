@@ -73,4 +73,9 @@ impl  ArenaPlayer {
     }
 }
 
+pub fn AddNewUserToContainer(userIndex: i64, userToken: Token, userName: String)
+{
+    // gUserContainer에 새로운 유저를 추가한다.
+    
+}
 
