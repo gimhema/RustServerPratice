@@ -13,6 +13,7 @@ use crate::sendMessageBuffer;
 // use crate::someGlobal;
 use crate::GameLogicCore;
 
+use crate::gUserContainer;
 
 
 const SENDTEST: &[u8] = b"Hi Unreal This Message Is Update Loop\n";
@@ -35,6 +36,17 @@ pub struct ArenaPlayer {
 
 
 impl  ArenaPlayer {
+    pub fn new(gid: i64, _name: String, _token: Token) -> Self {
+        let game_player_logic = GamePlayerLogic::new(gid);
+
+        ArenaPlayer { 
+            userID: gid,
+            userName: _name,
+            playerLogic: game_player_logic,
+            userToken: _token 
+        }
+    }
+
     pub fn Initialize(&mut self, ID: i64, userName: String, IP: String) {
         self.userID = ID;
         self.userName = userName;
@@ -76,6 +88,10 @@ impl  ArenaPlayer {
 pub fn AddNewUserToContainer(userIndex: i64, userToken: Token, userName: String)
 {
     // gUserContainer에 새로운 유저를 추가한다.
-    
+
+
+    let new_arena_player = ArenaPlayer::new(userIndex, userName, userToken);
+
+    gUserContainer.lock().unwrap().insert(userToken, new_arena_player);
 }
 
