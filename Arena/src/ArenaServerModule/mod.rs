@@ -29,10 +29,9 @@ pub mod ArenaServerCoreModule {
         // 초기화가 끝난 다음에 . . .
          
             
-        let mut instanceGame = InstanceGame::new();
-
-        instanceGame.GameCreate();
-        instanceGame.GameWait();
+//        let mut instanceGame = InstanceGame::new();
+//        instanceGame.GameCreate();
+//        instanceGame.GameWait();
     }
 
 //    pub fn 

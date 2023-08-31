@@ -10,17 +10,52 @@ use super::ArenaMessageModule::{self};
 
 
 pub struct InstanceGame {
-    gameID: i32,
+    gameID: i64,
+    num_player: i64,
+    max_num_player: i64
 }
 
 
 impl InstanceGame {
     // 게임 흐름
+    pub fn new(gid: i64, num_player: i64, max_num_player: i64) -> Self {
+        InstanceGame { gameID: gid, num_player: num_player, max_num_player: max_num_player }
+    }
 
-    pub fn new() -> InstanceGame {
-        InstanceGame { 
-            gameID: 0,
+    pub fn get_gameID(&self) -> &i64 {
+        &self.gameID
+    }
+
+    pub fn get_num_player(&self) -> &i64 {
+        &self.num_player
+    }
+
+    pub fn get_max_num_player(&self) -> &i64 {
+        &self.max_num_player
+    }
+
+    pub fn set_gameID(&mut self, gID: i64) {
+        self.gameID = gID;
+    }
+
+    pub fn set_num_player(&mut self, num_player: i64) {
+        self.num_player = num_player;
+    }
+
+    pub fn set_max_num_player(&mut self, max_num_player: i64) {
+        self.max_num_player = max_num_player;
+    }
+
+    pub fn IsFull(&mut self) -> bool {
+        let mut result = false;
+        if (self.num_player == self.max_num_player) {
+            result = true
         }
+        result
+    }
+
+    pub fn IncreasePlayerCount(&mut self) {
+        self.set_num_player(self.num_player + 1);
     }
 
     pub fn GameCreate(&mut self) {

@@ -58,6 +58,8 @@ fn main() -> io::Result<()> {
     use mio::event;
     use tokio::time::error::Elapsed;
 
+    use crate::ArenaServerModule::ArenaGameCommonModule::InstanceGame;
+
     // Server Network Setting
     env_logger::init();
 
@@ -88,7 +90,8 @@ fn main() -> io::Result<()> {
     println!("You'll see our welcome message and anything you type will be printed here.");
 
 
-    ArenaServerCoreModule::ArenaServerInitialize(); // Server Initialize 
+//    ArenaServerCoreModule::ArenaServerInitialize(); // Server Initialize 
+    let mut instanceGame =  InstanceGame::new(0, 0, 2);
 
     loop {
         println!("Set Poll");
@@ -132,10 +135,18 @@ fn main() -> io::Result<()> {
                     sendConnect.write(DATA2);
 
                     userCount += 1;
-                
-                  connections.insert(token, sendConnect);
-                  ArenaClientModule::AddNewUserToContainer(userCount,
-                     token, "test".to_string());
+                  
+                    if(!instanceGame.IsFull())
+                    {
+                        connections.insert(token, sendConnect);
+                        ArenaClientModule::AddNewUserToContainer(userCount,
+                           token, "test".to_string());    
+                        instanceGame.IncreasePlayerCount();
+                    }
+
+
+
+                     
                   
                 },
                 token => {
