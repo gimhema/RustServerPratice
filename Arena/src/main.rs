@@ -142,6 +142,12 @@ fn main() -> io::Result<()> {
                         ArenaClientModule::AddNewUserToContainer(userCount,
                            token, "test".to_string());    
                         instanceGame.IncreasePlayerCount();
+                        
+                        if( !instanceGame.IsStart() )
+                        {
+                            instanceGame.SetStartSwitch(true);
+                            instanceGame.GameStart();
+                        }
                     }
 
 

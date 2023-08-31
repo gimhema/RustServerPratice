@@ -12,14 +12,15 @@ use super::ArenaMessageModule::{self};
 pub struct InstanceGame {
     gameID: i64,
     num_player: i64,
-    max_num_player: i64
+    max_num_player: i64,
+    isStart: bool,
 }
 
 
 impl InstanceGame {
     // 게임 흐름
     pub fn new(gid: i64, num_player: i64, max_num_player: i64) -> Self {
-        InstanceGame { gameID: gid, num_player: num_player, max_num_player: max_num_player }
+        InstanceGame { gameID: gid, num_player: num_player, max_num_player: max_num_player, isStart: false }
     }
 
     pub fn get_gameID(&self) -> &i64 {
@@ -32,6 +33,14 @@ impl InstanceGame {
 
     pub fn get_max_num_player(&self) -> &i64 {
         &self.max_num_player
+    }
+
+    pub fn IsStart(&self) -> bool {
+        self.isStart
+    }
+
+    pub fn SetStartSwitch(&mut self, _switch: bool) {
+        self.isStart = _switch;
     }
 
     pub fn set_gameID(&mut self, gID: i64) {
