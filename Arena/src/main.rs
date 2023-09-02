@@ -92,7 +92,8 @@ fn main() -> io::Result<()> {
 
 //    ArenaServerCoreModule::ArenaServerInitialize(); // Server Initialize 
     let mut instanceGame =  InstanceGame::new(0, 0, 2);
-
+    instanceGame.GameReset();
+    // GameReset -> GameStart -> if Game Condition is End? -> GameEnd & GameUserOut -> GameReset
     loop {
         println!("Set Poll");
         poll.poll(&mut events, Some(Duration::from_millis(500)))?;

@@ -14,13 +14,14 @@ pub struct InstanceGame {
     num_player: i64,
     max_num_player: i64,
     isStart: bool,
+    isGameConclusion: bool
 }
 
 
 impl InstanceGame {
     // 게임 흐름
     pub fn new(gid: i64, num_player: i64, max_num_player: i64) -> Self {
-        InstanceGame { gameID: gid, num_player: num_player, max_num_player: max_num_player, isStart: false }
+        InstanceGame { gameID: gid, num_player: num_player, max_num_player: max_num_player, isStart: false, isGameConclusion: false }
     }
 
     pub fn get_gameID(&self) -> &i64 {
@@ -63,6 +64,11 @@ impl InstanceGame {
         result
     }
 
+    pub fn GameReset(&mut self) {
+        // 게임 시작 전에 리셋
+        println!("Game Reset");
+    }
+
     pub fn IncreasePlayerCount(&mut self) {
         self.set_num_player(self.num_player + 1);
     }
@@ -75,16 +81,24 @@ impl InstanceGame {
     pub fn GameAction(&mut self) {
         // 루프를 돌면서 게임의 로직을 실행
         loop {
+            if(self.isGameConclusion == true)
+            {
+                break;
+            }
 //            sendMessageBuffer.lock().unwrap().push_back("test".to_string());
         }
+        self.GameEnd();
     }
 
     pub fn GameEnd(&mut self) {
         // 게임을 끝내고 결과를 플레이어들에게 전송한다.
+        println!("Game End . . . .");
+        self.GameUserOut();
     }
-
-    pub fn GameDestroy(&mut self) {
-        // 인스턴스 게임을 파괴한다.
+    
+    pub fn GameUserOut(&mut self) {
+        // 전송 후 접속한 유저들을 아웃시킨다.
+        println!("Start User Out Task . . .");
     }
 
     // Async
