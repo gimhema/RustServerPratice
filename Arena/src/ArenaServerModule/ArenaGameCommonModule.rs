@@ -67,16 +67,9 @@ impl InstanceGame {
         self.set_num_player(self.num_player + 1);
     }
 
-    pub fn GameCreate(&mut self) {
-        // 게임 생성
-    }
-
-    pub fn GameWait(&mut self) {
-        // 게임 생성 후 플레이어의 준비 대기
-    }
-
     pub fn GameStart(&mut self) {
         // 게임 시작
+        self.GameAction();
     }
 
     pub fn GameAction(&mut self) {
@@ -88,10 +81,6 @@ impl InstanceGame {
 
     pub fn GameEnd(&mut self) {
         // 게임을 끝내고 결과를 플레이어들에게 전송한다.
-    }
-
-    pub fn GameClose(&mut self) {
-        // 게임을 닫고 대기상태로 돌아간다.
     }
 
     pub fn GameDestroy(&mut self) {

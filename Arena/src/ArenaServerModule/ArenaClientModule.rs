@@ -89,7 +89,6 @@ pub fn AddNewUserToContainer(userIndex: i64, userToken: Token, userName: String)
 {
     // gUserContainer에 새로운 유저를 추가한다.
 
-
     let new_arena_player = ArenaPlayer::new(userIndex, userName, userToken);
 
     gUserContainer.lock().unwrap().insert(userToken, new_arena_player);
