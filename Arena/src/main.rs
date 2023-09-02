@@ -21,6 +21,7 @@ use std::thread;
 use std::time::Duration;
 use std::collections::VecDeque;
 use std::sync::Mutex;
+use std::sync::Arc;
 
 extern crate lazy_static;
 use lazy_static::lazy_static;
@@ -91,9 +92,20 @@ fn main() -> io::Result<()> {
 
 
 //    ArenaServerCoreModule::ArenaServerInitialize(); // Server Initialize 
-    let mut instanceGame =  InstanceGame::new(0, 0, 2);
-    instanceGame.GameReset();
+//    let mut instanceGame =  InstanceGame::new(0, 0, 2);
+    let instanceGame = Arc::new(Mutex::new(InstanceGame::new(0, 0, 2)));
+
+//    instanceGame.GameReset();
     // GameReset -> GameStart -> if Game Condition is End? -> GameEnd & GameUserOut -> GameReset
+
+    let mut instanceGameActionLogic = thread::spawn(move ||{
+        let instance_game = Arc::clone(&instanceGame);
+        thread::spawn(move || {
+            let mut instance_game = instance_game.lock().unwrap();
+            instance_game.GameAction();
+        })
+    });
+
     loop {
         println!("Set Poll");
         poll.poll(&mut events, Some(Duration::from_millis(500)))?;
@@ -136,24 +148,10 @@ fn main() -> io::Result<()> {
                     sendConnect.write(DATA2);
 
                     userCount += 1;
-                  
-                    if(!instanceGame.IsFull())
-                    {
-                        connections.insert(token, sendConnect);
-                        ArenaClientModule::AddNewUserToContainer(userCount,
-                           token, "test".to_string());    
-                        instanceGame.IncreasePlayerCount();
-                        
-                        if( !instanceGame.IsStart() )
-                        {
-                            instanceGame.SetStartSwitch(true);
-                            instanceGame.GameStart();
-                        }
-                    }
 
-
-
-                     
+                    // 유저의 카운트 수를 보고 컷을 해야한다.
+                    connections.insert(token, sendConnect);
+                    ArenaClientModule::AddNewUserToContainer(userCount, token, "test".to_string());                     
                   
                 },
                 token => {
@@ -199,7 +197,7 @@ fn main() -> io::Result<()> {
             }
         }
     }
-
+    instanceGameActionLogic.join().expect("Failed Game Logic Thread");
 //    sendHandle.join().unwrap();
 }
 

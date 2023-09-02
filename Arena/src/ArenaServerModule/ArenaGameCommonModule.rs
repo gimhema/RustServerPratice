@@ -79,12 +79,16 @@ impl InstanceGame {
     }
 
     pub fn GameAction(&mut self) {
+        // 어디서 시작을 하지?? 스레드로 분기?
         // 루프를 돌면서 게임의 로직을 실행
         loop {
             if(self.isGameConclusion == true)
             {
                 break;
             }
+            // User Container 상태를 보고 IsStart를 결정한다.
+            // User Container의 크기(=플레이어의 유저수)가 충분해지면 게임을 시작한다.
+
 //            sendMessageBuffer.lock().unwrap().push_back("test".to_string());
         }
         self.GameEnd();
