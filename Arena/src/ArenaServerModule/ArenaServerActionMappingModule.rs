@@ -21,9 +21,9 @@ pub fn ServerActionMappingInitialize() {
     
 }
 
-pub fn CallServerAction(_key: i64) {
+pub fn CallServerAction(uid: i64, mid: i64, value: String) {
     //    serverActionMap가지고 무언갈 한다 . . .
-        serverActionMap.lock().unwrap().get(&_key).unwrap();
+        serverActionMap.lock().unwrap().get(&mid).unwrap();
 }
 
 

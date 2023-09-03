@@ -1,6 +1,6 @@
 // Manage Instance Game
 // Divieded from Arena Server Module . .
-
+// sendMessageBuffer.lock().unwrap().push_back("test".to_string());
 
 use crate::GameLogicCore;
 use crate::{sendMessageBuffer, recvMessageBuffer};
@@ -8,7 +8,8 @@ use crate::gUserContainer;
 use crate::serverActionMap;
 
 use super::ArenaClientModule::ArenaPlayer;
-use super::ArenaMessageModule::{self};
+use super::ArenaMessageModule::{self, ArenaMessageData};
+use super::ArenaServerActionMappingModule::CallServerAction;
 
 
 pub struct InstanceGame {
@@ -101,7 +102,7 @@ impl InstanceGame {
             {
                 break;
             }
-//            sendMessageBuffer.lock().unwrap().push_back("test".to_string());
+            self.RecvMessageProcessLoop();
         }
         self.GameEnd();
     }
@@ -120,14 +121,16 @@ impl InstanceGame {
     // Async
     // InstanceGame의 GameWait 이후 시작
     pub fn RecvMessageProcessLoop(&mut self) {
-        loop {
             // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다.
-                let msg = recvMessageBuffer.lock().unwrap().pop_back();
-            // 메세지를 꺼내고 헤더에 맞는 콜백 함수를 실행시킨다.
+            let msg = recvMessageBuffer.lock().unwrap().pop_back();
+            let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
+            // 메세지를 꺼내서 이리저리 뜯어본다.
+            let mut uid = data.get_uid();
+            let mut mid = data.get_mid();
+            let mut mVal = data.get_value();
 
             // 콜백함수에는 헤더 이후에 작성된 정보들이 저장되어있다.
-        
-        }
+//            CallServerAction(uid, mid, mVal);
     }
 
     pub fn PushSendMessageToSendBuffer(&mut self, _header : i64, _command : i64, _param : String) {

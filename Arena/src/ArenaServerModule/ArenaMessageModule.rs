@@ -3,6 +3,35 @@ use std::collections::VecDeque;
 use std::sync::Mutex;
 use mio::{Token};
 
+pub struct ArenaMessageData {
+    uid: i64, // User Identification
+    mid: i64, // Message Identification
+    value: String, // Message Value
+}
+
+impl ArenaMessageData {
+    pub fn CreateByMessage(msg: String) -> Self {
+        let mut recvMsg = msg;
+
+        // recvMsg를 이리저리 뜯어본다.
+
+        // 뜯은 결과를 메세지로 리턴한다.
+        ArenaMessageData { uid: 0, mid: 0, value: "".to_string() } // TEST
+    }
+
+    pub fn get_uid(&self) -> &i64 {
+        &self.uid
+    }
+    pub fn get_mid(&self) -> &i64 {
+        &self.mid
+    }
+    pub fn get_value(&self) -> &String {
+        &self.value
+    }
+}
+
+
+// depercated
 pub struct ArenaMessage{
     header : Token,
     msg : String
