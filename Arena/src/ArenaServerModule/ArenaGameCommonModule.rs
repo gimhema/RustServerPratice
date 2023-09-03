@@ -4,6 +4,8 @@
 
 use crate::GameLogicCore;
 use crate::{sendMessageBuffer, recvMessageBuffer};
+use crate::gUserContainer;
+use crate::serverActionMap;
 
 use super::ArenaClientModule::ArenaPlayer;
 use super::ArenaMessageModule::{self};
@@ -57,8 +59,10 @@ impl InstanceGame {
     }
 
     pub fn IsFull(&mut self) -> bool {
+
+        let playerNum: i64 = gUserContainer.lock().unwrap().len() as i64;
         let mut result = false;
-        if (self.num_player == self.max_num_player) {
+        if (playerNum == self.max_num_player) {
             result = true
         }
         result
@@ -75,20 +79,28 @@ impl InstanceGame {
 
     pub fn GameStart(&mut self) {
         // 게임 시작
+        println!("Game Start");
+        self.GameReset();
         self.GameAction();
     }
 
+    pub fn GameWait(&mut self) {
+        loop {
+            // User Container 상태를 보고 IsStart를 결정한다.
+            if( self.IsFull() )
+            {
+                break;
+            }
+        }
+        self.GameStart();              
+    }
+
     pub fn GameAction(&mut self) {
-        // 어디서 시작을 하지?? 스레드로 분기?
-        // 루프를 돌면서 게임의 로직을 실행
         loop {
             if(self.isGameConclusion == true)
             {
                 break;
             }
-            // User Container 상태를 보고 IsStart를 결정한다.
-            // User Container의 크기(=플레이어의 유저수)가 충분해지면 게임을 시작한다.
-
 //            sendMessageBuffer.lock().unwrap().push_back("test".to_string());
         }
         self.GameEnd();

@@ -102,7 +102,7 @@ fn main() -> io::Result<()> {
         let instance_game = Arc::clone(&instanceGame);
         thread::spawn(move || {
             let mut instance_game = instance_game.lock().unwrap();
-            instance_game.GameAction();
+            instance_game.GameWait();
         })
     });
 
