@@ -134,10 +134,18 @@ impl InstanceGame {
 
     pub fn CallServerAction(&mut self, userID : &i64, funcID : &i64, funcParam : &String ) {
 
-        // funcParam을 어떻게 넘겨야할까....
+        let server_action_map = &*serverActionMap.lock().unwrap();
 
-        serverActionMap.lock().unwrap().get(&funcID).unwrap();
-    }
+        if let Some(server_action) = server_action_map.get(funcID) {
+
+        let result = server_action(funcParam.clone());
+
+        println!("Result: {}", result);
+        } else {
+            println!("Function not found");
+        }
+
+}
 
     pub fn PushSendMessageToSendBuffer(&mut self, _header : i64, _command : i64, _param : String) {
 
