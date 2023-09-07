@@ -9,7 +9,6 @@ use crate::serverActionMap;
 
 use super::ArenaClientModule::ArenaPlayer;
 use super::ArenaMessageModule::{self, ArenaMessageData};
-use super::ArenaServerActionMappingModule::CallServerAction;
 
 
 pub struct InstanceGame {
@@ -125,12 +124,19 @@ impl InstanceGame {
             let msg = recvMessageBuffer.lock().unwrap().pop_back();
             let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
             // 메세지를 꺼내서 이리저리 뜯어본다.
-            let mut uid = data.get_uid();
-            let mut mid = data.get_mid();
-            let mut mVal = data.get_value();
+            let mut uid = data.get_uid(); // User ID
+            let mut mid = data.get_mid(); // Message ID
+            let mut mVal = data.get_value(); // Message Function
 
             // 콜백함수에는 헤더 이후에 작성된 정보들이 저장되어있다.
-//            CallServerAction(uid, mid, mVal);
+            self.CallServerAction(uid, mid, mVal);
+    }
+
+    pub fn CallServerAction(&mut self, userID : &i64, funcID : &i64, funcParam : &String ) {
+
+        // funcParam을 어떻게 넘겨야할까....
+
+        serverActionMap.lock().unwrap().get(&funcID).unwrap();
     }
 
     pub fn PushSendMessageToSendBuffer(&mut self, _header : i64, _command : i64, _param : String) {
