@@ -7,7 +7,7 @@ use ArenaServerModule::{ArenaServerCoreModule};
 use ArenaServerModule::{ArenaClientModule};
 use ArenaServerModule::ArenaMessageModule::{ArenaMessage};
 use ArenaServerModule::ArenaClientModule::{ArenaPlayer};
-
+use ArenaServerModule::ArenaServerActionMappingModule::{ServerActionMappingInitialize};
 
 // You can run this example from the root of the mio repo:
 // cargo run --example tcp_server --features="os-poll net"
@@ -63,6 +63,9 @@ fn main() -> io::Result<()> {
 
     // Server Network Setting
     env_logger::init();
+
+    // Initialize Message Function . . . 
+    ServerActionMappingInitialize();
 
     let mut userCount: i64 = 0;
 
