@@ -6,9 +6,10 @@ use crate::GameLogicCore;
 use crate::{sendMessageBuffer, recvMessageBuffer};
 use crate::gUserContainer;
 use crate::serverActionMap;
+use mio::{Token};
 
 use super::ArenaClientModule::ArenaPlayer;
-use super::ArenaMessageModule::{self, ArenaMessageData};
+use super::ArenaMessageModule::{self, ArenaMessageData, ArenaMessage};
 
 
 pub struct InstanceGame {
@@ -147,10 +148,12 @@ impl InstanceGame {
 
 }
 
-    pub fn PushSendMessageToSendBuffer(&mut self, _header : i64, _command : i64, _param : String) {
+    pub fn PushSendMessageToSendBuffer(&mut self, _header : Token, _command : i64, _param : String) {
 
 //        MakeSendMessage(header, command, param)를 만들고
-        // sendBuffer에 메세지를 저장한다.
+        let mut sendMsg = ArenaMessage::new(_header, _param);
+
+        sendMessageBuffer.lock().unwrap().push_back(sendMsg);
 
     }
 }

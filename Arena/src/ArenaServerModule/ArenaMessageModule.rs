@@ -38,6 +38,10 @@ pub struct ArenaMessage{
 }
 
 impl ArenaMessage {
+    pub fn new(_header: Token, _msg: String) -> Self {
+        ArenaMessage { header: _header, msg: _msg }
+    }
+
     pub fn get_header(&self) -> &Token {
         &self.header
     }
