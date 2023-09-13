@@ -2,7 +2,10 @@ use crate::{sendMessageBuffer, recvMessageBuffer};
 use std::collections::VecDeque;
 use std::sync::Mutex;
 use mio::{Token};
-
+use std::collections::HashMap;
+use std::sync::{MutexGuard};
+use crate::gUserContainer;
+use super::ArenaClientModule::ArenaPlayer;
 
 // For Recevie.. Need Change Name . . .
 pub struct ArenaMessageData {
@@ -81,13 +84,19 @@ pub fn ConvertUniqueToData(_unique: MessageUnique) -> String {
 
 pub fn SendMessageToAll( _command : i64, _param : String)
 {
-    // gUserContainer for 루프를 돌면서
-        // self.PushSendMessageToSendBuffer( pop Token, _command, _param);
+
+        let lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
+    
+
+        for (token, player) in lock.iter() {
+            PushSendMessageToSendBuffer( *token, _command, _param.clone());
+        }
+
 }
 
 pub fn SendMessageToOne(_header : Token, _command : i64, _param : String)
 {
-    // self.PushSendMessageToSendBuffer( _header, _command, _param);
+    PushSendMessageToSendBuffer( _header, _command, _param);
 }
 
     // server_action_map에 저장되어있는 함수들로부터 호출된다
@@ -96,8 +105,9 @@ pub fn PushSendMessageToSendBuffer(_header : Token, _command : i64, _param : Str
 
     // MakeSendMessage(header, command, param)를 만들고
     // sendMsg = "_command:_param"
+    let mut _data = format!("{}:{}", _command, _param);
 
-    let mut sendMsg = ArenaMessage::new(_header, _param);
+    let mut sendMsg = ArenaMessage::new(_header, _data);
 
     sendMessageBuffer.lock().unwrap().push_back(sendMsg);
 }
