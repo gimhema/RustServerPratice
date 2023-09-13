@@ -121,7 +121,7 @@ impl InstanceGame {
     // Async
     // InstanceGame의 GameWait 이후 시작
     pub fn RecvMessageProcessLoop(&mut self) {
-            // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다.
+            // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다. (main.rs 275~290 line)
             let msg = recvMessageBuffer.lock().unwrap().pop_back();
             let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
             // 메세지를 꺼내서 이리저리 뜯어본다.
@@ -137,8 +137,8 @@ impl InstanceGame {
 
         let server_action_map = &*serverActionMap.lock().unwrap();
 
+        // call server_action_map[funcID](funcParam) 
         if let Some(server_action) = server_action_map.get(funcID) {
-
         let result = server_action(funcParam.clone());
 
         println!("Result: {}", result);
@@ -147,14 +147,27 @@ impl InstanceGame {
         }
 
 }
+    // pub fn SendMessageToAll(&mut self, _command : i64, _param : String)
+    // {
+    //     // gUserContainer for 루프를 돌면서
+    //         // self.PushSendMessageToSendBuffer( pop Token, _command, _param);
+    // }
 
-    pub fn PushSendMessageToSendBuffer(&mut self, _header : Token, _command : i64, _param : String) {
+    // pub fn SendMessageToOne(&mut self, _header : Token, _command : i64, _param : String)
+    // {
+    //     // self.PushSendMessageToSendBuffer( _header, _command, _param);
+    // }
 
-//        MakeSendMessage(header, command, param)를 만들고
-        let mut sendMsg = ArenaMessage::new(_header, _param);
+    //     // server_action_map에 저장되어있는 함수들로부터 호출된다
+    // pub fn PushSendMessageToSendBuffer(&mut self, _header : Token, _command : i64, _param : String) 
+    // {
 
-        sendMessageBuffer.lock().unwrap().push_back(sendMsg);
+    //     // MakeSendMessage(header, command, param)를 만들고
+    //     let mut sendMsg = ArenaMessage::new(_header, _param);
 
-    }
+    //     sendMessageBuffer.lock().unwrap().push_back(sendMsg);
+    // }
+
+
 }
 

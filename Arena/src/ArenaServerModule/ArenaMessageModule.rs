@@ -1,8 +1,10 @@
-
+use crate::{sendMessageBuffer, recvMessageBuffer};
 use std::collections::VecDeque;
 use std::sync::Mutex;
 use mio::{Token};
 
+
+// For Recevie.. Need Change Name . . .
 pub struct ArenaMessageData {
     uid: i64, // User Identification
     mid: i64, // Message Identification
@@ -31,7 +33,7 @@ impl ArenaMessageData {
 }
 
 
-// depercated
+// To Send.. Need Change Name . . .
 pub struct ArenaMessage{
     header : Token,
     msg : String
@@ -50,15 +52,9 @@ impl ArenaMessage {
         &self.msg
     }
 }
-
-
 pub enum MessageUnique {
     CONSOLE_WRITE_LINE,
     NONE,
-    REQUEST_SEND_ONE,
-    REQUEST_SEND_ALL,
-    RESPONSE_SEND_ONE,
-    RESPONSE_SEND_ALL,
     ERROR,
 }
 
@@ -70,10 +66,6 @@ pub fn ConvertDataToUnique(_data: &str) -> MessageUnique {
     match _data {
         "CONSOLE_WRITE_LINE" => MessageUnique::CONSOLE_WRITE_LINE,
         "NONE" => MessageUnique::NONE,
-        "REQUEST_SEND_ONE" => MessageUnique::REQUEST_SEND_ONE,
-        "REQUEST_SEND_ALL" => MessageUnique::REQUEST_SEND_ALL,
-        "RESPONSE_SEND_ONE" => MessageUnique::RESPONSE_SEND_ONE,
-        "RESPONSE_SEND_ONE" => MessageUnique::RESPONSE_SEND_ONE,
         _ => MessageUnique::ERROR
     }
 }
@@ -82,11 +74,30 @@ pub fn ConvertUniqueToData(_unique: MessageUnique) -> String {
     let mut result: &str = "";
     match _unique {
         MessageUnique::CONSOLE_WRITE_LINE => result = "CONSOLE_WRITE_LINE",
-        MessageUnique::REQUEST_SEND_ONE => result = "REQUEST_SEND_ONE",
-        MessageUnique::REQUEST_SEND_ALL => result = "REQUEST_SEND_ALL",
-        MessageUnique::RESPONSE_SEND_ALL => result = "RESPONSE_SEND_ALL",
-        MessageUnique::RESPONSE_SEND_ONE => result = "RESPONSE_SEND_ONE",
         _ => result = "Error",// 
     }
     result.to_string()
+}
+
+pub fn SendMessageToAll( _command : i64, _param : String)
+{
+    // gUserContainer for 루프를 돌면서
+        // self.PushSendMessageToSendBuffer( pop Token, _command, _param);
+}
+
+pub fn SendMessageToOne(_header : Token, _command : i64, _param : String)
+{
+    // self.PushSendMessageToSendBuffer( _header, _command, _param);
+}
+
+    // server_action_map에 저장되어있는 함수들로부터 호출된다
+pub fn PushSendMessageToSendBuffer(_header : Token, _command : i64, _param : String) 
+{
+
+    // MakeSendMessage(header, command, param)를 만들고
+    // sendMsg = "_command:_param"
+
+    let mut sendMsg = ArenaMessage::new(_header, _param);
+
+    sendMessageBuffer.lock().unwrap().push_back(sendMsg);
 }

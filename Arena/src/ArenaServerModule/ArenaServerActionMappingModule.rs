@@ -18,7 +18,10 @@ pub fn ServerActionMappingInitialize() {
     serverActionMap.lock().unwrap().insert(
         MessageUnique::CONSOLE_WRITE_LINE as i64,
          ServerAction_ConsoleWriteLineTest);
-    
 }
+
+// serverActionMap[function ID] (fuctnion Parammeter)
+// => Push msg 
+// => Pop Msg => 
 
 
