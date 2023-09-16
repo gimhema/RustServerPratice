@@ -96,13 +96,13 @@ pub mod GameLogicCore {
       }
    }
 
-   pub struct GameEnvironment {
+   pub struct GameNonPlayerbleSystem {
       id : i64,
       gameNPCManager : GameNPCManager,
       gameEcosystem : GameNonPlayerableEcoSystem
    }
 
-   impl Manager for GameEnvironment {
+   impl Manager for GameNonPlayerbleSystem {
       fn Initialize(&self) {
           
       }
