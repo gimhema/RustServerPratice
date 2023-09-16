@@ -102,7 +102,25 @@ pub mod GameLogicCore {
       gameEcosystem : GameNonPlayerableEcoSystem
    }
 
+   impl GameNonPlayerbleSystem {
+      pub fn new(gid: i64) -> Self {
+         //         let game_unit_manager = GameUnitManager::new(gid); // GameUnitManager 생성
+         //        let game_struture_manager = GameStructureManager::new(gid);
+         //         let game_resource_sys_manager = GameResourceSysManager::new(gid);
+                  // GameMainLogic 구조체 생성 및 반환
+                  let game_npc_manager = GameNPCManager::new(gid);
+                  let game_ecosystem = GameNonPlayerableEcoSystem::new(gid);
+                  GameNonPlayerbleSystem {
+                      id: gid,
+                      gameNPCManager: game_npc_manager,
+                      gameEcosystem: game_ecosystem
+                  }      
+               }
+   }
+
    impl Manager for GameNonPlayerbleSystem {
+      
+
       fn Initialize(&self) {
           
       }

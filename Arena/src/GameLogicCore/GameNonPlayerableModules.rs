@@ -29,7 +29,20 @@ pub struct GameNPCManager {
     NPCContainer : Vec<GameNPCUnit>
 }
 
+impl GameNPCManager {
+    pub fn new(gid: i64) -> Self {
+        // 여기서 GameNPCManager를 초기화하고 반환하는 로직을 작성합니다.
+        let npc_manager = GameNPCManager {
+            id: gid,
+            NPCContainer: Vec::new(), // 빈 Vec로 초기화 혹은 필요한 초기화 로직을 추가할 수 있습니다.
+        };
+        npc_manager // 초기화된 GameNPCManager 반환
+    }
+}
+
 impl Manager for GameNPCManager {
+
+
     fn Initialize(&self) {
         println!("Initailize Game NPC Manager . . . ");
     }
@@ -61,6 +74,17 @@ pub enum AtmosphereType {
 pub struct GameNonPlayerableEcoSystem {
     id : i64,
     currentAtmosphere : AtmosphereType
+}
+
+impl GameNonPlayerableEcoSystem {
+    pub fn new(gid: i64) -> Self {
+        // 여기서 GameNPCManager를 초기화하고 반환하는 로직을 작성합니다.
+        let ecoSystem = GameNonPlayerableEcoSystem {
+            id: gid,
+            currentAtmosphere: AtmosphereType::NONE, // 빈 Vec로 초기화 혹은 필요한 초기화 로직을 추가할 수 있습니다.
+        };
+        ecoSystem // 초기화된 GameNPCManager 반환
+    }
 }
 
 impl Manager for GameNonPlayerableEcoSystem {
