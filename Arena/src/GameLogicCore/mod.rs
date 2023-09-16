@@ -116,16 +116,22 @@ pub mod GameLogicCore {
                       gameEcosystem: game_ecosystem
                   }      
                }
+      pub fn getNPCManager(&self) -> &GameNPCManager {
+         &self.gameNPCManager
+      }
+      pub fn getEcoSystem(&self) -> &GameNonPlayerableEcoSystem {
+         &self.gameEcosystem
+      }
    }
 
    impl Manager for GameNonPlayerbleSystem {
       
-
       fn Initialize(&self) {
           
       }
       fn Update(&self) {
-          
+          self.gameNPCManager.Update();
+          self.gameEcosystem.Update();
       }
    }
 

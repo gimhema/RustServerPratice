@@ -2,6 +2,7 @@
 // Divieded from Arena Server Module . .
 // sendMessageBuffer.lock().unwrap().push_back("test".to_string());
 
+use crate::CommonModule::Manager::Manager;
 use crate::GameLogicCore;
 use crate::GameLogicCore::GameLogicCore::GameNonPlayerbleSystem;
 use crate::{sendMessageBuffer, recvMessageBuffer};
@@ -33,7 +34,8 @@ impl InstanceGame {
             max_num_player: max_num_player, 
             isStart: false, 
             isGameConclusion: false, 
-            nonPlayerbleSystem: _nonPlyayerbleSystem }
+            nonPlayerbleSystem: _nonPlyayerbleSystem
+         }
     }
 
     pub fn get_gameID(&self) -> &i64 {
@@ -112,6 +114,7 @@ impl InstanceGame {
                 break;
             }
             self.RecvMessageProcessLoop();
+            self.GameNonPlayerAction();
         }
         self.GameEnd();
     }
@@ -154,8 +157,12 @@ impl InstanceGame {
         } else {
             println!("Function not found");
         }
+    }
 
-}
+    pub fn GameNonPlayerAction(&mut self) {
+        self.nonPlayerbleSystem.Update();
+    }
+
     // pub fn SendMessageToAll(&mut self, _command : i64, _param : String)
     // {
     //     // gUserContainer for 루프를 돌면서
