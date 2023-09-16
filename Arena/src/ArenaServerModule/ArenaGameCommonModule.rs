@@ -3,6 +3,7 @@
 // sendMessageBuffer.lock().unwrap().push_back("test".to_string());
 
 use crate::GameLogicCore;
+use crate::GameLogicCore::GameLogicCore::GameNonPlayerbleSystem;
 use crate::{sendMessageBuffer, recvMessageBuffer};
 use crate::gUserContainer;
 use crate::serverActionMap;
@@ -17,14 +18,22 @@ pub struct InstanceGame {
     num_player: i64,
     max_num_player: i64,
     isStart: bool,
-    isGameConclusion: bool
+    isGameConclusion: bool,
+    nonPlayerbleSystem : GameNonPlayerbleSystem
 }
 
 
 impl InstanceGame {
     // 게임 흐름
     pub fn new(gid: i64, num_player: i64, max_num_player: i64) -> Self {
-        InstanceGame { gameID: gid, num_player: num_player, max_num_player: max_num_player, isStart: false, isGameConclusion: false }
+        let _nonPlyayerbleSystem = GameNonPlayerbleSystem::new(gid);
+        InstanceGame { 
+            gameID: gid,
+            num_player: num_player,
+            max_num_player: max_num_player, 
+            isStart: false, 
+            isGameConclusion: false, 
+            nonPlayerbleSystem: _nonPlyayerbleSystem }
     }
 
     pub fn get_gameID(&self) -> &i64 {
