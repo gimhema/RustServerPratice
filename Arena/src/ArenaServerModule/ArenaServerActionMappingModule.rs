@@ -18,6 +18,16 @@ pub fn ServerActionMappingInitialize() {
     serverActionMap.lock().unwrap().insert(
         MessageUnique::CONSOLE_WRITE_LINE as i64,
          ServerAction_ConsoleWriteLineTest);
+
+
+    serverActionMap.lock().unwrap().insert(
+       MessageUnique::TEST_MESSAGE2 as i64,
+       ArenaServerActionModule::ServerAction_MessageTestFunction2);
+
+    serverActionMap.lock().unwrap().insert(
+        MessageUnique::CONSOLE_WRITE_LINE as i64,
+        ArenaServerActionModule::ServerAction_MessageTestFunction3);
+        
 }
 
 // serverActionMap[function ID] (fuctnion Parammeter)
