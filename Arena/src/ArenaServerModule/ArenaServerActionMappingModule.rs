@@ -25,7 +25,7 @@ pub fn ServerActionMappingInitialize() {
        ArenaServerActionModule::ServerAction_MessageTestFunction2);
 
     serverActionMap.lock().unwrap().insert(
-        MessageUnique::CONSOLE_WRITE_LINE as i64,
+        MessageUnique::TEST_MESSAGE3 as i64,
         ArenaServerActionModule::ServerAction_MessageTestFunction3);
         
 }
