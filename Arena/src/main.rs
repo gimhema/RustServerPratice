@@ -39,6 +39,7 @@ type ArenaEventAction = fn(String) -> i64;
 static gUserIndex: i64 = 0;
 static sendMessageBuffer: Mutex<VecDeque<ArenaMessage>> = Mutex::new(VecDeque::new());
 const RECV_LIMIT: usize = 10000;
+const SERVER_TICK: u64 = 500;
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 
 lazy_static!{
@@ -111,7 +112,7 @@ fn main() -> io::Result<()> {
 
     loop {
         println!("Set Poll");
-        poll.poll(&mut events, Some(Duration::from_millis(500)))?;
+        poll.poll(&mut events, Some(Duration::from_millis(SERVER_TICK)))?;
 
         println!("Iterate Event For Loop");
         for event in events.iter() {
