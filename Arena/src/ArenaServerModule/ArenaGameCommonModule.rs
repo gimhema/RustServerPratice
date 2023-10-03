@@ -159,6 +159,7 @@ impl InstanceGame {
             let msg = recvMessageBuffer.lock().unwrap().pop_back();
             let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
             // 메세지를 꺼내서 이리저리 뜯어본다.
+            // "uid:mid:mVal"
             let mut uid = data.get_uid(); // User ID
             let mut mid = data.get_mid(); // Message ID
             let mut mVal = data.get_value(); // Message Function

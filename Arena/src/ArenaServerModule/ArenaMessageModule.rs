@@ -16,12 +16,15 @@ pub struct ArenaMessageData {
 
 impl ArenaMessageData {
     pub fn CreateByMessage(msg: String) -> Self {
-        let mut recvMsg = msg;
+        let mut recv_msg = msg;
+        
+        let parts: Vec<&str> = recv_msg.split(':').collect();
 
-        // recvMsg를 이리저리 뜯어본다.
+        let uid = parts.get(0).unwrap_or(&"0").parse().unwrap_or(0);
+        let mid = parts.get(1).unwrap_or(&"0").parse().unwrap_or(0);
+        let value = parts.get(2).unwrap_or(&"").to_string();
 
-        // 뜯은 결과를 메세지로 리턴한다.
-        ArenaMessageData { uid: 0, mid: 0, value: "".to_string() } // TEST
+        ArenaMessageData { uid, mid, value }
     }
 
     pub fn get_uid(&self) -> &i64 {
