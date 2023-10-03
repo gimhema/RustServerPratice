@@ -47,6 +47,11 @@ impl  ArenaPlayer {
         }
     }
 
+    pub fn AutoUpdate(&mut self) {
+        // PlayerLogic 일부 요소들을 자동으로 업데이트한다.
+        // 생산 정보, 건물 정보, 시간등과 관련된 . . . .
+    }
+
     pub fn Initialize(&mut self, ID: i64, userName: String, IP: String) {
         self.userID = ID;
         self.userName = userName;

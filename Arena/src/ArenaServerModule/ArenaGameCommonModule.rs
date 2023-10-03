@@ -9,6 +9,8 @@ use crate::{sendMessageBuffer, recvMessageBuffer};
 use crate::gUserContainer;
 use crate::serverActionMap;
 use mio::{Token};
+use std::sync::{Mutex, MutexGuard};
+use std::collections::HashMap;
 
 use super::ArenaClientModule::ArenaPlayer;
 use super::ArenaMessageModule::{self, ArenaMessageData, ArenaMessage};
@@ -107,14 +109,34 @@ impl InstanceGame {
         self.GameStart();              
     }
 
+    pub fn GamePlayerAutoLogicUpdate(&mut self) {
+        // Mutex의 락을 획득합니다.
+        let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
+
+        // HashMap의 원소를 순회하면서 AutoUpdate 메서드를 호출합니다.
+        for (_, player) in container_lock.iter_mut() {
+            player.AutoUpdate(); // 메서드 호출
+        }
+        // Mutex 락을 해제합니다.
+        drop(container_lock);
+    }
+
+    pub fn GameAutoUpdate(&mut self) {
+        // Non Player Logic Update
+        // Player Auto Logic Update
+        self.GameNonPlayerAction();
+        self.GamePlayerAutoLogicUpdate();
+    }
+
     pub fn GameAction(&mut self) {
+        // 메세지랑 AutoUpdate는 스레드로 분리를 해야하지않을까 . . . 
         loop {
             if(self.isGameConclusion == true)
             {
                 break;
             }
             self.RecvMessageProcessLoop();
-            self.GameNonPlayerAction();
+            self.GameAutoUpdate();
         }
         self.GameEnd();
     }
