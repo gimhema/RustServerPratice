@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "ArenaServerConnector.h"
+// #include "Interfaces/IPv4/IPv4Address.h"
+#include <Runtime/Networking/Public/Interfaces/IPv4/IPv4Address.h>
+// #include <Interfaces/IPv4/IPv4Address.h>
 
 // Sets default values
 AArenaServerConnector::AArenaServerConnector()
@@ -47,6 +49,12 @@ void AArenaServerConnector::CreateSocket()
 
             // 서버에 연결
             TSharedRef<FInternetAddr> ServerAddress = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();;
+
+            FIPv4Address ip;
+            FIPv4Address::Parse(GameServerIP, ip);
+
+            ServerAddress->SetIp(ip.Value);
+            ServerAddress->SetPort(GameServerPort);
             if (Socket->Connect(*ServerAddress))
             {
                 // 메세지 전송
