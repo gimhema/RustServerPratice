@@ -35,17 +35,18 @@ void AArenaServerConnector::CreateSocket()
     if (SocketSubsystemPtr)
     {
         // 家南 积己
-        TSharedRef<FInternetAddr> ServerAddress = SocketSubsystemPtr->CreateInternetAddr();
-        bool bIsValid;
-        ServerAddress->SetIp(*GameServerIP, bIsValid);
-        ServerAddress->SetPort(GameServerPort);
+//        TSharedRef<FInternetAddr> ServerAddress = SocketSubsystemPtr->CreateInternetAddr();
+        bool bIsValid = true;
+//        ServerAddress->SetIp(*GameServerIP, bIsValid);
+//        ServerAddress->SetPort(GameServerPort);
 
         if (bIsValid)
         {
             // TCP 家南 积己
-            Socket = SocketSubsystemPtr->CreateSocket(NAME_Stream, TEXT("YourSocketName"), false);
+  //          Socket = SocketSubsystemPtr->CreateSocket(NAME_Stream, TEXT("YourSocketName"), false);
 
             // 辑滚俊 楷搬
+            TSharedRef<FInternetAddr> ServerAddress = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();;
             if (Socket->Connect(*ServerAddress))
             {
                 // 皋技瘤 傈价
