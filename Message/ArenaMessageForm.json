@@ -1,0 +1,14 @@
+{
+    "ConsoleWriteLineTest" : {
+        "UnrealClientFunctionBindName" : "",
+        "ServerFunctionBindUnique" : 0
+    },
+    "MessageTestFunction" : {
+        "UnrealClientFunctionBindName" : "",
+        "ServerFunctionBindUnique" : 1
+    },
+    "MessageTestFunction2" : {
+        "UnrealClientFunctionBindName" : "",
+        "ServerFunctionBindUnique" : 2
+    }
+}
