@@ -1,3 +1,21 @@
 {
-    
+    "Message" : {
+        "ExampleMessage(NOT USE)" : {
+            "UBindFunctionName" : "클라이언트가 언리얼에서 바인딩시킬 함수 이름",
+            "ServerRequestUnique" : "서버가 이 유니크 값을 클라이언트에게 보내면(요청하면) 클라가 바인딩된 함수를 실행한다."            
+        },
+
+        "ConsoleWriteLine" : {
+            "UBindFunctionName" : "",
+            "ServerRequestUnique" : 0
+        },
+        "TEST_MESSAGE" : {
+            "UBindFunctionName" : "",
+            "ServerRequestUnique" : 1
+        },
+        "TEST_MESSAGE_2" : {
+            "UBindFunctionName" : "",
+            "ServerRequestUnique" : 2
+        }
+    }
 }

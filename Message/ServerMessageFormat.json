@@ -1,3 +1,21 @@
 {
-    
+    "Message" : {
+        "ExampleMessage(NOT USE)" : {
+            "ServerBindFunctionUnique" : "서버가 바인딩시킬 유니크 값",
+            "ClientRequestUnique" : "클라가 이 유니크 값을 서버에게 보내면(요청하면) 서버가 바인딩된 함수를 실행한다."            
+        },
+
+        "ConsoleWriteLine" : {
+            "ServerBindFunctionUnique" : 0,
+            "ClientRequestUnique" : 0
+        },
+        "TEST_MESSAGE" : {
+            "ServerBindFunctionUnique" : 1,
+            "ClientRequestUnique" : 1
+        },
+        "TEST_MESSAGE_2" : {
+            "ServerBindFunctionUnique" : 2,
+            "ClientRequestUnique" : 2
+        }
+    }
 }
