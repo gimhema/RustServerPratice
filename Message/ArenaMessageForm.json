@@ -1,14 +1,4 @@
 {
-    "ConsoleWriteLineTest" : {
-        "UnrealClientFunctionBindName" : "",
-        "ServerFunctionBindUnique" : 0
-    },
-    "MessageTestFunction" : {
-        "UnrealClientFunctionBindName" : "",
-        "ServerFunctionBindUnique" : 1
-    },
-    "MessageTestFunction2" : {
-        "UnrealClientFunctionBindName" : "",
-        "ServerFunctionBindUnique" : 2
-    }
+    "CLIENT_MESSAGE_FORMAT" : "ClientMessageFormat.json",
+    "SERVER_MESSAGE_FORMAT" : "ServerMessageFormat.json",
 }
