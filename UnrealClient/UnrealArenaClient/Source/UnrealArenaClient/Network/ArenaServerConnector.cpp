@@ -86,6 +86,11 @@ void AArenaServerConnector::CreateSocket()
     }
 }
 
+void AArenaServerConnector::Start()
+{
+
+}
+
 bool AArenaServerConnector::SendMessageToServer(const FString& Message)
 {
     // 메세지 전송

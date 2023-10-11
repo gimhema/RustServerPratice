@@ -38,12 +38,20 @@ public:
 	FSocket* Socket;
 
 public:
+	// Initialize
 	UFUNCTION()
 		void InitSocketSystem();
 
 	UFUNCTION()
 		void CreateSocket();
 
+public:
+	// Connect Loop
+	UFUNCTION()
+		void Start();
+
+public:
+	// Send & Recv
 	UFUNCTION()
 		bool SendMessageToServer(const FString& Message);
 
