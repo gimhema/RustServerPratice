@@ -40,9 +40,6 @@ public:
 public:
 	// Initialize
 	UFUNCTION()
-		void InitSocketSystem();
-
-	UFUNCTION()
 		void CreateSocket();
 
 public:

@@ -27,11 +27,6 @@ void AArenaServerConnector::Tick(float DeltaTime)
 
 }
 
-void AArenaServerConnector::InitSocketSystem()
-{
-
-}
-
 void AArenaServerConnector::CreateSocket()
 {
     if (SocketSubsystemPtr)
@@ -88,7 +83,11 @@ void AArenaServerConnector::CreateSocket()
 
 void AArenaServerConnector::Start()
 {
+    CreateSocket();
 
+    // Listen . . . 
+
+    // Loop . . . Recv Message . . .
 }
 
 bool AArenaServerConnector::SendMessageToServer(const FString& Message)
