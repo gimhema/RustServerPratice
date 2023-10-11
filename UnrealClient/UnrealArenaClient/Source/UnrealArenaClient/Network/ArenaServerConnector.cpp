@@ -59,7 +59,7 @@ void AArenaServerConnector::CreateSocket()
             {
                 // 메세지 전송
                 int32 BytesSent = 0;
-                bool bSuccess = SendMessageToRLServer("Hello RL Server . . . ");
+                bool bSuccess = SendMessageToServer("Hello RL Server . . . ");
 
                 if (bSuccess)
                 {
@@ -86,11 +86,21 @@ void AArenaServerConnector::CreateSocket()
     }
 }
 
-bool AArenaServerConnector::SendMessageToRLServer(const FString& Message)
+bool AArenaServerConnector::SendMessageToServer(const FString& Message)
 {
     // 메세지 전송
     int32 BytesSent = 0;
 
     return Socket->Send((uint8*)TCHAR_TO_UTF8(*Message), Message.Len(), BytesSent);
+}
+
+void AArenaServerConnector::RecvMessageFromServer()
+{
+
+}
+
+void AArenaServerConnector::DisConnect()
+{
+
 }
 

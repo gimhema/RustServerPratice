@@ -45,6 +45,12 @@ public:
 		void CreateSocket();
 
 	UFUNCTION()
-		bool SendMessageToRLServer(const FString& Message);
+		bool SendMessageToServer(const FString& Message);
+
+	UFUNCTION()
+		void RecvMessageFromServer();
+
+	UFUNCTION()
+		void DisConnect();
 
 };
