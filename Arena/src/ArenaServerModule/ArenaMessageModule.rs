@@ -6,6 +6,7 @@ use std::collections::HashMap;
 use std::sync::{MutexGuard};
 use crate::gUserContainer;
 use super::ArenaClientModule::ArenaPlayer;
+use super::ArenaMessageUnique::MessageUnique;
 
 // For Recevie.. Need Change Name . . .
 pub struct ArenaMessageData {
@@ -58,13 +59,13 @@ impl ArenaMessage {
         &self.msg
     }
 }
-pub enum MessageUnique {
-    CONSOLE_WRITE_LINE,
-    TEST_MESSAGE2,
-    TEST_MESSAGE3,
-    NONE,
-    ERROR,
-}
+// pub enum MessageUnique {
+//     CONSOLE_WRITE_LINE,
+//     TEST_MESSAGE2,
+//     TEST_MESSAGE3,
+//     NONE,
+//     ERROR,
+// }
 
 pub fn Initialize() {
     println!("Common Module Initialize . . . .");

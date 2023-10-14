@@ -1,4 +1,4 @@
 {
     "CLIENT_MESSAGE_FORMAT" : "ClientMessageFormat.json",
-    "SERVER_MESSAGE_FORMAT" : "ServerMessageFormat.json",
+    "SERVER_MESSAGE_FORMAT" : "ServerMessageFormat.json"
 }

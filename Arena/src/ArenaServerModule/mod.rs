@@ -3,7 +3,7 @@ pub mod ArenaMessageModule;
 pub mod ArenaGameCommonModule;
 pub mod ArenaServerActionModule;
 pub mod ArenaServerActionMappingModule;
-
+pub mod ArenaMessageUnique;
 
 use crate::GameLogicCore;
 
@@ -11,7 +11,8 @@ pub mod ArenaServerCoreModule {
     use crate::ArenaServerModule::ArenaMessageModule;
     use crate::ArenaServerModule::ArenaClientModule;
     use crate::ArenaServerModule::ArenaServerActionMappingModule::ServerActionMappingInitialize;
-    use super::ArenaMessageModule::MessageUnique;
+    // use super::ArenaMessageModule::MessageUnique;
+    use super::ArenaMessageUnique::MessageUnique;
     use super::GameLogicCore::GameLogicCore;
     use super::ArenaServerActionMappingModule;
     use super::ArenaGameCommonModule::InstanceGame;
