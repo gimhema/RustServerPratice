@@ -5,6 +5,7 @@
 #include <Runtime/Core/Public/HAL/RunnableThread.h>
 #include <Runtime/Core/Public/HAL/UnrealMemory.h>
 #include <Runtime/Core/Public/Async/Async.h>
+#include <Runtime/Sockets/Public/SocketTypes.h>
 #include <Runtime/Networking/Public/Interfaces/IPv4/IPv4Address.h>
 // #include <Interfaces/IPv4/IPv4Address.h>
 
@@ -92,20 +93,23 @@ void AArenaServerConnector::Start()
 
     // Listen . . . 
 
-    uint32 pendingDataSize = 0;
-    TArray<uint8> recvedData;
-
-    int32 totalReadData = 0;
-
-    Socket->SetNonBlocking(true);
-//    int32 _read;
-//   uint8 _temp;
-//    if(!Socket->Recv(&_temp, 1, _read, ESoc))
-
-    Socket->SetNonBlocking(false);
-
     while (isRun)
     {
+        uint32 pendingDataSize = 0;
+        TArray<uint8> recvedData;
+
+        int32 totalReadData = 0;
+
+        Socket->SetNonBlocking(true);
+        int32 _read;
+        uint8 _temp;
+        if (!Socket->Recv(&_temp, 1, _read, ESocketReceiveFlags::Peek))
+        {
+            isRun = false;
+            continue;
+        }
+
+        Socket->SetNonBlocking(false);
 
         while (isRun)
         {
@@ -126,7 +130,15 @@ void AArenaServerConnector::Start()
             totalReadData = totalReadData + readData;
         }
 
+        if (isRun && recvedData.Num() != 0)
+        {
+            // Recv Logic
+        }
+
+        // sleep for loop control . . .
     }
+
+    // DisConnect
 }
 
 bool AArenaServerConnector::SendMessageToServer(const FString& Message)
