@@ -2,6 +2,9 @@
 
 #include "ArenaServerConnector.h"
 // #include "Interfaces/IPv4/IPv4Address.h"
+#include <Runtime/Core/Public/HAL/RunnableThread.h>
+#include <Runtime/Core/Public/HAL/UnrealMemory.h>
+#include <Runtime/Core/Public/Async/Async.h>
 #include <Runtime/Networking/Public/Interfaces/IPv4/IPv4Address.h>
 // #include <Interfaces/IPv4/IPv4Address.h>
 
@@ -64,6 +67,8 @@ void AArenaServerConnector::CreateSocket()
                 {
                     UE_LOG(LogTemp, Error, TEXT("Failed Send Message"));
                 }
+
+                isRun = true;
             }
             else
             {
@@ -87,7 +92,41 @@ void AArenaServerConnector::Start()
 
     // Listen . . . 
 
-    // Loop . . . Recv Message . . .
+    uint32 pendingDataSize = 0;
+    TArray<uint8> recvedData;
+
+    int32 totalReadData = 0;
+
+    Socket->SetNonBlocking(true);
+//    int32 _read;
+//   uint8 _temp;
+//    if(!Socket->Recv(&_temp, 1, _read, ESoc))
+
+    Socket->SetNonBlocking(false);
+
+    while (isRun)
+    {
+
+        while (isRun)
+        {
+            if (!Socket->HasPendingData(pendingDataSize))
+            {
+                break;
+            }
+
+            recvedData.SetNumUninitialized(totalReadData + pendingDataSize);
+
+            int32 readData = 0;
+
+            if (!Socket->Recv(recvedData.GetData() + totalReadData, pendingDataSize, readData))
+            {
+                // Data Read Failed.
+                break;
+            }
+            totalReadData = totalReadData + readData;
+        }
+
+    }
 }
 
 bool AArenaServerConnector::SendMessageToServer(const FString& Message)

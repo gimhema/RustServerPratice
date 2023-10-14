@@ -37,6 +37,8 @@ public:
 	ISocketSubsystem* SocketSubsystemPtr;
 	FSocket* Socket;
 
+	bool isRun = false;
+
 public:
 	// Initialize
 	UFUNCTION()
