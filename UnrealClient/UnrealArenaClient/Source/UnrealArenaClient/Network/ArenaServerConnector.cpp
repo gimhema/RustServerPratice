@@ -133,6 +133,7 @@ void AArenaServerConnector::Start()
         if (isRun && recvedData.Num() != 0)
         {
             // Recv Logic
+            RecvMessageFromServer();
         }
 
         // sleep for loop control . . .
