@@ -22,6 +22,7 @@ void AArenaServerConnector::BeginPlay()
 {
 	Super::BeginPlay();
 	
+    InitArenaGameMode();
 }
 
 // Called every frame
@@ -162,6 +163,6 @@ void AArenaServerConnector::DisConnect()
 
 void AArenaServerConnector::InitArenaGameMode()
 {
-
+    arenaGameMode = Cast<AArenaGameMode>(UGameplayStatics::GetGameMode(this));
 }
 

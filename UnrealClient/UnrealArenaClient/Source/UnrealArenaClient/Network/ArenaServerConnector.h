@@ -30,7 +30,7 @@ public:
 
 public:
 	UPROPERTY()
-	AArenaGameMode arenaGameMode;
+	AArenaGameMode* arenaGameMode;
 
 	UPROPERTY(BlueprintReadWrite)
 	FString GameServerIP = TEXT("");
