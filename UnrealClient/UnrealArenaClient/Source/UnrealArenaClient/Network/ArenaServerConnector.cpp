@@ -153,7 +153,11 @@ bool AArenaServerConnector::SendMessageToServer(const FString& Message)
 
 void AArenaServerConnector::RecvMessageFromServer()
 {
-
+    if (arenaGameMode)
+    {
+//        arenaGameMode->CallMessageFunctionByName();
+//        arenaGameMode->CallMessageFunctionByUnique();
+    }
 }
 
 void AArenaServerConnector::DisConnect()

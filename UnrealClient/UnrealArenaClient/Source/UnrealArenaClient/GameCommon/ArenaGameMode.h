@@ -26,6 +26,8 @@ public:
 	void InitializeFunctionMap();
 	FGameMessageFuncDelegate CreateMessageFunc(FString funcName);
 
+	void CallMessageFunctionByUnique(EArenaGameMessage fUnique);
+
 public:
 	// Function Maps . . . .
 	void RECV_ECONSOLE_WRITE_LINE_FUNC();
