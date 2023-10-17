@@ -160,3 +160,8 @@ void AArenaServerConnector::DisConnect()
 
 }
 
+void AArenaServerConnector::InitArenaGameMode()
+{
+
+}
+

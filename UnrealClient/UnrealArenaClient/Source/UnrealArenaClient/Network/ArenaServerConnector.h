@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Sockets.h"
 #include "SocketSubsystem.h"
+#include "../GameCommon/ArenaGameMode.h"
 // #include "SocketSubsystemModule.h"
 #include "IPAddress.h"
 #include "ArenaServerConnector.generated.h"
@@ -28,12 +29,15 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	UPROPERTY()
+	AArenaGameMode arenaGameMode;
+
 	UPROPERTY(BlueprintReadWrite)
 	FString GameServerIP = TEXT("");
 	UPROPERTY(BlueprintReadWrite)
 	int32 GameServerPort = 0;
 
-//	FSocketSubsystemModule& SocketSubsystem = FModuleManager::LoadModuleChecked<FSocketSubsystemModule>("SocketSubsystem");
+	
 	ISocketSubsystem* SocketSubsystemPtr;
 	FSocket* Socket;
 
@@ -42,22 +46,25 @@ public:
 public:
 	// Initialize
 	UFUNCTION()
-		void CreateSocket();
+	void CreateSocket();
+
+	UFUNCTION()
+	void InitArenaGameMode();
 
 public:
 	// Connect Loop
 	UFUNCTION()
-		void Start();
+	void Start();
 
 public:
 	// Send & Recv
 	UFUNCTION()
-		bool SendMessageToServer(const FString& Message);
+	bool SendMessageToServer(const FString& Message);
 
 	UFUNCTION()
-		void RecvMessageFromServer();
+	void RecvMessageFromServer();
 
 	UFUNCTION()
-		void DisConnect();
+	void DisConnect();
 
 };
