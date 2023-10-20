@@ -134,7 +134,7 @@ void AArenaServerConnector::Start()
         if (isRun && recvedData.Num() != 0)
         {
             // Recv Logic
-            RecvMessageFromServer();
+            RecvMessageFromServer(recvedData);
         }
 
         // sleep for loop control . . .
@@ -151,7 +151,7 @@ bool AArenaServerConnector::SendMessageToServer(const FString& Message)
     return Socket->Send((uint8*)TCHAR_TO_UTF8(*Message), Message.Len(), BytesSent);
 }
 
-void AArenaServerConnector::RecvMessageFromServer()
+void AArenaServerConnector::RecvMessageFromServer(TArray<uint8>& Message)
 {
     if (arenaGameMode)
     {
@@ -170,3 +170,30 @@ void AArenaServerConnector::InitArenaGameMode()
     arenaGameMode = Cast<AArenaGameMode>(UGameplayStatics::GetGameMode(this));
 }
 
+FString AArenaServerConnector::ReadDataAsString(TArray<uint8>& Message, int32 length)
+{
+    if (length <= 0)
+    {
+        if (length < 0)
+        {
+
+        }
+        return FString("");
+    }
+    if (Message.Num() < length)
+    {
+        return FString("");
+    }
+
+    TArray<uint8> StringAsArray;
+    StringAsArray.Reserve(length);
+
+    for (int i = 0; i < length; i++)
+    {
+        StringAsArray.Add(Message[0]);
+        Message.RemoveAt(0);
+    }
+
+    std::string cstr(reinterpret_cast<const char*>(StringAsArray.GetData()), StringAsArray.Num());
+    return FString(UTF8_TO_TCHAR(cstr.c_str()));
+}

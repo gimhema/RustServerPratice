@@ -62,9 +62,11 @@ public:
 	bool SendMessageToServer(const FString& Message);
 
 	UFUNCTION()
-	void RecvMessageFromServer();
+	void RecvMessageFromServer(TArray<uint8>& Message);
 
 	UFUNCTION()
 	void DisConnect();
 
+	UFUNCTION()
+	FString ReadDataAsString(TArray<uint8>& Message, int32 length);
 };
