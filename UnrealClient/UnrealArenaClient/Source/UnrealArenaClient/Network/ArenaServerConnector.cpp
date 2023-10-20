@@ -155,6 +155,7 @@ void AArenaServerConnector::RecvMessageFromServer(TArray<uint8>& Message)
 {
     if (arenaGameMode)
     {
+        FString _data = ReadDataAsString(Message, Message.Num());
 //        arenaGameMode->CallMessageFunctionByName();
 //        arenaGameMode->CallMessageFunctionByUnique();
     }
