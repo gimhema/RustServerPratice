@@ -224,6 +224,14 @@ TArray<float> AArenaServerConnector::ConvertDataToFuncParam(FString splitedData)
 {
     TArray<float> _arr;
 
+    TArray<FString> Substrings;
+    splitedData.ParseIntoArray(Substrings, TEXT(","), true);
+
+    for (int i = 0; i < Substrings.Num(); ++i)
+    {
+        _arr.Push(FCString::Atof(*Substrings[i]));
+    }
+
     return _arr;
 }
 
