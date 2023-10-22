@@ -9,6 +9,7 @@
 #include "../GameCommon/ArenaGameMode.h"
 // #include "SocketSubsystemModule.h"
 #include "IPAddress.h"
+#include "ArenaGameMessage.h"
 #include "ArenaServerConnector.generated.h"
 
 
@@ -68,6 +69,11 @@ public:
 	UFUNCTION()
 	void DisConnect();
 
+public:
+	// Data Method
 	UFUNCTION()
 	FString ReadDataAsString(TArray<uint8>& Message, int32 length);
+
+	UFUNCTION()
+		FArenaGameMessage ConvertDataToGameMessage(FString data);
 };

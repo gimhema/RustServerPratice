@@ -198,3 +198,13 @@ FString AArenaServerConnector::ReadDataAsString(TArray<uint8>& Message, int32 le
     std::string cstr(reinterpret_cast<const char*>(StringAsArray.GetData()), StringAsArray.Num());
     return FString(UTF8_TO_TCHAR(cstr.c_str()));
 }
+
+FArenaGameMessage AArenaServerConnector::ConvertDataToGameMessage(FString data)
+{
+
+    // sendMsg = "_command:_param"
+
+    FArenaGameMessage msg;
+
+    return msg;
+}
