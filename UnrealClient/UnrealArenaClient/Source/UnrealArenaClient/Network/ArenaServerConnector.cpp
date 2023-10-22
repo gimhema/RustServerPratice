@@ -203,8 +203,19 @@ FArenaGameMessage AArenaServerConnector::ConvertDataToGameMessage(FString data)
 {
 
     // sendMsg = "_command:_param"
+    // ex) "0:1.0,2.2,300"
 
     FArenaGameMessage msg;
 
+//    data.Split
+
     return msg;
 }
+
+TArray<float> AArenaServerConnector::ConvertDataToFuncParam(FString splitedData)
+{
+    TArray<float> _arr;
+
+    return _arr;
+}
+
