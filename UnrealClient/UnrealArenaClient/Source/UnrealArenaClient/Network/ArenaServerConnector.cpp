@@ -205,9 +205,17 @@ FArenaGameMessage AArenaServerConnector::ConvertDataToGameMessage(FString data)
     // sendMsg = "_command:_param"
     // ex) "0:1.0,2.2,300"
 
-    FArenaGameMessage msg;
+    FString _deli = ":";
 
-//    data.Split
+    TArray<FString> Substrings;
+    data.ParseIntoArray(Substrings, TEXT(":"), true);
+
+    int _command = FCString::Atoi(*Substrings[0]);   
+    FString _fParam = Substrings[1];
+
+    FArenaGameMessage msg;
+    msg.functionCommand = _command;
+    msg.fuctionParam = _fParam;
 
     return msg;
 }
