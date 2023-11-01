@@ -12,7 +12,7 @@ void AArenaGameMode::CallMessageFunctionByUnique(EArenaGameMessage fUnique, FStr
 {
 	if (MessageFuncMap[fUnique].IsBound())
 	{
-		MessageFuncMap[fUnique].Execute(fParam);
+		MessageFuncMap[fUnique].Execute( ConvertDataToFuncParam(fParam) );
 	}
 }
 
@@ -39,7 +39,7 @@ TArray<float> AArenaGameMode::ConvertDataToFuncParam(FString splitedData)
 	return _arr;
 }
 
-void AArenaGameMode::RECV_ECONSOLE_WRITE_LINE_FUNC()
+void AArenaGameMode::RECV_ECONSOLE_WRITE_LINE_FUNC(TArray<float> param)
 {
 
 }

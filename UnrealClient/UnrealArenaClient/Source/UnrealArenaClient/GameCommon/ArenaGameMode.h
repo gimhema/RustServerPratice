@@ -11,7 +11,7 @@
  * 
  */
 
-DECLARE_DELEGATE_OneParam(FGameMessageFuncDelegate, FString);
+DECLARE_DELEGATE_OneParam(FGameMessageFuncDelegate, TArray<float>);
 
 UCLASS()
 class UNREALARENACLIENT_API AArenaGameMode : public AGameModeBase
@@ -33,6 +33,6 @@ public:
 
 public:
 	// Function Maps . . . .
-	void RECV_ECONSOLE_WRITE_LINE_FUNC();
+	void RECV_ECONSOLE_WRITE_LINE_FUNC(TArray<float> param);
 
 };
