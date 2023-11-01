@@ -26,7 +26,10 @@ public:
 	void InitializeFunctionMap();
 	FGameMessageFuncDelegate CreateMessageFunc(FString funcName);
 
-	void CallMessageFunctionByUnique(EArenaGameMessage fUnique);
+	void CallMessageFunctionByUnique(EArenaGameMessage fUnique, FString fParam);
+
+	UFUNCTION()
+	TArray<float> ConvertDataToFuncParam(FString splitedData);
 
 public:
 	// Function Maps . . . .

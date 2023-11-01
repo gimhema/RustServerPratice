@@ -77,6 +77,4 @@ public:
 	UFUNCTION()
 		FArenaGameMessage ConvertDataToGameMessage(FString data);
 
-	UFUNCTION()
-		TArray<float> ConvertDataToFuncParam(FString splitedData);
 };
