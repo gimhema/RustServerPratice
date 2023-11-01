@@ -12,7 +12,7 @@ void AArenaGameMode::CallMessageFunctionByUnique(EArenaGameMessage fUnique, FStr
 {
 	if (MessageFuncMap[fUnique].IsBound())
 	{
-//		MessageFuncMap[fUnique].
+		MessageFuncMap[fUnique].Execute(fParam);
 	}
 }
 

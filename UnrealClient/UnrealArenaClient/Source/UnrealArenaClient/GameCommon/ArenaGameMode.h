@@ -11,7 +11,7 @@
  * 
  */
 
-DECLARE_DELEGATE(FGameMessageFuncDelegate);
+DECLARE_DELEGATE_OneParam(FGameMessageFuncDelegate, FString);
 
 UCLASS()
 class UNREALARENACLIENT_API AArenaGameMode : public AGameModeBase
