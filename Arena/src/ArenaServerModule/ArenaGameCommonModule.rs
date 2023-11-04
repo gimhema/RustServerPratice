@@ -99,6 +99,7 @@ impl InstanceGame {
     }
 
     pub fn GameWait(&mut self) {
+        println!("Game Wait . . . .");
         loop {
             // User Container 상태를 보고 IsStart를 결정한다.
             if( self.IsFull() )
@@ -106,11 +107,14 @@ impl InstanceGame {
                 break;
             }
         }
+        println!("Game Ready ! !");
         self.GameStart();              
     }
 
     pub fn GamePlayerAutoLogicUpdate(&mut self) {
         // Mutex의 락을 획득합니다.
+        
+        // 플레이어의 수만큼 스레드를 생성해야함
         let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
 
         // HashMap의 원소를 순회하면서 AutoUpdate 메서드를 호출합니다.
@@ -124,21 +128,27 @@ impl InstanceGame {
     pub fn GameAutoUpdate(&mut self) {
         // Non Player Logic Update
         // Player Auto Logic Update
-        self.GameNonPlayerAction();
-        self.GamePlayerAutoLogicUpdate();
+        
+//        self.GameNonPlayerAction(); // 스레드로 분기
+//        self.GamePlayerAutoLogicUpdate(); // 스레드로 분기
     }
 
     pub fn GameAction(&mut self) {
-        // 메세지랑 AutoUpdate는 스레드로 분리를 해야하지않을까 . . . 
-        loop {
-            if(self.isGameConclusion == true)
-            {
-                break;
-            }
-            self.RecvMessageProcessLoop();
-            self.GameAutoUpdate();
-        }
-        self.GameEnd();
+        // 메세지 수신 스레드 분기
+        // 자동 업데이트 스레드 분기
+        // 게임 상태 체크 스레드 분기
+//        loop {
+//            if(self.isGameConclusion == true)
+//            {
+//                break;
+//            }
+//            self.RecvMessageProcessLoop(); // 메세지 스레드로 분리해야함
+//            self.GameAutoUpdate(); // depercated
+//            self.GameNonPlayerAction(); // 스레드로 분기
+//            self.GamePlayerAutoLogicUpdate(); // 스레드로 분기
+
+//        }
+//        self.GameEnd();
     }
 
     pub fn GameEnd(&mut self) {
@@ -155,6 +165,8 @@ impl InstanceGame {
     // Async
     // InstanceGame의 GameWait 이후 시작
     pub fn RecvMessageProcessLoop(&mut self) {
+        if(self.isGameConclusion == false) // 게임이 진행중이여야만 한다.
+        {
             // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다. (main.rs 275~290 line)
             let msg = recvMessageBuffer.lock().unwrap().pop_back();
             // "uid:mid:mVal" 형식으로 받아올것이다.
@@ -166,6 +178,7 @@ impl InstanceGame {
 
             // 콜백함수에는 헤더 이후에 작성된 정보들이 저장되어있다.
             self.CallServerAction(uid, mid, mVal);
+        }
     }
 
     pub fn CallServerAction(&mut self, userID : &i64, funcID : &i64, funcParam : &String ) {
@@ -183,7 +196,10 @@ impl InstanceGame {
     }
 
     pub fn GameNonPlayerAction(&mut self) {
-        self.nonPlayerbleSystem.Update();
+        if (self.isGameConclusion == false)
+        {
+            self.nonPlayerbleSystem.Update();
+        }
     }
 
     // pub fn SendMessageToAll(&mut self, _command : i64, _param : String)
