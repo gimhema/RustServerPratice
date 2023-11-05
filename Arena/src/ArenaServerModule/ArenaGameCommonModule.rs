@@ -130,28 +130,28 @@ impl InstanceGame {
         drop(container_lock);
     }
 
-    pub fn GameAutoUpdate(&mut self) {
-        // Non Player Logic Update
-        // Player Auto Logic Update
-        
+    pub fn GameAction(&mut self) {
+        // 스레드풀을 통해 업데이트 함수들을 실행
+        self.gameActionThreadPool.execute(||{
+            // Call RecvMessageProcessLoop()
+            println!("Execute RecvMessageProcessLoop Thread");
+        });
+        self.gameActionThreadPool.execute(||{
+            // Call GamePlayerAutoLogicUpdate()
+            println!("Execute GamePlayerAutoLogicUpdate Thread");
+        });
+        self.gameActionThreadPool.execute(||{
+            // Call GameNonPlayerAction()
+            println!("Execute GameNonPlayerAction Thread");
+        });
+        self.gameActionThreadPool.execute(||{
+            // Call CheckGameStatus()
+            println!("Execute CheckGameStatus Thread");
+        });
     }
 
-    pub fn GameAction(&mut self) {
-        // 메세지 수신 스레드 분기
-        // 자동 업데이트 스레드 분기
-        // 게임 상태 체크 스레드 분기
-//        loop {
-//            if(self.isGameConclusion == true)
-//            {
-//                break;
-//            }
-//            self.RecvMessageProcessLoop(); // 메세지 스레드로 분리해야함
-//            self.GameAutoUpdate(); // depercated
-//            self.GameNonPlayerAction(); // 스레드로 분기
-//            self.GamePlayerAutoLogicUpdate(); // 스레드로 분기
-
-//        }
-//        self.GameEnd();
+    pub fn CheckGameStatus(&mut self){
+        println!("Check Game Status . . . .");
     }
 
     pub fn GameEnd(&mut self) {
@@ -168,8 +168,9 @@ impl InstanceGame {
     // Async
     // InstanceGame의 GameWait 이후 시작
     pub fn RecvMessageProcessLoop(&mut self) {
-        if(self.isGameConclusion == false) // 게임이 진행중이여야만 한다.
+        loop
         {
+            if (self.isGameConclusion == true) { break; } // 게임이 끝났다면 종료
             // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다. (main.rs 275~290 line)
             let msg = recvMessageBuffer.lock().unwrap().pop_back();
             // "uid:mid:mVal" 형식으로 받아올것이다.
@@ -178,7 +179,7 @@ impl InstanceGame {
             let mut uid = data.get_uid(); // User ID
             let mut mid = data.get_mid(); // Message ID
             let mut mVal = data.get_value(); // Message Function
-
+    
             // 콜백함수에는 헤더 이후에 작성된 정보들이 저장되어있다.
             self.CallServerAction(uid, mid, mVal);
         }
