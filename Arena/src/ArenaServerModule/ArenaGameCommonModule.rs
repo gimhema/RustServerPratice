@@ -14,8 +14,9 @@ use std::collections::HashMap;
 
 use super::ArenaClientModule::ArenaPlayer;
 use super::ArenaMessageModule::{self, ArenaMessageData, ArenaMessage};
+use super::CommonModule::GameActionThreadPool::ThreadPool;
 
-
+const THREAD_POOL_CAPACITY: usize = 10;
 
 pub struct InstanceGame {
     gameID: i64,
@@ -23,7 +24,8 @@ pub struct InstanceGame {
     max_num_player: i64,
     isStart: bool,
     isGameConclusion: bool,
-    nonPlayerbleSystem : GameNonPlayerbleSystem
+    nonPlayerbleSystem : GameNonPlayerbleSystem,
+    gameActionThreadPool : ThreadPool
 }
 
 
@@ -31,13 +33,15 @@ impl InstanceGame {
     // 게임 흐름
     pub fn new(gid: i64, num_player: i64, max_num_player: i64) -> Self {
         let _nonPlyayerbleSystem = GameNonPlayerbleSystem::new(gid);
+        let _threadPool = ThreadPool::new(THREAD_POOL_CAPACITY);
         InstanceGame { 
             gameID: gid,
             num_player: num_player,
             max_num_player: max_num_player, 
             isStart: false, 
             isGameConclusion: false, 
-            nonPlayerbleSystem: _nonPlyayerbleSystem
+            nonPlayerbleSystem: _nonPlyayerbleSystem,
+            gameActionThreadPool: _threadPool
          }
     }
 
