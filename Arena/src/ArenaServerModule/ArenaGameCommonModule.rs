@@ -204,28 +204,5 @@ impl InstanceGame {
             self.nonPlayerbleSystem.Update();
         }
     }
-
-    // pub fn SendMessageToAll(&mut self, _command : i64, _param : String)
-    // {
-    //     // gUserContainer for 루프를 돌면서
-    //         // self.PushSendMessageToSendBuffer( pop Token, _command, _param);
-    // }
-
-    // pub fn SendMessageToOne(&mut self, _header : Token, _command : i64, _param : String)
-    // {
-    //     // self.PushSendMessageToSendBuffer( _header, _command, _param);
-    // }
-
-    //     // server_action_map에 저장되어있는 함수들로부터 호출된다
-    // pub fn PushSendMessageToSendBuffer(&mut self, _header : Token, _command : i64, _param : String) 
-    // {
-
-    //     // MakeSendMessage(header, command, param)를 만들고
-    //     let mut sendMsg = ArenaMessage::new(_header, _param);
-
-    //     sendMessageBuffer.lock().unwrap().push_back(sendMsg);
-    // }
-
-
 }
 
