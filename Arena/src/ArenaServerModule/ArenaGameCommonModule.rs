@@ -16,6 +16,7 @@ use super::ArenaClientModule::ArenaPlayer;
 use super::ArenaMessageModule::{self, ArenaMessageData, ArenaMessage};
 
 
+
 pub struct InstanceGame {
     gameID: i64,
     num_player: i64,
@@ -129,8 +130,6 @@ impl InstanceGame {
         // Non Player Logic Update
         // Player Auto Logic Update
         
-//        self.GameNonPlayerAction(); // 스레드로 분기
-//        self.GamePlayerAutoLogicUpdate(); // 스레드로 분기
     }
 
     pub fn GameAction(&mut self) {
