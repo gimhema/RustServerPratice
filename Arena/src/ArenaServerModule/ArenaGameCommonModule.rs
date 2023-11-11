@@ -99,6 +99,7 @@ impl InstanceGame {
     pub fn GameStart(&mut self) {
         // 게임 시작
         println!("Game Start");
+        self.isStart = true;
         self.GameReset();
         self.GameAction();
     }
@@ -119,7 +120,7 @@ impl InstanceGame {
     pub fn GamePlayerAutoLogicUpdate(&mut self) {
         // Mutex의 락을 획득합니다.
         
-        // 플레이어의 수만큼 스레드를 생성해야함
+        // 플레이어의 수만큼 스레드를 생성해야함        
         let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
 
         // HashMap의 원소를 순회하면서 AutoUpdate 메서드를 호출합니다.
@@ -137,6 +138,13 @@ impl InstanceGame {
 
     pub fn CheckGameStatus(&mut self){
         println!("Check Game Status . . . .");
+        loop 
+        {
+            if (true == self.IsStart())
+            {
+                
+            }
+        }
     }
 
     pub fn GameEnd(&mut self) {
@@ -155,18 +163,21 @@ impl InstanceGame {
     pub fn RecvMessageProcessLoop(&mut self) {
         loop
         {
-            if (self.isGameConclusion == true) { break; } // 게임이 끝났다면 종료
-            // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다. (main.rs 275~290 line)
-            let msg = recvMessageBuffer.lock().unwrap().pop_back();
-            // "uid:mid:mVal" 형식으로 받아올것이다.
-            let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
-            // 메세지를 꺼내서 이리저리 뜯어본다.
-            let mut uid = data.get_uid(); // User ID
-            let mut mid = data.get_mid(); // Message ID
-            let mut mVal = data.get_value(); // Message Function
-    
-            // 콜백함수에는 헤더 이후에 작성된 정보들이 저장되어있다.
-            self.CallServerAction(uid, mid, mVal);
+            if( true == self.IsStart() )
+            {
+                if (self.isGameConclusion == true) { break; } // 게임이 끝났다면 종료
+                // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다. (main.rs 275~290 line)
+                let msg = recvMessageBuffer.lock().unwrap().pop_back();
+                // "uid:mid:mVal" 형식으로 받아올것이다.
+                let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
+                // 메세지를 꺼내서 이리저리 뜯어본다.
+                let mut uid = data.get_uid(); // User ID
+                let mut mid = data.get_mid(); // Message ID
+                let mut mVal = data.get_value(); // Message Function
+        
+                // 콜백함수에는 헤더 이후에 작성된 정보들이 저장되어있다.
+                self.CallServerAction(uid, mid, mVal);
+            }
         }
     }
 
@@ -185,9 +196,15 @@ impl InstanceGame {
     }
 
     pub fn GameNonPlayerAction(&mut self) {
-        if (self.isGameConclusion == false)
+        loop
         {
-            self.nonPlayerbleSystem.Update();
+            if (true == self.IsStart())
+            {
+                if (self.isGameConclusion == false)
+                {
+                    self.nonPlayerbleSystem.Update();
+                }
+            }
         }
     }
 }
