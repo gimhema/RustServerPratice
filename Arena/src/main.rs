@@ -1,3 +1,4 @@
+
 // My Custom Modules -- Rocky Linux Commit Test
 mod ArenaServerModule;
 mod GameLogicCore;
@@ -99,15 +100,37 @@ fn main() -> io::Result<()> {
 //    let mut instanceGame =  InstanceGame::new(0, 0, 2);
     let instanceGame = Arc::new(Mutex::new(InstanceGame::new(0, 0, 2)));
 
-//    instanceGame.GameReset();
-    // GameReset -> GameStart -> if Game Condition is End? -> GameEnd & GameUserOut -> GameReset
+    // Clone Arc for each thread
+    let instance_game_action = Arc::clone(&instanceGame);
+    let instance_game_recv_message = Arc::clone(&instanceGame);
+    let instance_game_auto_update_logic = Arc::clone(&instanceGame);
+    let instance_non_playerble_logic = Arc::clone(&instanceGame);
+    let instance_game_status_logic = Arc::clone(&instanceGame);
 
-    let mut instanceGameActionLogic = thread::spawn(move ||{
-        let instance_game = Arc::clone(&instanceGame);
-        thread::spawn(move || {
-            let mut instance_game = instance_game.lock().unwrap();
-            instance_game.GameWait();
-        })
+    // Spawn threads using the cloned Arcs
+    let instanceGameWaitLogic = thread::spawn(move || {
+        let mut instance_game = instance_game_action.lock().unwrap();
+        instance_game.GameWait();
+    });
+
+    let instanceGameRecvMessageLoopLogic = thread::spawn(move || {
+        let mut instance_game = instance_game_recv_message.lock().unwrap();
+        instance_game.RecvMessageProcessLoop();
+    });
+
+    let instance_game_auto_update_logic = thread::spawn(move || {
+        let mut instance_game = instance_game_auto_update_logic.lock().unwrap();
+        instance_game.GamePlayerAutoLogicUpdate();
+    });
+
+    let instance_non_playerble_logic = thread::spawn(move || {
+        let mut instance_game = instance_non_playerble_logic.lock().unwrap();
+        instance_game.GameNonPlayerAction();
+    });
+
+    let instance_game_status_logic = thread::spawn(move || {
+        let mut instance_game = instance_game_status_logic.lock().unwrap();
+        instance_game.CheckGameStatus();
     });
 
     loop {
@@ -201,7 +224,9 @@ fn main() -> io::Result<()> {
             }
         }
     }
-    instanceGameActionLogic.join().expect("Failed Game Logic Thread");
+
+    instanceGameWaitLogic.join().unwrap();
+    instanceGameRecvMessageLoopLogic.join().unwrap();
 //    sendHandle.join().unwrap();
 }
 

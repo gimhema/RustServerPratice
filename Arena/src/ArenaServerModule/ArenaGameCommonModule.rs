@@ -131,23 +131,8 @@ impl InstanceGame {
     }
 
     pub fn GameAction(&mut self) {
-        // 스레드풀을 통해 업데이트 함수들을 실행
-        self.gameActionThreadPool.execute(||{
-            // Call RecvMessageProcessLoop()
-            println!("Execute RecvMessageProcessLoop Thread");
-        });
-        self.gameActionThreadPool.execute(||{
-            // Call GamePlayerAutoLogicUpdate()
-            println!("Execute GamePlayerAutoLogicUpdate Thread");
-        });
-        self.gameActionThreadPool.execute(||{
-            // Call GameNonPlayerAction()
-            println!("Execute GameNonPlayerAction Thread");
-        });
-        self.gameActionThreadPool.execute(||{
-            // Call CheckGameStatus()
-            println!("Execute CheckGameStatus Thread");
-        });
+        // depercated
+        // main에서 이 작업을 진행함
     }
 
     pub fn CheckGameStatus(&mut self){
