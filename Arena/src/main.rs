@@ -227,7 +227,11 @@ fn main() -> io::Result<()> {
 
     instanceGameWaitLogic.join().unwrap();
     instanceGameRecvMessageLoopLogic.join().unwrap();
-//    sendHandle.join().unwrap();
+    instance_game_auto_update_logic.join().unwrap();
+    instance_non_playerble_logic.join().unwrap();
+    instance_game_status_logic.join().unwrap();
+
+
 }
 
 fn next(current: &mut Token) -> Token {
