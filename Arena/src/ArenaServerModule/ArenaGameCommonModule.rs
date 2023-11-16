@@ -101,7 +101,6 @@ impl InstanceGame {
         println!("Game Start");
         self.isStart = true;
         self.GameReset();
-        self.GameAction();
     }
 
     pub fn GameWait(&mut self) {
@@ -131,10 +130,6 @@ impl InstanceGame {
         drop(container_lock);
     }
 
-    pub fn GameAction(&mut self) {
-        // depercated
-        // main에서 이 작업을 진행함
-    }
 
     pub fn CheckGameStatus(&mut self){
         println!("Check Game Status . . . .");
