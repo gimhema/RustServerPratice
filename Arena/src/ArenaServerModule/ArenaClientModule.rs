@@ -17,6 +17,7 @@ use crate::gUserContainer;
 
 
 const SENDTEST: &[u8] = b"Hi Unreal This Message Is Update Loop\n";
+const UPDATE_LIMIT: i64 = 10; // 임시
 
 pub fn SendTestFunction(connectionStream: &mut TcpStream)
 {
@@ -31,7 +32,8 @@ pub struct ArenaPlayer {
     userID: i64,
     userName: String,
     playerLogic: GamePlayerLogic,
-    userToken: Token
+    userToken: Token,
+    updateStep: i64
 }
 
 
@@ -43,8 +45,30 @@ impl  ArenaPlayer {
             userID: gid,
             userName: _name,
             playerLogic: game_player_logic,
-            userToken: _token 
+            userToken: _token, 
+            updateStep: 0
         }
+    }
+
+    pub fn CurrentStep(&mut self) -> &i64 {
+        &self.updateStep
+    }
+
+    pub fn NextStep(&mut self) {
+        if ( self.updateStep >= UPDATE_LIMIT) 
+        {
+            self.updateStep = 0;
+        }
+        else
+        {
+            self.updateStep += 1;
+        }
+
+    }
+
+    pub fn AutoUpdateOneStep(&mut self, step: i64) {
+        // 업데이트를 한스텝씩 진행한다.
+        // 일괄적으로 업데이트할경우 후순위 플레이어가 불이익을 받을수도 있기에
     }
 
     pub fn AutoUpdate(&mut self) {
