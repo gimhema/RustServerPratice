@@ -66,14 +66,25 @@ impl  ArenaPlayer {
 
     }
 
-    pub fn AutoUpdateOneStep(&mut self, step: i64) {
+    pub fn AutoUpdateOneStep(&mut self) {
         // 업데이트를 한스텝씩 진행한다.
         // 일괄적으로 업데이트할경우 후순위 플레이어가 불이익을 받을수도 있기에
+        let _step = self.CurrentStep();
+
+        match _step {
+            0 => println!("Unit Update"),
+            1 => println!("Construct Update"), 
+            2 => println!("Resource Update"), 
+            _ => println!("Default Case"), 
+        }
+
+        self.NextStep();
     }
 
     pub fn AutoUpdate(&mut self) {
         // PlayerLogic 일부 요소들을 자동으로 업데이트한다.
         // 생산 정보, 건물 정보, 시간등과 관련된 . . . .
+        self.AutoUpdateOneStep();
     }
 
     pub fn Initialize(&mut self, ID: i64, userName: String, IP: String) {
