@@ -25,7 +25,8 @@ pub struct InstanceGame {
     isStart: bool,
     isGameConclusion: bool,
     nonPlayerbleSystem : GameNonPlayerbleSystem,
-    gameActionThreadPool : ThreadPool
+    gameActionThreadPool : ThreadPool,
+    isConclude: bool
 }
 
 
@@ -41,7 +42,8 @@ impl InstanceGame {
             isStart: false, 
             isGameConclusion: false, 
             nonPlayerbleSystem: _nonPlyayerbleSystem,
-            gameActionThreadPool: _threadPool
+            gameActionThreadPool: _threadPool,
+            isConclude: false
          }
     }
 
@@ -59,6 +61,10 @@ impl InstanceGame {
 
     pub fn IsStart(&self) -> bool {
         self.isStart
+    }
+
+    pub fn IsConclude(&self) -> bool {
+        self.isConclude
     }
 
     pub fn SetStartSwitch(&mut self, _switch: bool) {
@@ -117,27 +123,32 @@ impl InstanceGame {
     }
 
     pub fn GamePlayerAutoLogicUpdate(&mut self) {
-        // Mutex의 락을 획득합니다.
-        
-        // 플레이어의 수만큼 스레드를 생성해야함        
-        let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
+        loop {
+            if (true == self.IsStart())
+            {
+                let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
+                if (true == self.IsConclude()) { break; }
 
-        // HashMap의 원소를 순회하면서 AutoUpdate 메서드를 호출합니다.
-        for (_, player) in container_lock.iter_mut() {
-            player.AutoUpdate(); // 메서드 호출
+                // HashMap의 원소를 순회하면서 AutoUpdate 메서드를 호출합니다.
+                for (_, player) in container_lock.iter_mut() {
+                    player.AutoUpdate(); // 메서드 호출
+                }
+                // Mutex 락을 해제합니다.
+                drop(container_lock);
+            }
         }
-        // Mutex 락을 해제합니다.
-        drop(container_lock);
     }
 
 
     pub fn CheckGameStatus(&mut self){
+        // 게임의 승패를 판정한다.
         println!("Check Game Status . . . .");
         loop 
         {
             if (true == self.IsStart())
             {
-                
+                if (true == self.IsConclude()) { break; }
+
             }
         }
     }

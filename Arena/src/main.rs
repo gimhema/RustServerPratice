@@ -22,6 +22,7 @@ use std::thread;
 use std::time::Duration;
 use std::collections::VecDeque;
 use std::sync::Mutex;
+use std::sync::MutexGuard;
 use std::sync::Arc;
 
 extern crate lazy_static;
@@ -118,11 +119,6 @@ fn main() -> io::Result<()> {
         instance_game.RecvMessageProcessLoop();
     });
 
-    let instance_game_auto_update_logic = thread::spawn(move || {
-        let mut instance_game = instance_game_auto_update_logic.lock().unwrap();
-        instance_game.GamePlayerAutoLogicUpdate();
-    });
-
     let instance_non_playerble_logic = thread::spawn(move || {
         let mut instance_game = instance_non_playerble_logic.lock().unwrap();
         instance_game.GameNonPlayerAction();
@@ -131,6 +127,11 @@ fn main() -> io::Result<()> {
     let instance_game_status_logic = thread::spawn(move || {
         let mut instance_game = instance_game_status_logic.lock().unwrap();
         instance_game.CheckGameStatus();
+    });
+
+    let instance_game_auto_update_logic = thread::spawn(move || {
+        let mut instance_game = instance_game_auto_update_logic.lock().unwrap();
+        instance_game.GamePlayerAutoLogicUpdate();
     });
 
     loop {
@@ -227,7 +228,6 @@ fn main() -> io::Result<()> {
 
     instanceGameWaitLogic.join().unwrap();
     instanceGameRecvMessageLoopLogic.join().unwrap();
-    instance_game_auto_update_logic.join().unwrap();
     instance_non_playerble_logic.join().unwrap();
     instance_game_status_logic.join().unwrap();
 
@@ -334,6 +334,18 @@ fn would_block(err: &io::Error) -> bool {
 fn interrupted(err: &io::Error) -> bool {
     err.kind() == io::ErrorKind::Interrupted
 }
+
+    // Game User Auto Update
+//    let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
+//    for (_, player) in gUserContainer.lock().into_iter() {
+//        let instance_game_auto_update_logic = thread::spawn(move || {
+//            player.AutoUpdate(); // 메서드 호출
+//        });
+//    }
+//    drop(container_lock);
+
+
+
 
 #[cfg(target_os = "wasi")]
 fn main() {
