@@ -110,26 +110,31 @@ fn main() -> io::Result<()> {
 
     // Spawn threads using the cloned Arcs
     let instanceGameWaitLogic = thread::spawn(move || {
+        println!("Spawned Wait Thead");
         let mut instance_game = instance_game_action.lock().unwrap();
         instance_game.GameWait();
     });
 
     let instanceGameRecvMessageLoopLogic = thread::spawn(move || {
+        println!("Spawned Wait Recv Message Thread");
         let mut instance_game = instance_game_recv_message.lock().unwrap();
         instance_game.RecvMessageProcessLoop();
     });
 
     let instance_non_playerble_logic = thread::spawn(move || {
+        println!("Spawned NonPlayerble Logic Thread");
         let mut instance_game = instance_non_playerble_logic.lock().unwrap();
         instance_game.GameNonPlayerAction();
     });
 
     let instance_game_status_logic = thread::spawn(move || {
+        println!("Spawned Checking Game Status Logic");
         let mut instance_game = instance_game_status_logic.lock().unwrap();
         instance_game.CheckGameStatus();
     });
 
     let instance_game_auto_update_logic = thread::spawn(move || {
+        println!("Spawned Game Auto Update Logic");
         let mut instance_game = instance_game_auto_update_logic.lock().unwrap();
         instance_game.GamePlayerAutoLogicUpdate();
     });

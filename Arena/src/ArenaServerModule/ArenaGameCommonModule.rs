@@ -110,12 +110,15 @@ impl InstanceGame {
     }
 
     pub fn GameWait(&mut self) {
-        println!("Game Wait . . . .");
         loop {
             // User Container 상태를 보고 IsStart를 결정한다.
             if( self.IsFull() )
             {
                 break;
+            }
+            else 
+            {
+//                println!("Game Wait . . . .");
             }
         }
         println!("Game Ready ! !");
@@ -124,6 +127,7 @@ impl InstanceGame {
 
     pub fn GamePlayerAutoLogicUpdate(&mut self) {
         loop {
+            println!("Check Player Auto Update . . .");
             if (true == self.IsStart())
             {
                 let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
@@ -142,9 +146,11 @@ impl InstanceGame {
 
     pub fn CheckGameStatus(&mut self){
         // 게임의 승패를 판정한다.
-        println!("Check Game Status . . . .");
         loop 
         {
+            println!("Check Game Status . . . .");
+            // TEST
+            // self.SetStartSwitch(true);
             if (true == self.IsStart())
             {
                 if (true == self.IsConclude()) { break; }
@@ -169,6 +175,7 @@ impl InstanceGame {
     pub fn RecvMessageProcessLoop(&mut self) {
         loop
         {
+            println!("Loop Recv Message . . .");
             if( true == self.IsStart() )
             {
                 if (self.isGameConclusion == true) { break; } // 게임이 끝났다면 종료
@@ -204,6 +211,7 @@ impl InstanceGame {
     pub fn GameNonPlayerAction(&mut self) {
         loop
         {
+            println!("Check NonPlayer Logic in loop . .");
             if (true == self.IsStart())
             {
                 if (self.isGameConclusion == false)
