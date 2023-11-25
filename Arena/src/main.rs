@@ -25,6 +25,7 @@ use std::sync::Mutex;
 use std::sync::MutexGuard;
 use std::sync::Arc;
 
+
 extern crate lazy_static;
 use lazy_static::lazy_static;
 
@@ -114,30 +115,30 @@ fn main() -> io::Result<()> {
         let mut instance_game = instance_game_action.lock().unwrap();
         instance_game.GameWait();
     });
-
-    let instanceGameRecvMessageLoopLogic = thread::spawn(move || {
-        println!("Spawned Wait Recv Message Thread");
-        let mut instance_game = instance_game_recv_message.lock().unwrap();
-        instance_game.RecvMessageProcessLoop();
-    });
-
-    let instance_non_playerble_logic = thread::spawn(move || {
-        println!("Spawned NonPlayerble Logic Thread");
-        let mut instance_game = instance_non_playerble_logic.lock().unwrap();
-        instance_game.GameNonPlayerAction();
-    });
-
-    let instance_game_status_logic = thread::spawn(move || {
-        println!("Spawned Checking Game Status Logic");
-        let mut instance_game = instance_game_status_logic.lock().unwrap();
-        instance_game.CheckGameStatus();
-    });
-
-    let instance_game_auto_update_logic = thread::spawn(move || {
-        println!("Spawned Game Auto Update Logic");
-        let mut instance_game = instance_game_auto_update_logic.lock().unwrap();
-        instance_game.GamePlayerAutoLogicUpdate();
-    });
+//
+//    let instanceGameRecvMessageLoopLogic = thread::spawn(move || {
+//        println!("Spawned Wait Recv Message Thread");
+//        let mut instance_game = instance_game_recv_message.lock().unwrap();
+//        instance_game.RecvMessageProcessLoop();
+//    });
+//
+//    let instance_non_playerble_logic = thread::spawn(move || {
+//        println!("Spawned NonPlayerble Logic Thread");
+//        let mut instance_game = instance_non_playerble_logic.lock().unwrap();
+//        instance_game.GameNonPlayerAction();
+//    });
+//
+//    let instance_game_status_logic = thread::spawn(move || {
+//        println!("Spawned Checking Game Status Logic");
+//        let mut instance_game = instance_game_status_logic.lock().unwrap();
+//        instance_game.CheckGameStatus();
+//    });
+//
+//    let instance_game_auto_update_logic = thread::spawn(move || {
+//        println!("Spawned Game Auto Update Logic");
+//        let mut instance_game = instance_game_auto_update_logic.lock().unwrap();
+//        instance_game.GamePlayerAutoLogicUpdate();
+//    });
 
     loop {
         println!("Set Poll");
@@ -232,9 +233,9 @@ fn main() -> io::Result<()> {
     }
 
     instanceGameWaitLogic.join().unwrap();
-    instanceGameRecvMessageLoopLogic.join().unwrap();
-    instance_non_playerble_logic.join().unwrap();
-    instance_game_status_logic.join().unwrap();
+//    instanceGameRecvMessageLoopLogic.join().unwrap();
+//    instance_non_playerble_logic.join().unwrap();
+//    instance_game_status_logic.join().unwrap();
 
 
 }

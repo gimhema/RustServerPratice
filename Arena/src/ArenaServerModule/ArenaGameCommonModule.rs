@@ -11,6 +11,7 @@ use crate::serverActionMap;
 use mio::{Token};
 use std::sync::{Mutex, MutexGuard};
 use std::collections::HashMap;
+use std::{thread, time};
 
 use super::ArenaClientModule::ArenaPlayer;
 use super::ArenaMessageModule::{self, ArenaMessageData, ArenaMessage};
@@ -110,15 +111,15 @@ impl InstanceGame {
     }
 
     pub fn GameWait(&mut self) {
+        let ten_millis = time::Duration::from_millis(1000);
+
         loop {
             // User Container 상태를 보고 IsStart를 결정한다.
+            thread::sleep(ten_millis);
+            println!("Game Wait . . .");
             if( self.IsFull() )
             {
                 break;
-            }
-            else 
-            {
-//                println!("Game Wait . . . .");
             }
         }
         println!("Game Ready ! !");
@@ -154,7 +155,6 @@ impl InstanceGame {
             if (true == self.IsStart())
             {
                 if (true == self.IsConclude()) { break; }
-
             }
         }
     }
