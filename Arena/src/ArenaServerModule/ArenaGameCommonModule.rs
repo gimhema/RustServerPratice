@@ -110,9 +110,19 @@ impl InstanceGame {
 
     pub fn GameLogicUpdate(&mut self) {
 
-        self.GameWait();
+        self.GameWait(); // Wait Player
 
-        self.GameStart();
+        self.GameStart(); // Initialize Game Status
+
+        loop {
+            // Update Game Logic loop
+            if (true == self.IsStart()) { if (true == self.IsConclude()) { break; } } // Checking Game Result
+
+            self.GamePlayerAutoLogicUpdate();
+
+        }
+
+        self.GameEnd();
 
 
     }
@@ -133,35 +143,16 @@ impl InstanceGame {
     }
 
     pub fn GamePlayerAutoLogicUpdate(&mut self) {
-        loop {
-            println!("Check Player Auto Update . . .");
-            if (true == self.IsStart())
-            {
-                let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
-                if (true == self.IsConclude()) { break; }
-
-                // HashMap의 원소를 순회하면서 AutoUpdate 메서드를 호출합니다.
-                for (_, player) in container_lock.iter_mut() {
-                    player.AutoUpdate(); // 메서드 호출
-                }
-                // Mutex 락을 해제합니다.
-                drop(container_lock);
-            }
-        }
-    }
-
-
-    pub fn CheckGameStatus(&mut self){
-        // 게임의 승패를 판정한다.
-        loop 
+        println!("Check Player Auto Update . . .");
+        if (true == self.IsStart())
         {
-            println!("Check Game Status . . . .");
-            // TEST
-            // self.SetStartSwitch(true);
-            if (true == self.IsStart())
-            {
-                if (true == self.IsConclude()) { break; }
+            let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
+            // HashMap의 원소를 순회하면서 AutoUpdate 메서드를 호출합니다.
+            for (_, player) in container_lock.iter_mut() {
+                player.AutoUpdate(); // 메서드 호출
             }
+            // Mutex 락을 해제합니다.
+            drop(container_lock);
         }
     }
 
@@ -179,8 +170,12 @@ impl InstanceGame {
     // Async
     // InstanceGame의 GameWait 이후 시작
     pub fn RecvMessageProcessLoop(&mut self) {
+        let ten_millis = time::Duration::from_millis(1000);
         loop
         {
+            if (self.IsConclude()) { break; }
+            
+            thread::sleep(ten_millis);
             println!("Loop Recv Message . . .");
             if( true == self.IsStart() )
             {

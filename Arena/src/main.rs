@@ -112,6 +112,16 @@ fn main() -> io::Result<()> {
         instance_game.GameLogicUpdate();
     });
 
+
+//    let instance_recvMsg_action = Arc::clone(&instanceGame);
+//    let instanceRecvMsgLogic = thread::spawn(move || {
+//        println!("Spawned Wait Thead");
+//        let mut instance_game_recv_process = instance_recvMsg_action.lock().unwrap();
+//        instance_game_recv_process.RecvMessageProcessLoop();
+//    });
+
+
+
     loop {
         println!("Set Poll");
         poll.poll(&mut events, Some(Duration::from_millis(SERVER_TICK)))?;
