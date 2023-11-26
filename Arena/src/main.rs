@@ -104,13 +104,9 @@ fn main() -> io::Result<()> {
 
     // Clone Arc for each thread
     let instance_game_action = Arc::clone(&instanceGame);
-    let instance_game_recv_message = Arc::clone(&instanceGame);
-    let instance_game_auto_update_logic = Arc::clone(&instanceGame);
-    let instance_non_playerble_logic = Arc::clone(&instanceGame);
-    let instance_game_status_logic = Arc::clone(&instanceGame);
 
     // Spawn threads using the cloned Arcs
-    let instanceGameWaitLogic = thread::spawn(move || {
+    let instanceGameUpdateLogic = thread::spawn(move || {
         println!("Spawned Wait Thead");
         let mut instance_game = instance_game_action.lock().unwrap();
         instance_game.GameLogicUpdate();
@@ -208,7 +204,7 @@ fn main() -> io::Result<()> {
         }
     }
 
-    instanceGameWaitLogic.join().unwrap();
+    instanceGameUpdateLogic.join().unwrap();
 
 }
 
