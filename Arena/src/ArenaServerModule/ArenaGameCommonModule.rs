@@ -99,9 +99,6 @@ impl InstanceGame {
         println!("Game Reset");
     }
 
-    pub fn IncreasePlayerCount(&mut self) {
-        self.set_num_player(self.num_player + 1);
-    }
 
     pub fn GameStart(&mut self) {
         // 게임 시작
@@ -112,7 +109,12 @@ impl InstanceGame {
 
 
     pub fn GameLogicUpdate(&mut self) {
-        
+
+        self.GameWait();
+
+        self.GameStart();
+
+
     }
 
     pub fn GameWait(&mut self) {
@@ -128,7 +130,6 @@ impl InstanceGame {
             }
         }
         println!("Game Ready ! !");
-        self.GameStart();              
     }
 
     pub fn GamePlayerAutoLogicUpdate(&mut self) {
