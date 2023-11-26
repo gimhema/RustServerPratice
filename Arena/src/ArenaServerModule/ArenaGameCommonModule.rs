@@ -110,6 +110,11 @@ impl InstanceGame {
         self.GameReset();
     }
 
+
+    pub fn GameLogicUpdate(&mut self) {
+        
+    }
+
     pub fn GameWait(&mut self) {
         let ten_millis = time::Duration::from_millis(1000);
 

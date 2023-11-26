@@ -113,7 +113,7 @@ fn main() -> io::Result<()> {
     let instanceGameWaitLogic = thread::spawn(move || {
         println!("Spawned Wait Thead");
         let mut instance_game = instance_game_action.lock().unwrap();
-        instance_game.GameWait();
+        instance_game.GameLogicUpdate();
     });
 
     loop {
