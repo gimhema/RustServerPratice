@@ -169,32 +169,6 @@ impl InstanceGame {
 
     // Async
     // InstanceGame의 GameWait 이후 시작
-    pub fn RecvMessageProcessLoop(&mut self) {
-        let ten_millis = time::Duration::from_millis(1000);
-        loop
-        {
-            if (self.IsConclude()) { break; }
-            
-            thread::sleep(ten_millis);
-            println!("Loop Recv Message . . .");
-            if( true == self.IsStart() )
-            {
-                if (self.isGameConclusion == true) { break; } // 게임이 끝났다면 종료
-                // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다. (main.rs 275~290 line)
-                let msg = recvMessageBuffer.lock().unwrap().pop_back();
-                // "uid:mid:mVal" 형식으로 받아올것이다.
-                let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
-                // 메세지를 꺼내서 이리저리 뜯어본다.
-                let mut uid = data.get_uid(); // User ID
-                let mut mid = data.get_mid(); // Message ID
-                let mut mVal = data.get_value(); // Message Function
-        
-                // 콜백함수에는 헤더 이후에 작성된 정보들이 저장되어있다.
-                self.CallServerAction(uid, mid, mVal);
-            }
-        }
-    }
-
     pub fn CallServerAction(&mut self, userID : &i64, funcID : &i64, funcParam : &String ) {
 
         let server_action_map = &*serverActionMap.lock().unwrap();
