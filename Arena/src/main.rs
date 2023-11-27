@@ -18,12 +18,13 @@ use mio::{Events, Interest, Poll, Registry, Token};
 use std::collections::HashMap;
 use std::io::{self, Read, Write};
 use std::str::from_utf8;
-use std::thread;
+use std::{thread, time};
 use std::time::Duration;
 use std::collections::VecDeque;
 use std::sync::Mutex;
 use std::sync::MutexGuard;
 use std::sync::Arc;
+
 
 
 extern crate lazy_static;
@@ -114,11 +115,10 @@ fn main() -> io::Result<()> {
 
 
 //    let instance_recvMsg_action = Arc::clone(&instanceGame);
-//    let instanceRecvMsgLogic = thread::spawn(move || {
-//        println!("Spawned Wait Thead");
-//        let mut instance_game_recv_process = instance_recvMsg_action.lock().unwrap();
-//        instance_game_recv_process.RecvMessageProcessLoop();
-//    });
+    let instanceRecvMsgLogic = thread::spawn(move || {
+        println!("Spawned RecvMessage Thead");
+        RecvMessageProcessLoop();
+    });
 
 
 
@@ -215,6 +215,7 @@ fn main() -> io::Result<()> {
     }
 
     instanceGameUpdateLogic.join().unwrap();
+    instanceRecvMsgLogic.join().unwrap();
 
 }
 
@@ -319,15 +320,31 @@ fn interrupted(err: &io::Error) -> bool {
     err.kind() == io::ErrorKind::Interrupted
 }
 
-    // Game User Auto Update
-//    let mut container_lock: MutexGuard<HashMap<Token, ArenaPlayer>> = gUserContainer.lock().unwrap();
-//    for (_, player) in gUserContainer.lock().into_iter() {
-//        let instance_game_auto_update_logic = thread::spawn(move || {
-//            player.AutoUpdate(); // 메서드 호출
-//        });
-//    }
-//    drop(container_lock);
-
+pub fn RecvMessageProcessLoop() {
+    let ten_millis = time::Duration::from_millis(1000);
+    loop
+    {
+//        if (self.IsConclude()) { break; }
+        
+        thread::sleep(ten_millis);
+        println!("Loop Recv Message . . .");
+//        if( true == self.IsStart() )
+//        {
+//            if (self.isGameConclusion == true) { break; } // 게임이 끝났다면 종료
+//            // recvMessageBuffer.lock().unwrap() 에서 메세지를 꺼낸다. (main.rs 275~290 line)
+//            let msg = recvMessageBuffer.lock().unwrap().pop_back();
+//            // "uid:mid:mVal" 형식으로 받아올것이다.
+//            let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
+//            // 메세지를 꺼내서 이리저리 뜯어본다.
+//            let mut uid = data.get_uid(); // User ID
+//            let mut mid = data.get_mid(); // Message ID
+//            let mut mVal = data.get_value(); // Message Function
+//    
+//            // 콜백함수에는 헤더 이후에 작성된 정보들이 저장되어있다.
+//            self.CallServerAction(uid, mid, mVal);
+//        }
+    }
+}
 
 
 
