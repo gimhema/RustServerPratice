@@ -5,7 +5,7 @@
 use crate::CommonModule::Manager::Manager;
 use crate::GameLogicCore;
 use crate::GameLogicCore::GameLogicCore::GameNonPlayerbleSystem;
-use crate::{sendMessageBuffer, recvMessageBuffer};
+use crate::{sendMessageBuffer, recvMessageBuffer, waitOperationBuffer};
 use crate::gUserContainer;
 use crate::serverActionMap;
 use mio::{Token};
@@ -129,7 +129,16 @@ impl InstanceGame {
     }
 
     pub fn GameWaitOperationProcess(&mut self) {
-            println!("GameWaitOperationProcess !!!!!!!!");
+        println!("GameWaitOperationProcess . . .");
+        loop {
+            if ( true == waitOperationBuffer.lock().unwrap().is_empty() ) {break;}
+
+            let mut _operation = waitOperationBuffer.lock().unwrap().pop_back();
+            let mut uid = _operation.as_mut().unwrap().get_uid(); // User ID
+            let mut mid = _operation.as_mut().unwrap().get_mid(); // Message ID
+            let mut mVal = _operation.as_mut().unwrap().get_value(); // Message Function
+
+        }
     }
 
 

@@ -360,10 +360,7 @@ pub fn RecvMessageProcessLoop() {
             let msg = recvMessageBuffer.lock().unwrap().pop_back();
             // "uid:mid:mVal" 형식으로 받아올것이다.
             let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
-            // 메세지를 꺼내서 이리저리 뜯어본다.
-            // let mut uid = data.get_uid(); // User ID
-            // let mut mid = data.get_mid(); // Message ID
-            // let mut mVal = data.get_value(); // Message Function
+
             waitOperationBuffer.lock().unwrap().push_front(data);
         }
     }
