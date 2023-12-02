@@ -26,6 +26,7 @@ use std::sync::MutexGuard;
 use std::sync::Arc;
 
 
+use crate::ArenaServerModule::ArenaGameCommonModule::InstanceGame;
 
 extern crate lazy_static;
 use lazy_static::lazy_static;
@@ -58,6 +59,12 @@ lazy_static!{
     // 토큰을 키로 괸리하는 유저 관리 컨테이너
     // 이러면 전반적인 구조 수정이 좀 필요하다..
     static ref gUserContainer: Mutex<HashMap<Token, ArenaPlayer>> = Mutex::new(HashMap::new());
+
+//    static ref instanceGame = Arc::new(Mutex::new(InstanceGame::new(0, 0, 2)));
+}
+
+lazy_static! {
+    static ref instanceGame: Arc<Mutex<InstanceGame>> = Arc::new(Mutex::new(InstanceGame::new(0, 0, 2)));
 }
 
 
@@ -69,7 +76,6 @@ fn main() -> io::Result<()> {
     use mio::event;
     use tokio::time::error::Elapsed;
 
-    use crate::ArenaServerModule::ArenaGameCommonModule::InstanceGame;
 
     // Server Network Setting
     env_logger::init();
@@ -105,8 +111,7 @@ fn main() -> io::Result<()> {
 
 
 //    ArenaServerCoreModule::ArenaServerInitialize(); // Server Initialize 
-//    let mut instanceGame =  InstanceGame::new(0, 0, 2);
-    let instanceGame = Arc::new(Mutex::new(InstanceGame::new(0, 0, 2)));
+    // let instanceGame = Arc::new(Mutex::new(InstanceGame::new(0, 0, 2)));
 
     // Clone Arc for each thread
     let instance_game_action = Arc::clone(&instanceGame);
@@ -118,6 +123,13 @@ fn main() -> io::Result<()> {
         instance_game.GameLogicUpdate();
     });
 
+
+//    let instance_recv_logic_thread = thread::spawn(move || {
+//        println!("Spawned Recv Logic Thread");
+//        let mut instance_game = instance_recv_action.lock().unwrap();
+//        instance_game.GameWaitOperationProcess();
+//    });
+    
 
 //    let instance_recvMsg_action = Arc::clone(&instanceGame);
     let instanceRecvMsgLogic = thread::spawn(move || {
@@ -221,6 +233,7 @@ fn main() -> io::Result<()> {
 
     instanceGameUpdateLogic.join().unwrap();
     instanceRecvMsgLogic.join().unwrap();
+//    instance_recv_logic_thread.join().unwrap();
 
 }
 
@@ -333,6 +346,13 @@ pub fn RecvMessageProcessLoop() {
         
         thread::sleep(ten_millis);
         println!("Loop Recv Message . . .");
+
+        // let instance_recv_action = Arc::clone(&instanceGame);
+        // let mut _game = instance_recv_action.lock().unwrap();
+        // _game.GameWaitOperationProcess();
+    
+        
+        // instanceGame.lock().unwrap().GameWaitOperationProcess();
 
         if( recvMessageBuffer.lock().unwrap().is_empty() == false )
         {

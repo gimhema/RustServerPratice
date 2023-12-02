@@ -118,14 +118,20 @@ impl InstanceGame {
             // Update Game Logic loop
             if (true == self.IsStart()) { if (true == self.IsConclude()) { break; } } // Checking Game Result
 
+            // 자동 업데이트 전 처리해야할 명령 대기들을 먼저 진행한다.
+            self.GameWaitOperationProcess();
+
             self.GamePlayerAutoLogicUpdate();
 
         }
 
         self.GameEnd();
-
-
     }
+
+    pub fn GameWaitOperationProcess(&mut self) {
+            println!("GameWaitOperationProcess !!!!!!!!");
+    }
+
 
     pub fn GameWait(&mut self) {
         let ten_millis = time::Duration::from_millis(1000);
@@ -133,7 +139,7 @@ impl InstanceGame {
         loop {
             // User Container 상태를 보고 IsStart를 결정한다.
             thread::sleep(ten_millis);
-            println!("Game Wait . . .");
+            println!("Game Wait . . . . . . . . . . .");
             if( self.IsFull() )
             {
                 break;
