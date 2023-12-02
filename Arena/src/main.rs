@@ -41,11 +41,14 @@ const DATA3: &[u8] = b"Hi Unreal This Message Update\n";
 type ArenaEventAction = fn(String) -> i64;
 
 static gUserIndex: i64 = 0;
-static sendMessageBuffer: Mutex<VecDeque<ArenaMessage>> = Mutex::new(VecDeque::new());
+
 const RECV_LIMIT: usize = 10000;
 const SERVER_TICK: u64 = 500;
+
+static sendMessageBuffer: Mutex<VecDeque<ArenaMessage>> = Mutex::new(VecDeque::new());
 static recvMessageBuffer: Mutex<VecDeque<String>> = Mutex::new(VecDeque::new());
 
+static waitOperationBuffer: Mutex<VecDeque<ArenaMessageData>> = Mutex::new(VecDeque::new());
 
 
 lazy_static!{
@@ -338,12 +341,10 @@ pub fn RecvMessageProcessLoop() {
             // "uid:mid:mVal" 형식으로 받아올것이다.
             let mut data = ArenaMessageData::CreateByMessage(msg.unwrap());
             // 메세지를 꺼내서 이리저리 뜯어본다.
-            let mut uid = data.get_uid(); // User ID
-            let mut mid = data.get_mid(); // Message ID
-            let mut mVal = data.get_value(); // Message Function
-    
-            // mid에 따라서 메세지가 저장되어야할 업데이트 버퍼를 결정한다.
-            
+            // let mut uid = data.get_uid(); // User ID
+            // let mut mid = data.get_mid(); // Message ID
+            // let mut mVal = data.get_value(); // Message Function
+            waitOperationBuffer.lock().unwrap().push_front(data);
         }
     }
 }
