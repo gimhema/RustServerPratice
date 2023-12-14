@@ -18,4 +18,24 @@ pub struct ServerBase {
 
 impl ServerBase {
 
+    fn Start(&mut self)
+    {
+
+    }
+
+    fn Update(&mut self)
+    {
+
+    }
+
+    fn RecvLoop(&mut self)
+    {
+
+    }
+
+    fn SendLoop(&mut self)
+    {
+        
+    }
+
 }
