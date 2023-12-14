@@ -14,6 +14,16 @@ use mio::event;
 use tokio::time::error::Elapsed;
 
 const SERVER: Token = Token(0);
+const SERVER_TICK: u64 = 500;
+const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
+const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
+
+// Private
+fn next(current: &mut Token) -> Token {
+    let next = current.0;
+    current.0 += 1;
+    Token(next)
+}
 
 pub struct ServerBase {
 
@@ -26,21 +36,23 @@ impl ServerBase {
 
     }
 
-    fn Start(&mut self)
+    fn Start(&mut self) -> io::Result<()> 
     {
         env_logger::init();
 
         let mut userCount: i64 = 0;
-        let mut poll = Poll::new();
+        let mut poll = Poll::new()?;
+        let mut events = Events::with_capacity(128);
 
         let addr = "127.0.0.1:9000".parse().unwrap();
-        let mut server = TcpListener::bind(addr);
+        let mut server = TcpListener::bind(addr)?;
     
         // Register the server with poll we can receive events for it.
         poll.registry().register(&mut server, SERVER, Interest::READABLE | Interest::WRITABLE)?;
     
         // Map of `Token` -> `TcpStream`.
         let mut connections = HashMap::new();
+
         let mut unique_token = Token(SERVER.0 + 1);
 
         loop {
@@ -95,15 +107,15 @@ impl ServerBase {
                         
     
                        let done = if let Some(connection) = connections.get_mut(&token) {
-                           // handle_connection_event(poll.registry(), connection, event)?
+                           handle_connection_event(poll.registry(), connection, event)?
                        } else {
                            // Sporadic events happen, we can safely ignore them.
-                           // false
+                           false
                        };
     
                        if done {
                            if let Some(mut connection) = connections.remove(&token) {
-                               // poll.registry().deregister(&mut connection)?;
+                               poll.registry().deregister(&mut connection)?;
                            }
                        }
                     }
@@ -132,7 +144,7 @@ impl ServerBase {
                 //        }
                     }
                 }
-            }
+        }
 
     fn Update(&mut self)
     {
@@ -150,3 +162,102 @@ impl ServerBase {
     }
 
 }
+
+
+
+fn handle_connection_event(
+    registry: &Registry,
+    connection: &mut TcpStream,
+    event: &Event,
+) -> io::Result<bool> {
+    println!("Handle Connection Event Start . . ");
+
+    if event.is_writable() {
+        // We can (maybe) write to the connection.
+        match connection.write(DATA) {
+            // We want to write the entire `DATA` buffer in a single go. If we
+            // write less we'll return a short write error (same as
+            // `io::Write::write_all` does).
+            Ok(n) if n < DATA.len() => return Err(io::ErrorKind::WriteZero.into()),
+            Ok(_) => {
+                // After we've written something we'll reregister the connection
+                // to only respond to readable events.
+                registry.reregister(connection, event.token(), Interest::READABLE)?
+            }
+            // Would block "errors" are the OS's way of saying that the
+            // connection is not actually ready to perform this I/O operation.
+            Err(ref err) if would_block(err) => {}
+            // Got interrupted (how rude!), we'll try again.
+            Err(ref err) if interrupted(err) => {
+                return handle_connection_event(registry, connection, event)
+            }
+            // Other errors we'll consider fatal.
+            Err(err) => return Err(err),
+        }
+    }
+
+    if event.is_readable() {
+        let mut connection_closed = false;
+        let mut received_data = vec![0; 4096];
+        let mut bytes_read = 0;
+        // We can (maybe) read from the connection.
+        loop {
+            match connection.read(&mut received_data[bytes_read..]) {
+                Ok(0) => {
+                    // Reading 0 bytes means the other side has closed the
+                    // connection or is done writing, then so are we.
+                    connection_closed = true;
+                    break;
+                }
+                Ok(n) => {
+                    bytes_read += n;
+                    if bytes_read == received_data.len() {
+                        received_data.resize(received_data.len() + 1024, 0);
+                    }
+                }
+                // Would block "errors" are the OS's way of saying that the
+                // connection is not actually ready to perform this I/O operation.
+                Err(ref err) if would_block(err) => break,
+                Err(ref err) if interrupted(err) => continue,
+                // Other errors we'll consider fatal.
+                Err(err) => return Err(err),
+            }
+        }
+
+        if bytes_read != 0 {
+
+            let received_data = &received_data[..bytes_read];
+            if let Ok(str_buf) = from_utf8(received_data) {
+                println!("Received data: {}", str_buf.trim_end());
+                // 받은 데이터 처리
+                // 데이터를 수신전용 버퍼에 추가한다.
+                let recvMsg = String::from(from_utf8(received_data).unwrap());        
+                // if(recvMessageBuffer.lock().unwrap().capacity() < RECV_LIMIT)
+                // {
+                //     recvMessageBuffer.lock().unwrap().push_back(recvMsg);                
+                // }
+                
+            } else {
+                println!("Received (none UTF-8) data: {:?}", received_data);
+            }
+        }
+
+        if connection_closed {
+            println!("Connection closed");
+            return Ok(true);
+        }
+    }
+    println!("Handle Connection Event End . . ");
+    Ok(false)
+}
+
+
+fn would_block(err: &io::Error) -> bool {
+    err.kind() == io::ErrorKind::WouldBlock
+}
+
+fn interrupted(err: &io::Error) -> bool {
+    err.kind() == io::ErrorKind::Interrupted
+}
+
+
