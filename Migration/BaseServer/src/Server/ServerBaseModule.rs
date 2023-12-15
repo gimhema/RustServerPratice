@@ -101,7 +101,6 @@ impl ServerBase {
     
                         // 유저의 카운트 수를 보고 컷을 해야한다.
                         connections.insert(token, sendConnect);
-                        // ArenaClientModule::AddNewUserToContainer(userCount, token, "test".to_string());                     
                       
                     },
                     token => {
@@ -129,20 +128,20 @@ impl ServerBase {
             // 정해진 header로 메세지를 보낸다
             // 메세지용 클래스도 하나 필요하겠네..
             for (key, value) in &mut connections {
-                // let mut send_data_buffer = sendMessageBuffer.lock().unwrap();
+                let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
                 
                 // 메세지 버퍼가 비어있지 않다면
-                //if send_data_buffer.capacity() > 0 {
-                //    if let Some(send_data) = send_data_buffer.pop_back() {
-                //        let destination = send_data.get_header();
-                //        let send_msg = send_data.get_msg().as_bytes();
-                //       
-                //       // message의 토큰을 보고
-                //       // 같은 토큰인 경우에만 메세지를 보낸다.
-                //       // 어떤 토큰에 보낼것인가? << 즉 모두에게 보내야하는지, 특정유저에게만 보내야하는지는 송신전처리에서 봐야한다.
-                //        if key == destination {
-                //            value.write(send_msg);
-                //        }
+                if send_data_buffer.capacity() > 0 {
+                    if let Some(send_data) = send_data_buffer.pop_back() {
+                        let destination = send_data.get_header();
+                        let send_msg = send_data.get_msg().as_bytes();
+                       
+                       // message의 토큰을 보고
+                       // 같은 토큰인 경우에만 메세지를 보낸다.
+                       // 어떤 토큰에 보낼것인가? << 즉 모두에게 보내야하는지, 특정유저에게만 보내야하는지는 송신전처리에서 봐야한다.
+                        if key == destination {
+                            value.write(send_msg);
+                        }
                     }
                 }
         }
