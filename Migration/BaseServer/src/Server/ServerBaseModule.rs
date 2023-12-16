@@ -13,6 +13,8 @@ use std::sync::Arc;
 use mio::event;
 use tokio::time::error::Elapsed;
 
+use super::GamePacketModule::GamePacket;
+
 const SERVER: Token = Token(0);
 const SERVER_TICK: u64 = 500;
 const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
