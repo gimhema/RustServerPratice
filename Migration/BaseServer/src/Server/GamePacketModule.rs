@@ -11,5 +11,11 @@ pub struct GamePacket {
 }
 
 impl ServerBase {
+    fn GamePacketSerialize(&mut self, packet: &GamePacket) -> Result<String, serde_json::Error> {
+        serde_json::to_string(packet)
+    } 
 
+    fn GamePacketDeSerialize(&mut self, data: &str) -> Result<GamePacket, serde_json::Error> {
+        serde_json::from_str(data)
+    } 
 }
