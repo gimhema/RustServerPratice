@@ -29,7 +29,7 @@ fn next(current: &mut Token) -> Token {
 
 pub struct ServerBase {
     recvMessageBuffer: Mutex<VecDeque<String>>,
-    sendMessageBuffer: Mutex<VecDeque<String>> // need change String -> GamePacket
+    sendMessageBuffer: Mutex<VecDeque<GamePacket>> // need change String -> GamePacket
 }
 
 impl ServerBase {
