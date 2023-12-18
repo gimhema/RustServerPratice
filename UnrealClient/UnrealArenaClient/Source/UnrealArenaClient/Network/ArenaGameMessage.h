@@ -19,7 +19,10 @@ struct FArenaGameMessage
 	GENERATED_BODY()
 
 	UPROPERTY()
-	int functionCommand;
+	int senderID;
+
+	UPROPERTY()
+	int functionHeader;
 
 	UPROPERTY()
 	FString fuctionParam;

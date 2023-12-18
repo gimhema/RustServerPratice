@@ -214,7 +214,7 @@ FArenaGameMessage AArenaServerConnector::ConvertDataToGameMessage(FString data)
     FString _fParam = Substrings[1];
 
     FArenaGameMessage msg;
-    msg.functionCommand = _command;
+    msg.functionHeader = _command;
     msg.fuctionParam = _fParam;
 
     return msg;
