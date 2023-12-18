@@ -47,26 +47,26 @@ public:
 
 public:
 	// Initialize
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void CreateSocket();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void InitArenaGameMode();
 
 public:
 	// Connect Loop
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void Start();
 
 public:
 	// Send & Recv
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	bool SendMessageToServer(const FString& Message);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void RecvMessageFromServer(TArray<uint8>& Message);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void DisConnect();
 
 public:
