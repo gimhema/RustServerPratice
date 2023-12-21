@@ -4,11 +4,16 @@ use Server::GamePacketModule::GamePacket;
 use Server::GamePacketModule::PacketTestManager;
 
 fn main() {
-//    println!("Hello, world!");
+    println!("Start Server . . .");
 
 //    let server = ServerBase();
 
-    let mut packetTest = PacketTestManager{};
+//    let mut packetTest = PacketTestManager{};
+//
+//    packetTest.PacketTest();
 
-    packetTest.PacketTest();
+    let mut server = ServerBase::new();
+
+    server.Start();
+
 }

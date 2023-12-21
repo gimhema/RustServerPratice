@@ -29,17 +29,24 @@ fn next(current: &mut Token) -> Token {
 
 pub struct ServerBase {
     recvMessageBuffer: Mutex<VecDeque<String>>,
-    sendMessageBuffer: Mutex<VecDeque<GamePacket>> // need change String -> GamePacket
+    sendMessageBuffer: Mutex<VecDeque<GamePacket>>
 }
 
 impl ServerBase {
 
-    fn Initialize(&mut self)
-    {
+    //
+    pub fn new() -> Self {
+        let mut _recvMessageBuffer = Mutex::new(VecDeque::new());
+        let mut _sendMessageBuffer = Mutex::new(VecDeque::new());
 
+        ServerBase {
+            recvMessageBuffer : _recvMessageBuffer,
+            sendMessageBuffer : _sendMessageBuffer
+        }
     }
 
-    fn Start(&mut self) -> io::Result<()> 
+
+    pub fn Start(&mut self) -> io::Result<()> 
     {
         env_logger::init();
 
