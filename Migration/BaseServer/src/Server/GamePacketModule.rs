@@ -10,6 +10,18 @@ pub struct GamePacket {
     functionParam: Vec<f64>
 }
 
+impl GamePacket {
+    pub fn new(_sendID: i64, _fHeader: i64) -> Self {
+        let mut _param = Vec::new();
+        GamePacket {
+            senderID : _sendID,
+            functionHeader : _fHeader,
+            functionParam : _param
+        }
+    }
+}
+
+
 impl ServerBase {
     fn GamePacketSerialize(&mut self, packet: &GamePacket) -> Result<String, serde_json::Error> {
         serde_json::to_string(packet)

@@ -143,6 +143,8 @@ impl ServerBase {
                 if send_data_buffer.capacity() > 0 {
                     if let Some(send_data) = send_data_buffer.pop_back() {
                         
+                        // let mut data = send_data.try_into().u
+                        
                         // let destination = send_data.get_header();
                         // let send_msg = send_data.get_msg().as_bytes();
                        
