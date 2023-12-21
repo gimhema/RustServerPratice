@@ -143,16 +143,16 @@ impl ServerBase {
                 if send_data_buffer.capacity() > 0 {
                     if let Some(send_data) = send_data_buffer.pop_back() {
                         
-                        // let mut data = send_data.try_into().u
+                        // let mut data = send_data.getSenderID()
                         
                         // let destination = send_data.get_header();
-                        // let send_msg = send_data.get_msg().as_bytes();
+                        // let mut send_msg = &self.GamePacketSerialize(&send_data).unwrap().as_bytes();
                        
                        // message의 토큰을 보고
                        // 같은 토큰인 경우에만 메세지를 보낸다.
                        // 어떤 토큰에 보낼것인가? << 즉 모두에게 보내야하는지, 특정유저에게만 보내야하는지는 송신전처리에서 봐야한다.
                        // if key == destination {
-                       //     value.write(send_msg);
+//                            value.write(send_msg.unwrap().as_bytes_mut());
                        // }
                     }
                 }
