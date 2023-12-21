@@ -19,6 +19,18 @@ impl GamePacket {
             functionParam : _param
         }
     }
+
+    pub fn getSenderID(&self) -> &i64 {
+        &self.senderID
+    }
+
+    pub fn getFunctionHeader(&self) -> &i64 {
+        &self.functionHeader
+    }
+
+    pub fn getFunctionParam(&self) -> &Vec<f64> {
+        &self.functionParam
+    }
 }
 
 
