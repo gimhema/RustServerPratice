@@ -16,5 +16,21 @@ impl ConnectionHandler
             connections : _connetions
         }
     }
+
+    pub fn AddNewConnection(&mut self, id: i64, connToken: Token)
+    {
+        self.connections.insert(id, connToken);
+    }
+
+    pub fn GetConnetionByID(&mut self, id: i64) -> &Token
+    {
+        let mut ret = self.connections.get(&id);
+        ret.clone().unwrap()
+    }
+
+    pub fn RemoveConnectionById(&mut self, id: i64)
+    {
+        self.connections.remove(&id);
+    }
 }
 
