@@ -14,6 +14,8 @@ use mio::event;
 use tokio::time::error::Elapsed;
 
 use super::GamePacketModule::GamePacket;
+use super::ConnetionHandleModule::ConnectionHandler;
+
 
 const SERVER: Token = Token(0);
 const SERVER_TICK: u64 = 500;
@@ -29,7 +31,8 @@ fn next(current: &mut Token) -> Token {
 
 pub struct ServerBase {
     recvMessageBuffer: Mutex<VecDeque<String>>,
-    sendMessageBuffer: Mutex<VecDeque<GamePacket>>
+    sendMessageBuffer: Mutex<VecDeque<GamePacket>>,
+    clientHandler: ConnectionHandler
 }
 
 impl ServerBase {
@@ -38,10 +41,12 @@ impl ServerBase {
     pub fn new() -> Self {
         let mut _recvMessageBuffer = Mutex::new(VecDeque::new());
         let mut _sendMessageBuffer = Mutex::new(VecDeque::new());
+        let mut _clientHandler = ConnectionHandler::new();
 
         ServerBase {
             recvMessageBuffer : _recvMessageBuffer,
-            sendMessageBuffer : _sendMessageBuffer
+            sendMessageBuffer : _sendMessageBuffer,
+            clientHandler: _clientHandler
         }
     }
 
