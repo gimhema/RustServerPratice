@@ -114,6 +114,7 @@ impl ServerBase {
                         userCount += 1;
     
                         // 유저의 카운트 수를 보고 컷을 해야한다.
+//                        self.clientHandler.AddNewConnection(0,token);
                         connections.insert(token, sendConnect);
                       
                     },

@@ -1,5 +1,5 @@
 mod Server;
-// use Server::ServerBaseModule::ServerBase;
+use Server::ServerBaseModule::ServerBase;
 // use Server::GamePacketModule::GamePacket;
 // use Server::GamePacketModule::PacketTestManager;
 
@@ -12,9 +12,8 @@ fn main() {
 //
 //    packetTest.PacketTest();
 
-//    let mut server = ServerBase::new();
-
-//    server.Start();
+    let mut server = ServerBase::new();
+    server.Start();
 
 
 }
