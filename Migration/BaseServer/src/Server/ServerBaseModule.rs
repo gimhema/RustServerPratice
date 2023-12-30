@@ -168,14 +168,16 @@ impl ServerBase {
                 if send_data_buffer.capacity() > 0 {
                     if let Some(send_data) = send_data_buffer.pop_back() {
                         
-                        // let mut data = send_data.getSenderID()
+                        let mut data = send_data.getSenderID();
                         
-                        // let destination = send_data.get_header();
-                        // let mut send_msg = &self.GamePacketSerialize(&send_data).unwrap().as_bytes();
+                        let destination = 0; // TEST, GamePacket의 수신자 ID를 받아와야함.
+                        // let send_msg = self.GamePacketSerialize(&send_data).unwrap().as_mut();
+                        // let send_msg = self.GamePacketSerialize(&send_data).unwrap().as_bytes().clone();
                        
                        // message의 토큰을 보고
                        // 같은 토큰인 경우에만 메세지를 보낸다.
                        // 어떤 토큰에 보낼것인가? << 즉 모두에게 보내야하는지, 특정유저에게만 보내야하는지는 송신전처리에서 봐야한다.
+                       // ?? 이러면 토큰이 필요한건가????
                        // if key == destination {
 //                            value.write(send_msg.unwrap().as_bytes_mut());
                        // }
