@@ -15,6 +15,8 @@ use std::sync::Arc;
 use mio::event;
 use tokio::time::error::Elapsed;
 
+use serde::{Serialize, Deserialize};
+
 use super::GamePacketModule::GamePacket;
 use super::ConnetionHandleModule::ConnectionHandler;
 
@@ -173,7 +175,16 @@ impl ServerBase {
                         let destination = 0; // TEST, GamePacket의 수신자 ID를 받아와야함.
                         // let send_msg = self.GamePacketSerialize(&send_data).unwrap().as_mut();
                         // let send_msg = self.GamePacketSerialize(&send_data).unwrap().as_bytes().clone();
-                       
+
+                        if let send_msg = serde_json::to_string(&send_data)? {
+                            // 메세지 직렬화 유효한 경우
+                            let seriailized_msg = send_msg.as_bytes();
+                            
+                        }
+                        else {
+                            // 실패
+                        }
+
                        // message의 토큰을 보고
                        // 같은 토큰인 경우에만 메세지를 보낸다.
                        // 어떤 토큰에 보낼것인가? << 즉 모두에게 보내야하는지, 특정유저에게만 보내야하는지는 송신전처리에서 봐야한다.
