@@ -1,6 +1,8 @@
 use mio::event::Event;
+use mio::event::Source;
 use mio::net::{TcpListener, TcpStream};
 use mio::{Events, Interest, Poll, Registry, Token};
+use std::borrow::BorrowMut;
 use std::collections::HashMap;
 use std::io::{self, Read, Write};
 use std::str::from_utf8;
@@ -32,7 +34,8 @@ fn next(current: &mut Token) -> Token {
 pub struct ServerBase {
     recvMessageBuffer: Mutex<VecDeque<String>>,
     sendMessageBuffer: Mutex<VecDeque<GamePacket>>,
-    clientHandler: ConnectionHandler
+    clientHandler: ConnectionHandler,
+    numUser: i64
 }
 
 impl ServerBase {
@@ -46,7 +49,8 @@ impl ServerBase {
         ServerBase {
             recvMessageBuffer : _recvMessageBuffer,
             sendMessageBuffer : _sendMessageBuffer,
-            clientHandler: _clientHandler
+            clientHandler: _clientHandler,
+            numUser: 0
         }
     }
 
@@ -66,7 +70,7 @@ impl ServerBase {
         poll.registry().register(&mut server, SERVER, Interest::READABLE | Interest::WRITABLE)?;
     
         // Map of `Token` -> `TcpStream`.
-        let mut connections = HashMap::new();
+        // let mut connections = HashMap::new();
 
         let mut unique_token = Token(SERVER.0 + 1);
 
@@ -115,23 +119,37 @@ impl ServerBase {
     
                         // 유저의 카운트 수를 보고 컷을 해야한다.
 //                        self.clientHandler.AddNewConnection(0,token);
-                        connections.insert(token, sendConnect);
+                        self.clientHandler.AddNewConnection(0, sendConnect, token );
+//                        connections.insert(token, sendConnect);
                       
                     },
                     token => {
                         
     
-                       let done = if let Some(connection) = connections.get_mut(&token) {
-                           handle_connection_event(poll.registry(), connection, event)?
-                       } else {
-                           // Sporadic events happen, we can safely ignore them.
-                           false
-                       };
+                       // let done = if let Some(connection) = connections.get_mut(&token) {
+                       //     handle_connection_event(poll.registry(), connection, event)?
+                       // } else {
+                       //     // Sporadic events happen, we can safely ignore them.
+                       //     false
+                       // };
+
+                       let done = if let Some(connection)  = self.clientHandler.GetConnetionByToken(token) {
+                        handle_connection_event(poll.registry(), connection, event)?
+                    } else {
+                        // Sporadic events happen, we can safely ignore them.
+                        false
+                    };
     
                        if done {
-                           if let Some(mut connection) = connections.remove(&token) {
-                               poll.registry().deregister(&mut connection)?;
-                           }
+//                           if let Some(mut connection) = connections.remove(&token) {
+//                               poll.registry().deregister(&mut connection)?;
+//                           }
+
+                            if let Some(mut connection)  = self.clientHandler.GetConnetionByToken(token)
+                            {
+                                poll.registry().deregister(connection);
+                                self.clientHandler.RemoveConnectionByToken(token);
+                            }
                        }
                     }
                 }
@@ -142,7 +160,8 @@ impl ServerBase {
             // sendBuffer에 저장되어 있는 메세지를 확인하고 있을때마다 
             // 정해진 header로 메세지를 보낸다
             // 메세지용 클래스도 하나 필요하겠네..
-            for (key, value) in &mut connections {
+            // for (key, value) in &mut connections
+            for (key, value) in self.clientHandler.GetConnections() {
                 let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
                 
                 // 메세지 버퍼가 비어있지 않다면

@@ -1,3 +1,4 @@
+use std::io::Write;
 use std::sync::Mutex;
 use std::collections::VecDeque;
 use std::collections::HashMap;
@@ -6,21 +7,21 @@ use mio::Token;
 
 pub struct Connection
 {
-    token: Token,
+    id: i64,
     tcpStream: TcpStream
 }
 
 impl Connection
 {
-    pub fn new(_token: Token, _connStream: TcpStream) -> Self {
-        Connection { token: _token, tcpStream: _connStream }
+    pub fn new(_id: i64, _connStream: TcpStream) -> Self {
+        Connection { id: _id, tcpStream: _connStream }
     }
 }
 
 pub struct ConnectionHandler 
 {
 //    connections: HashMap<i64, Token>
-    connections: HashMap<i64, Connection>
+    connections: HashMap<Token, Connection>
 }
 
 impl ConnectionHandler
@@ -32,20 +33,29 @@ impl ConnectionHandler
         }
     }
 
-    pub fn AddNewConnection(&mut self, id: i64, connection: Connection)
+    pub fn GetConnections(&mut self) -> &HashMap<Token, Connection>
     {
-        self.connections.insert(id, connection);
+        &self.connections
     }
 
-    pub fn GetConnetionByID(&mut self, id: i64) -> &Connection
+    pub fn AddNewConnection(&mut self, id: i64, _tcpStream: TcpStream, _token: Token)
     {
-        let mut ret = self.connections.get(&id);
-        ret.clone().unwrap()
+        let mut conn = Connection::new(id, _tcpStream);
+        self.connections.insert(_token, conn);
     }
 
-    pub fn RemoveConnectionById(&mut self, id: i64)
+    pub fn GetConnetionByToken(&mut self, token: Token) -> Option<&mut TcpStream>
     {
-        self.connections.remove(&id);
+        if let Some(connection) = self.connections.get_mut(&token) {
+            Some(&mut connection.tcpStream)
+        } else {
+            None
+        }
+    }
+
+    pub fn RemoveConnectionByToken(&mut self, token: Token)
+    {
+        self.connections.remove(&token);
     }
 }
 
