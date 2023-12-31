@@ -16,6 +16,14 @@ impl Connection
     pub fn new(_id: i64, _connStream: TcpStream) -> Self {
         Connection { id: _id, tcpStream: _connStream }
     }
+
+    pub fn getID(&self) -> &i64 {
+        &self.id
+    }
+
+    pub fn getTcpStream(&self) -> &TcpStream {
+        &self.tcpStream
+    }
 }
 
 pub struct ConnectionHandler 

@@ -172,14 +172,17 @@ impl ServerBase {
                         
                         let mut data = send_data.getSenderID();
                         
-                        let destination = 0; // TEST, GamePacket의 수신자 ID를 받아와야함.
+                        let destination = send_data.getTargetID();
+                        let _targetID = value.getID();
                         // let send_msg = self.GamePacketSerialize(&send_data).unwrap().as_mut();
                         // let send_msg = self.GamePacketSerialize(&send_data).unwrap().as_bytes().clone();
 
                         if let send_msg = serde_json::to_string(&send_data)? {
                             // 메세지 직렬화 유효한 경우
-                            let seriailized_msg = send_msg.as_bytes();
-                            
+                            if destination == _targetID {
+                                let seriailized_msg = send_msg.as_bytes();
+                                value.getTcpStream().write(seriailized_msg);
+                            }
                         }
                         else {
                             // 실패

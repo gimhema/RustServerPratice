@@ -22,6 +22,10 @@ impl GamePacket {
         }
     }
 
+    pub fn getTargetID(&self) -> &i64 {
+        &self.targetID
+    }
+
     pub fn getSenderID(&self) -> &i64 {
         &self.senderID
     }
