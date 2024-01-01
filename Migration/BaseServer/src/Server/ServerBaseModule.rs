@@ -19,6 +19,8 @@ use serde::{Serialize, Deserialize};
 
 use super::GamePacketModule::GamePacket;
 use super::ConnetionHandleModule::ConnectionHandler;
+use super::MessageBufferModule::RecvMessageBuffer;
+use super::MessageBufferModule::SendMessageBuffer;
 use super::Server;
 
 
