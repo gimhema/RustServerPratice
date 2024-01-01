@@ -25,4 +25,37 @@ pub struct SendMessageBuffer {
     container: Mutex<VecDeque<GamePacket>>
 }
 
+impl RecvMessageBuffer {
+    pub fn new() -> Self {
+        let mut _recvMessageBuffer = Mutex::new(VecDeque::new());
+        RecvMessageBuffer { container: _recvMessageBuffer }
+    }
+
+    pub fn PushBackData(&mut self, recvMsg: String)
+    {
+        self.container.lock().unwrap().push_back(recvMsg);
+    }
+
+    pub fn PopData(&mut self) -> Option<String>
+    {
+        self.container.lock().unwrap().pop_back()
+    }
+}
+
+impl SendMessageBuffer {
+    pub fn new() -> Self {
+        let mut _sendMessageBuffer = Mutex::new(VecDeque::new());
+        SendMessageBuffer { container: _sendMessageBuffer }
+    }
+
+    pub fn PushBackData(&mut self, sendMsg: GamePacket)
+    {
+        self.container.lock().unwrap().push_back(sendMsg);
+    }
+
+    pub fn PopData(&mut self) -> Option<GamePacket>
+    {
+        self.container.lock().unwrap().pop_back()
+    }
+}
 
