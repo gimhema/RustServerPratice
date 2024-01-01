@@ -4,6 +4,7 @@ use serde_json::{to_string, from_str};
 use super::ServerBaseModule::ServerBase;
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
+
 pub struct GamePacket {
     senderID: i64,
     targetID: i64,

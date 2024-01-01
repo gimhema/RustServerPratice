@@ -19,6 +19,7 @@ use serde::{Serialize, Deserialize};
 
 use super::GamePacketModule::GamePacket;
 use super::ConnetionHandleModule::ConnectionHandler;
+use super::Server;
 
 
 const SERVER: Token = Token(0);
@@ -32,6 +33,8 @@ fn next(current: &mut Token) -> Token {
     current.0 += 1;
     Token(next)
 }
+
+
 
 pub struct ServerBase {
     recvMessageBuffer: Mutex<VecDeque<String>>,
@@ -66,6 +69,22 @@ impl ServerBase {
 
     }
 
+    pub fn CreateUpdateThread(&self)
+    {
+        let mut server = self;
+        // let updateLogic = thread::spawn(|| {
+        //     println!("Spawned Update Logic Thread");
+        //     server.UpdateThreadWorker();         
+        // });
+    }
+
+    // self.clientHandler.GetConnetionByToken(token)
+
+    pub fn GetConnetionByToken(&mut self, token: Token) -> Option<&mut TcpStream>
+    {
+        self.clientHandler.GetConnetionByToken(token)
+    }
+
     pub fn Start(&mut self) -> io::Result<()> 
     {
         env_logger::init();
@@ -90,9 +109,7 @@ impl ServerBase {
             println!("Spawned Recv Msg Logic Thread");
         });
 
-        let updateLogic = thread::spawn(move || {
-            println!("Spawned Update Logic Thread");
-        });
+
 
         loop {
             println!("Set Poll");
@@ -138,19 +155,21 @@ impl ServerBase {
                         userCount += 1;
     
                         // 유저의 카운트 수를 보고 컷을 해야한다.
-//                        self.clientHandler.AddNewConnection(0,token);
                         self.clientHandler.AddNewConnection(0, sendConnect, token );
-//                        connections.insert(token, sendConnect);
-                      
+                        
                     },
                     token => {
 
-                       let done = if let Some(connection)  = self.clientHandler.GetConnetionByToken(token) {
-                        handle_connection_event(poll.registry(), connection, event)?
-                    } else {
-                        // Sporadic events happen, we can safely ignore them.
-                        false
-                    };
+
+                       let done = if let Some(connection)  = self.GetConnetionByToken(token) 
+                       {
+                            handle_connection_event(poll.registry(), connection, event)?
+                        } 
+                        else 
+                        {
+                            // Sporadic events happen, we can safely ignore them.
+                            false
+                        };
     
                        if done {
 
@@ -198,10 +217,16 @@ impl ServerBase {
         }
 
         recvMsgLogic.join().unwrap();
-        updateLogic.join().unwrap();
+        // updateLogic.join().unwrap();
     }
-}
 
+
+    
+
+
+
+
+}
 
 
 fn handle_connection_event(
@@ -271,7 +296,7 @@ fn handle_connection_event(
                 // 받은 데이터 처리
                 // 데이터를 수신전용 버퍼에 추가한다.
                 let recvMsg = String::from(from_utf8(received_data).unwrap());        
-                // if(recvMessageBuffer.lock().unwrap().capacity() < RECV_LIMIT)
+                // if(recvMessageBuffer.lock().unwrap().capacity() < 100000) // RECV_LIMIT
                 // {
                 //     recvMessageBuffer.lock().unwrap().push_back(recvMsg);                
                 // }
@@ -289,6 +314,7 @@ fn handle_connection_event(
     println!("Handle Connection Event End . . ");
     Ok(false)
 }
+
 
 
 fn would_block(err: &io::Error) -> bool {
