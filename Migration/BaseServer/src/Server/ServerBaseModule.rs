@@ -56,6 +56,15 @@ impl ServerBase {
         }
     }
 
+    pub fn RecvThreadWorker(&mut self)
+    {
+
+    }
+
+    pub fn UpdateThreadWorker(&mut self)
+    {
+
+    }
 
     pub fn Start(&mut self) -> io::Result<()> 
     {
@@ -75,6 +84,15 @@ impl ServerBase {
         // let mut connections = HashMap::new();
 
         let mut unique_token = Token(SERVER.0 + 1);
+
+        let recvMsgLogic = thread::spawn(move || {
+            // recv logic thread
+            println!("Spawned Recv Msg Logic Thread");
+        });
+
+        let updateLogic = thread::spawn(move || {
+            println!("Spawned Update Logic Thread");
+        });
 
         loop {
             println!("Set Poll");
@@ -178,6 +196,9 @@ impl ServerBase {
                 }
             }
         }
+
+        recvMsgLogic.join().unwrap();
+        updateLogic.join().unwrap();
     }
 }
 
