@@ -42,8 +42,8 @@ fn next(current: &mut Token) -> Token {
 
 
 pub struct ServerBase {
-    recvMessageBuffer: Mutex<VecDeque<String>>,
-    sendMessageBuffer: Mutex<VecDeque<GamePacket>>,
+//    recvMessageBuffer: Mutex<VecDeque<String>>,
+//    sendMessageBuffer: Mutex<VecDeque<GamePacket>>,
     clientHandler: ConnectionHandler,
     numUser: i64
 }
@@ -52,13 +52,13 @@ impl ServerBase {
 
     //
     pub fn new() -> Self {
-        let mut _recvMessageBuffer = Mutex::new(VecDeque::new());
-        let mut _sendMessageBuffer = Mutex::new(VecDeque::new());
+   //     let mut _recvMessageBuffer = Mutex::new(VecDeque::new());
+   //     let mut _sendMessageBuffer = Mutex::new(VecDeque::new());
         let mut _clientHandler = ConnectionHandler::new();
 
         ServerBase {
-            recvMessageBuffer : _recvMessageBuffer,
-            sendMessageBuffer : _sendMessageBuffer,
+  //          recvMessageBuffer : _recvMessageBuffer,
+  //          sendMessageBuffer : _sendMessageBuffer,
             clientHandler: _clientHandler,
             numUser: 0
         }
@@ -195,29 +195,29 @@ impl ServerBase {
             // 메세지용 클래스도 하나 필요하겠네..
             // for (key, value) in &mut connections
             for (key, value) in self.clientHandler.GetConnections() {
-                let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
+                // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
                 
                 // 메세지 버퍼가 비어있지 않다면
-                if send_data_buffer.capacity() > 0 {
-                    if let Some(send_data) = send_data_buffer.pop_back() {
-                        
-                        let mut data = send_data.getSenderID();
-                        
-                        let destination = send_data.getTargetID();
-                        let _targetID = value.getID();
-
-                        if let send_msg = serde_json::to_string(&send_data)? {
-                            // 메세지 직렬화 유효한 경우
-                            if destination == _targetID {
-                                let seriailized_msg = send_msg.as_bytes();
-                                value.getTcpStream().write(seriailized_msg);
-                            }
-                        }
-                        else {
-                            // 실패
-                        }
-                    }
-                }
+                // if send_data_buffer.capacity() > 0 {
+                //     if let Some(send_data) = send_data_buffer.pop_back() {
+                //         
+                //         let mut data = send_data.getSenderID();
+                //         
+                //         let destination = send_data.getTargetID();
+                //         let _targetID = value.getID();
+// 
+                //         if let send_msg = serde_json::to_string(&send_data)? {
+                //             // 메세지 직렬화 유효한 경우
+                //             if destination == _targetID {
+                //                 let seriailized_msg = send_msg.as_bytes();
+                //                 value.getTcpStream().write(seriailized_msg);
+                //             }
+                //         }
+                //         else {
+                //             // 실패
+                //         }
+                //     }
+                // }
             }
         }
 
