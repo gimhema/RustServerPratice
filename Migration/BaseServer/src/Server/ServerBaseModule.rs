@@ -300,7 +300,13 @@ fn handle_connection_event(
                 println!("Received data: {}", str_buf.trim_end());
                 // 받은 데이터 처리
                 // 데이터를 수신전용 버퍼에 추가한다.
-                let recvMsg = String::from(from_utf8(received_data).unwrap());        
+                let recvMsg = String::from(from_utf8(received_data).unwrap());
+                
+                if( gRecvMessageBuffer.GetNumElem() < 100000)
+                {
+
+                }
+
                 // if(recvMessageBuffer.lock().unwrap().capacity() < 100000) // RECV_LIMIT
                 // {
                 //     recvMessageBuffer.lock().unwrap().push_back(recvMsg);                

@@ -42,6 +42,13 @@ impl RecvMessageBuffer {
     {
         self.container.lock().unwrap().pop_back()
     }
+
+    pub fn GetNumElem(&self) -> usize
+    {
+        self.container.lock().unwrap().len()
+    }
+
+    
 }
 
 impl SendMessageBuffer {
