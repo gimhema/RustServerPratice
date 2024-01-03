@@ -33,7 +33,7 @@ impl RecvMessageBuffer {
         RecvMessageBuffer { container: _recvMessageBuffer }
     }
 
-    pub fn PushBackData(&mut self, recvMsg: String)
+    pub fn PushBackData(&self, recvMsg: String)
     {
         self.container.lock().unwrap().push_back(recvMsg);
     }

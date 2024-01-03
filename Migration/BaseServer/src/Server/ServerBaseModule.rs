@@ -304,7 +304,7 @@ fn handle_connection_event(
                 
                 if( gRecvMessageBuffer.GetNumElem() < 100000)
                 {
-
+                    gRecvMessageBuffer.PushBackData(recvMsg);
                 }
 
                 // if(recvMessageBuffer.lock().unwrap().capacity() < 100000) // RECV_LIMIT
