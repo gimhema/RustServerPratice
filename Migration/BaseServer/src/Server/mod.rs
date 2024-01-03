@@ -4,7 +4,7 @@ pub mod GamePacketModule;
 pub mod ConnetionHandleModule;
 pub mod MessageBufferModule;
 
-use crate::{recvMessageBuffer, sendMessageBuffer};
+use crate::{gRecvMessageBuffer, gSendMessageBuffer};
 
 pub mod Server {
     use super::ServerBaseModule::ServerBase;

@@ -9,8 +9,8 @@ extern crate lazy_static;
 use lazy_static::lazy_static;
 
 lazy_static! {
-    static ref recvMessageBuffer: RecvMessageBuffer = RecvMessageBuffer::new();
-    static ref sendMessageBuffer: SendMessageBuffer = SendMessageBuffer::new();
+    static ref gRecvMessageBuffer: RecvMessageBuffer = RecvMessageBuffer::new();
+    static ref gSendMessageBuffer: SendMessageBuffer = SendMessageBuffer::new();
 }
 
 fn main() {

@@ -25,7 +25,7 @@ use super::MessageBufferModule::SendMessageBuffer;
 
 use super::Server;
 
-use crate::{recvMessageBuffer, sendMessageBuffer};
+use crate::{gRecvMessageBuffer, gSendMessageBuffer};
 
 const SERVER: Token = Token(0);
 const SERVER_TICK: u64 = 500;
