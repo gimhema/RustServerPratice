@@ -62,9 +62,14 @@ impl SendMessageBuffer {
         self.container.lock().unwrap().push_back(sendMsg);
     }
 
-    pub fn PopData(&mut self) -> Option<GamePacket>
+    pub fn PopData(&self) -> Option<GamePacket>
     {
         self.container.lock().unwrap().pop_back()
+    }
+
+    pub fn GetNumElem(&self) -> usize
+    {
+        self.container.lock().unwrap().len()
     }
 }
 

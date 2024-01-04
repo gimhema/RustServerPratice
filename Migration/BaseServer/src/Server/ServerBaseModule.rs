@@ -32,6 +32,8 @@ const SERVER_TICK: u64 = 500;
 const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
+const BUFFER_SIZE_LIMIT: usize = 10000;
+
 // Private
 fn next(current: &mut Token) -> Token {
     let next = current.0;
@@ -197,27 +199,24 @@ impl ServerBase {
             for (key, value) in self.clientHandler.GetConnections() {
                 // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
                 
-                // 메세지 버퍼가 비어있지 않다면
-                // if send_data_buffer.capacity() > 0 {
-                //     if let Some(send_data) = send_data_buffer.pop_back() {
-                //         
-                //         let mut data = send_data.getSenderID();
-                //         
-                //         let destination = send_data.getTargetID();
-                //         let _targetID = value.getID();
-// 
-                //         if let send_msg = serde_json::to_string(&send_data)? {
-                //             // 메세지 직렬화 유효한 경우
-                //             if destination == _targetID {
-                //                 let seriailized_msg = send_msg.as_bytes();
-                //                 value.getTcpStream().write(seriailized_msg);
-                //             }
-                //         }
-                //         else {
-                //             // 실패
-                //         }
-                //     }
-                // }
+                if gSendMessageBuffer.GetNumElem() > 0 {
+                    let mut send_data = gSendMessageBuffer.PopData();
+                    
+                    let mut senderID = send_data.as_ref().unwrap().getSenderID();
+                    let mut destination = send_data.as_ref().unwrap().getTargetID();
+                    let _targetID = value.getID();
+
+                    if let send_msg = serde_json::to_string(&send_data)? {
+                        if destination == _targetID {
+                            let serialized_msg = send_msg.as_bytes();
+                            value.getTcpStream().write(serialized_msg);
+                        }
+                    }
+                    else {
+                        // 실패
+                    }
+                
+                }
             }
         }
 
@@ -302,15 +301,10 @@ fn handle_connection_event(
                 // 데이터를 수신전용 버퍼에 추가한다.
                 let recvMsg = String::from(from_utf8(received_data).unwrap());
                 
-                if( gRecvMessageBuffer.GetNumElem() < 100000)
+                if( gRecvMessageBuffer.GetNumElem() < BUFFER_SIZE_LIMIT)
                 {
                     gRecvMessageBuffer.PushBackData(recvMsg);
                 }
-
-                // if(recvMessageBuffer.lock().unwrap().capacity() < 100000) // RECV_LIMIT
-                // {
-                //     recvMessageBuffer.lock().unwrap().push_back(recvMsg);                
-                // }
                 
             } else {
                 println!("Received (none UTF-8) data: {:?}", received_data);
