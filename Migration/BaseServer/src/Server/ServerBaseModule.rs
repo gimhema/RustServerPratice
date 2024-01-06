@@ -25,7 +25,7 @@ use super::MessageBufferModule::SendMessageBuffer;
 
 use super::Server;
 
-use crate::{gRecvMessageBuffer, gSendMessageBuffer};
+use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
 
 const SERVER: Token = Token(0);
 const SERVER_TICK: u64 = 500;
@@ -34,10 +34,20 @@ const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 const BUFFER_SIZE_LIMIT: usize = 10000;
 
+pub fn GetThreadSwitch() -> bool
+{
+    THREAD_SWITCH.lock().unwrap().clone()
+}
 
+pub fn SetThreadSwitch(val: bool)
+{
+    let mut switch = THREAD_SWITCH.lock().unwrap();
+    *switch = val;
+}
 
 pub fn RecvThreadWorker()
 {
+
     let mut _recvMsg = gRecvMessageBuffer.PopData();
 
     println!("Received Message : {}", _recvMsg.unwrap().as_str());
@@ -77,16 +87,6 @@ impl ServerBase {
         }
     }
 
-    pub fn CreateReceiveThread(&self)
-    {
-        let mut server = self;
-        
-        let updateLogic = thread::spawn(|| {
-            println!("Spawned Update Logic Thread");
-            RecvThreadWorker();         
-        });
-    }
-
     // self.clientHandler.GetConnetionByToken(token)
 
     pub fn GetConnetionByToken(&mut self, token: Token) -> Option<&mut TcpStream>
@@ -113,7 +113,7 @@ impl ServerBase {
 
         let mut unique_token = Token(SERVER.0 + 1);
 
-//        self.CreateReceiveThread();
+        // Create Receive Messga Thread
         let recvMsgLogic = thread::spawn(move || {
             // recv logic thread
             RecvThreadWorker();
