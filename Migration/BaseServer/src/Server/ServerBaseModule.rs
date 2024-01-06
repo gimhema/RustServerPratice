@@ -44,8 +44,6 @@ fn next(current: &mut Token) -> Token {
 
 
 pub struct ServerBase {
-//    recvMessageBuffer: Mutex<VecDeque<String>>,
-//    sendMessageBuffer: Mutex<VecDeque<GamePacket>>,
     clientHandler: ConnectionHandler,
     numUser: i64
 }
@@ -54,13 +52,9 @@ impl ServerBase {
 
     //
     pub fn new() -> Self {
-   //     let mut _recvMessageBuffer = Mutex::new(VecDeque::new());
-   //     let mut _sendMessageBuffer = Mutex::new(VecDeque::new());
         let mut _clientHandler = ConnectionHandler::new();
 
         ServerBase {
-  //          recvMessageBuffer : _recvMessageBuffer,
-  //          sendMessageBuffer : _sendMessageBuffer,
             clientHandler: _clientHandler,
             numUser: 0
         }
