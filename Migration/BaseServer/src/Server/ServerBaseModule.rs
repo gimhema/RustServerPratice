@@ -5,6 +5,7 @@ use mio::{Events, Interest, Poll, Registry, Token};
 use std::borrow::BorrowMut;
 use std::collections::HashMap;
 use std::io::{self, Read, Write};
+use std::ops::DerefMut;
 use std::str::from_utf8;
 use std::{thread, time};
 use std::time::Duration;
@@ -25,6 +26,8 @@ use super::MessageBufferModule::SendMessageBuffer;
 
 use super::Server;
 
+use std::ops::{Deref};
+
 use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
 
 const SERVER: Token = Token(0);
@@ -33,32 +36,6 @@ const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 const BUFFER_SIZE_LIMIT: usize = 10000;
-
-pub fn GetThreadSwitch() -> bool
-{
-    THREAD_SWITCH.lock().unwrap().clone()
-}
-
-pub fn SetThreadSwitch(val: bool)
-{
-    let mut switch = THREAD_SWITCH.lock().unwrap();
-    *switch = val;
-}
-
-pub fn RecvThreadWorker()
-{
-
-    let mut _recvMsg = gRecvMessageBuffer.PopData();
-
-    println!("Received Message : {}", _recvMsg.unwrap().as_str());
-    // recvMsg 가지고 뭘 한다....
-}
-
-pub fn UpdateThreadWorker()
-{
-
-}
-
 
 
 // Private
@@ -75,6 +52,21 @@ pub struct ServerBase {
     numUser: i64
 }
 
+impl Deref for ServerBase {
+    type Target = ConnectionHandler;
+
+    fn deref(&self) -> &Self::Target {
+        &self.clientHandler
+    }
+}
+
+impl DerefMut for ServerBase {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.clientHandler
+    }
+}
+
+
 impl ServerBase {
 
     //
@@ -85,6 +77,11 @@ impl ServerBase {
             clientHandler: _clientHandler,
             numUser: 0
         }
+    }
+
+    pub fn UpdateThreadWorker()
+    {
+    
     }
 
     // self.clientHandler.GetConnetionByToken(token)
@@ -112,13 +109,6 @@ impl ServerBase {
         // let mut connections = HashMap::new();
 
         let mut unique_token = Token(SERVER.0 + 1);
-
-        // Create Receive Messga Thread
-        let recvMsgLogic = thread::spawn(move || {
-            // recv logic thread
-            RecvThreadWorker();
-        });
-
 
 
         loop {
@@ -223,7 +213,7 @@ impl ServerBase {
             }
         }
 
-        recvMsgLogic.join().unwrap();
+        // recvMsgLogic.join().unwrap();
         // updateLogic.join().unwrap();
     }
 
