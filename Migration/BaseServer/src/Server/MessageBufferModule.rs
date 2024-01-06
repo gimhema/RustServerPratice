@@ -38,7 +38,7 @@ impl RecvMessageBuffer {
         self.container.lock().unwrap().push_back(recvMsg);
     }
 
-    pub fn PopData(&mut self) -> Option<String>
+    pub fn PopData(&self) -> Option<String>
     {
         self.container.lock().unwrap().pop_back()
     }

@@ -34,6 +34,23 @@ const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 const BUFFER_SIZE_LIMIT: usize = 10000;
 
+
+
+pub fn RecvThreadWorker()
+{
+    let mut _recvMsg = gRecvMessageBuffer.PopData();
+
+    println!("Received Message : {}", _recvMsg.unwrap().as_str());
+    // recvMsg 가지고 뭘 한다....
+}
+
+pub fn UpdateThreadWorker()
+{
+
+}
+
+
+
 // Private
 fn next(current: &mut Token) -> Token {
     let next = current.0;
@@ -60,23 +77,14 @@ impl ServerBase {
         }
     }
 
-    pub fn RecvThreadWorker(&mut self)
-    {
-
-    }
-
-    pub fn UpdateThreadWorker(&mut self)
-    {
-
-    }
-
-    pub fn CreateUpdateThread(&self)
+    pub fn CreateReceiveThread(&self)
     {
         let mut server = self;
-        // let updateLogic = thread::spawn(|| {
-        //     println!("Spawned Update Logic Thread");
-        //     server.UpdateThreadWorker();         
-        // });
+        
+        let updateLogic = thread::spawn(|| {
+            println!("Spawned Update Logic Thread");
+            RecvThreadWorker();         
+        });
     }
 
     // self.clientHandler.GetConnetionByToken(token)
@@ -105,9 +113,10 @@ impl ServerBase {
 
         let mut unique_token = Token(SERVER.0 + 1);
 
+//        self.CreateReceiveThread();
         let recvMsgLogic = thread::spawn(move || {
             // recv logic thread
-            println!("Spawned Recv Msg Logic Thread");
+            RecvThreadWorker();
         });
 
 
