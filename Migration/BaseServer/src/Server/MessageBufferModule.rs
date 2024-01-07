@@ -48,6 +48,10 @@ impl RecvMessageBuffer {
         self.container.lock().unwrap().len()
     }
 
+    pub fn IsEmpty(&self) -> bool
+    {
+        self.container.lock().unwrap().is_empty()
+    }
     
 }
 

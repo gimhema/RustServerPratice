@@ -11,7 +11,7 @@ extern crate lazy_static;
 use lazy_static::lazy_static;
 
 lazy_static! {
-    static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false);
+    static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); // 원자성을 띠고있는 값으로 바꾸든가 해야한다..
     static ref gRecvMessageBuffer: RecvMessageBuffer = RecvMessageBuffer::new();
     static ref gSendMessageBuffer: SendMessageBuffer = SendMessageBuffer::new();
     static ref gServer: Mutex<ServerBase> = Mutex::new(ServerBase::new());
@@ -31,11 +31,14 @@ pub fn SetThreadSwitch(val: bool)
 pub fn RecvThreadWorker()
 {
     while (true) {
-        if(GetThreadSwitch() == true) {break;}
+        if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
 
-        let mut _recvMsg = gRecvMessageBuffer.PopData();
+        if (gRecvMessageBuffer.IsEmpty() == false)
+        {
+            let mut _recvMsg = gRecvMessageBuffer.PopData();
 
-        println!("Received Message : {}", _recvMsg.unwrap().as_str());
+            println!("Received Message : {}", _recvMsg.unwrap().as_str());
+        }
         // recvMsg 가지고 뭘 한다.... 
     }
  }
