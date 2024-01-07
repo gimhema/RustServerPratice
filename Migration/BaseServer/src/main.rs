@@ -43,10 +43,24 @@ pub fn RecvThreadWorker()
     }
  }
 
+ pub fn UpdateThreadWorker()
+ {
+    while (true)  {
+        if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
+
+    }
+ }
+
+ pub fn ServerRunThreadWorker()
+ {
+    let mut server = gServer.lock().unwrap();
+    server.Start();
+ }
+
 fn main() {
     println!("Start Server . . .");
     
-    let mut server = gServer.lock().unwrap();
+ //    let mut server = gServer.lock().unwrap();
 
     // Create Receive Messga Thread
     let recvMsgLogic = thread::spawn(move || {
@@ -54,7 +68,20 @@ fn main() {
         RecvThreadWorker();
     });
 
-    server.Start();
+    let updateLogic = thread::spawn(move || {
+        // recv logic thread
+        UpdateThreadWorker();
+    });
+
+    let serverLogic = thread::spawn(move || {
+        // recv logic thread
+        ServerRunThreadWorker();
+    });
+
+
+//    server.Start();
 
     recvMsgLogic.join().unwrap();
+    updateLogic.join().unwrap();
+    serverLogic.join().unwrap();
 }
