@@ -79,7 +79,7 @@ impl ServerBase {
         }
     }
 
-    pub fn UpdateThreadWorker()
+    pub fn Update(&mut self)
     {
     
     }

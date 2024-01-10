@@ -47,7 +47,7 @@ pub fn RecvThreadWorker()
  {
     while (true)  {
         if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
-
+        gServer.lock().unwrap().Update();
     }
  }
 
