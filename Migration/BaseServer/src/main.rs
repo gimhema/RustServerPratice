@@ -33,6 +33,9 @@ pub fn RecvThreadWorker()
     while (true) {
         if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
 
+        thread::sleep(time::Duration::from_millis(1000));
+        println!("Receive Loop");
+
         if (gRecvMessageBuffer.IsEmpty() == false)
         {
             let mut _recvMsg = gRecvMessageBuffer.PopData();
@@ -47,6 +50,11 @@ pub fn RecvThreadWorker()
  {
     while (true)  {
         if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
+
+        thread::sleep(time::Duration::from_millis(1000));
+        println!("Update Loop");
+
+
         gServer.lock().unwrap().Update();
     }
  }
