@@ -29,6 +29,7 @@ use super::Server;
 use std::ops::{Deref};
 
 use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
+use crate::{GetThreadSwitch, SetThreadSwitch};
 
 const SERVER: Token = Token(0);
 const SERVER_TICK: u64 = 500;
