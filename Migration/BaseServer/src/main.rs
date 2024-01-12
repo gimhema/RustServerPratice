@@ -30,7 +30,7 @@ pub fn SetThreadSwitch(val: bool)
 
 pub fn RecvThreadWorker()
 {
-    while (true) {
+    loop {
         if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
 
         thread::sleep(time::Duration::from_millis(1000));
@@ -48,14 +48,14 @@ pub fn RecvThreadWorker()
 
  pub fn UpdateThreadWorker()
  {
-    while (true)  {
+    loop  {
         if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
 
-        thread::sleep(time::Duration::from_millis(1000));
+        thread::sleep(time::Duration::from_millis(400));
         println!("Update Loop");
 
-
-        gServer.lock().unwrap().Update();
+        let mut server = gServer.lock().unwrap();
+        server.Update();
     }
  }
 
@@ -79,12 +79,13 @@ fn main() {
     let updateLogic = thread::spawn(move || {
         // recv logic thread
         UpdateThreadWorker();
-    });
+    });    
 
     let serverLogic = thread::spawn(move || {
         // recv logic thread
         ServerRunThreadWorker();
     });
+
 
 
 //    server.Start();
