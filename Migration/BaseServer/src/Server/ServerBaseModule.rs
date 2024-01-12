@@ -32,7 +32,7 @@ use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
 use crate::{GetThreadSwitch, SetThreadSwitch};
 
 const SERVER: Token = Token(0);
-const SERVER_TICK: u64 = 500;
+const SERVER_TICK: u64 = 10;
 const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
@@ -46,7 +46,10 @@ fn next(current: &mut Token) -> Token {
     Token(next)
 }
 
-
+pub fn update_logic(server: &mut ServerBase) {
+    // Your update logic here
+    server.Update();
+}
 
 pub struct ServerBase {
     clientHandler: ConnectionHandler,
@@ -82,7 +85,7 @@ impl ServerBase {
 
     pub fn Update(&mut self)
     {
-    
+        println!("Call Server Update");
     }
 
     // self.clientHandler.GetConnetionByToken(token)
@@ -160,8 +163,6 @@ impl ServerBase {
                         
                     },
                     token => {
-
-
                        let done = if let Some(connection)  = self.GetConnetionByToken(token) 
                        {
                             handle_connection_event(poll.registry(), connection, event)?
@@ -184,6 +185,10 @@ impl ServerBase {
                 }
                 println!("For Loop End");
             }
+            println!("Calling update_logic");
+            update_logic(self);
+            println!("update_logic called");
+
             println!("Set Poll End");
     
             // sendBuffer에 저장되어 있는 메세지를 확인하고 있을때마다 

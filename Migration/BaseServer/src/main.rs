@@ -4,6 +4,7 @@ use Server::MessageBufferModule::RecvMessageBuffer;
 use Server::MessageBufferModule::SendMessageBuffer;
 use std::sync::Mutex;
 use std::{thread, time};
+use std::sync::{RwLock, Arc};
 // use Server::GamePacketModule::GamePacket;
 // use Server::GamePacketModule::PacketTestManager;
 
@@ -14,7 +15,8 @@ lazy_static! {
     static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); // 원자성을 띠고있는 값으로 바꾸든가 해야한다..
     static ref gRecvMessageBuffer: RecvMessageBuffer = RecvMessageBuffer::new();
     static ref gSendMessageBuffer: SendMessageBuffer = SendMessageBuffer::new();
-    static ref gServer: Mutex<ServerBase> = Mutex::new(ServerBase::new());
+//    static ref gServer: Mutex<ServerBase> = Mutex::new(ServerBase::new());
+    static ref gServer: Arc<RwLock<ServerBase>> = Arc::new(RwLock::new(ServerBase::new()));
 }
 
 pub fn GetThreadSwitch() -> bool
@@ -51,18 +53,20 @@ pub fn RecvThreadWorker()
     loop  {
         if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
 
-        thread::sleep(time::Duration::from_millis(400));
-        println!("Update Loop");
-
-        let mut server = gServer.lock().unwrap();
+        let mut server = gServer.write().unwrap();
         server.Update();
+
+        // thread::sleep(time::Duration::from_millis(400));
+        
     }
  }
 
  pub fn ServerRunThreadWorker()
  {
-    let mut server = gServer.lock().unwrap();
-    server.Start();
+    {
+        let mut server = gServer.write().unwrap();
+        server.Start();
+    }
  }
 
 fn main() {
@@ -76,10 +80,10 @@ fn main() {
         RecvThreadWorker();
     });
 
-    let updateLogic = thread::spawn(move || {
-        // recv logic thread
-        UpdateThreadWorker();
-    });    
+//    let updateLogic = thread::spawn(move || {
+//        // recv logic thread
+//        UpdateThreadWorker();
+//    });    
 
     let serverLogic = thread::spawn(move || {
         // recv logic thread
@@ -91,6 +95,6 @@ fn main() {
 //    server.Start();
 
     recvMsgLogic.join().unwrap();
-    updateLogic.join().unwrap();
+//    updateLogic.join().unwrap();
     serverLogic.join().unwrap();
 }
