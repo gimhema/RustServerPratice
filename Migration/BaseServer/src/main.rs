@@ -30,40 +30,6 @@ pub fn SetThreadSwitch(val: bool)
     *switch = val;
 }
 
-pub fn RecvThreadWorker()
-{
-    loop {
-        if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
-
-        thread::sleep(time::Duration::from_millis(1000));
-        println!("Receive Loop");
-
-        if (gRecvMessageBuffer.IsEmpty() == false)
-        {
-            let mut _recvMsg = gRecvMessageBuffer.PopData();
-
-            println!("Received Message : {}", _recvMsg.unwrap().as_str());
-        }
-
-        let mut server = gServer.write().unwrap();
-        server.CallRecvFunction();
-        drop(server);
-        // recvMsg 가지고 뭘 한다.... 
-    }
- }
-
- pub fn UpdateThreadWorker()
- {
-    loop  {
-        if(GetThreadSwitch() == true) {break;} // 10초마다 검사하든지 해야한다.
-
-        let mut server = gServer.write().unwrap();
-        server.Update();
-
-        // thread::sleep(time::Duration::from_millis(400));
-        
-    }
- }
 
  pub fn ServerRunThreadWorker()
  {
@@ -76,15 +42,6 @@ pub fn RecvThreadWorker()
 fn main() {
     println!("Start Server . . .");
     
- //    let mut server = gServer.lock().unwrap();
-
-    // Create Receive Messga Thread
-
-    let serverLogic = thread::spawn(move || {
-        // recv logic thread
-        ServerRunThreadWorker();
-    });
-
-
-    serverLogic.join().unwrap();
+    let mut server = gServer.write().unwrap();
+    server.Start();
 }
