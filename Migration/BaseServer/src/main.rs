@@ -5,8 +5,6 @@ use Server::MessageBufferModule::SendMessageBuffer;
 use std::sync::Mutex;
 use std::{thread, time};
 use std::sync::{RwLock, Arc};
-// use Server::GamePacketModule::GamePacket;
-// use Server::GamePacketModule::PacketTestManager;
 
 extern crate lazy_static;
 use lazy_static::lazy_static;
@@ -15,7 +13,6 @@ lazy_static! {
     static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); // 원자성을 띠고있는 값으로 바꾸든가 해야한다..
     static ref gRecvMessageBuffer: RecvMessageBuffer = RecvMessageBuffer::new();
     static ref gSendMessageBuffer: SendMessageBuffer = SendMessageBuffer::new();
-//    static ref gServer: Mutex<ServerBase> = Mutex::new(ServerBase::new());
     static ref gServer: Arc<RwLock<ServerBase>> = Arc::new(RwLock::new(ServerBase::new()));
 }
 
