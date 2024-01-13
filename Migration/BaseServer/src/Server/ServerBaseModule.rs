@@ -54,7 +54,8 @@ pub fn update_logic(server: &mut ServerBase) {
 
 pub struct ServerBase {
     clientHandler: ConnectionHandler,
-    numUser: i64
+    numUser: i64,
+    step: i64
 }
 
 impl Deref for ServerBase {
@@ -80,13 +81,22 @@ impl ServerBase {
 
         ServerBase {
             clientHandler: _clientHandler,
-            numUser: 0
+            numUser: 0,
+            step: 0
         }
     }
 
     pub fn CallRecvFunction(&mut self)
     {
         println!("Call Recv Function");
+
+        if (gRecvMessageBuffer.IsEmpty() == false)
+        {
+            let mut _recvMsg = gRecvMessageBuffer.PopData();
+
+            println!("Received Message : {}", _recvMsg.unwrap().as_str());
+        }
+
     }
 
     pub fn Update(&mut self)
@@ -122,7 +132,7 @@ impl ServerBase {
 
 
         loop {
-            println!("Set Poll");
+            println!("Set Poll Step : {}", self.step);
             poll.poll(&mut events, Some(Duration::from_millis(SERVER_TICK)))?;
     
             println!("Iterate Event For Loop");
@@ -196,6 +206,8 @@ impl ServerBase {
             println!("update_logic called");
 
             println!("Set Poll End");
+
+            self.step += 1;
     
             // sendBuffer에 저장되어 있는 메세지를 확인하고 있을때마다 
             // 정해진 header로 메세지를 보낸다
