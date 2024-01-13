@@ -44,6 +44,10 @@ pub fn RecvThreadWorker()
 
             println!("Received Message : {}", _recvMsg.unwrap().as_str());
         }
+
+        let mut server = gServer.write().unwrap();
+        server.CallRecvFunction();
+        drop(server);
         // recvMsg 가지고 뭘 한다.... 
     }
  }
@@ -75,15 +79,6 @@ fn main() {
  //    let mut server = gServer.lock().unwrap();
 
     // Create Receive Messga Thread
-    let recvMsgLogic = thread::spawn(move || {
-        // recv logic thread
-        RecvThreadWorker();
-    });
-
-//    let updateLogic = thread::spawn(move || {
-//        // recv logic thread
-//        UpdateThreadWorker();
-//    });    
 
     let serverLogic = thread::spawn(move || {
         // recv logic thread
@@ -91,10 +86,5 @@ fn main() {
     });
 
 
-
-//    server.Start();
-
-    recvMsgLogic.join().unwrap();
-//    updateLogic.join().unwrap();
     serverLogic.join().unwrap();
 }

@@ -32,7 +32,7 @@ use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
 use crate::{GetThreadSwitch, SetThreadSwitch};
 
 const SERVER: Token = Token(0);
-const SERVER_TICK: u64 = 10;
+const SERVER_TICK: u64 = 1000;
 const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
@@ -48,6 +48,7 @@ fn next(current: &mut Token) -> Token {
 
 pub fn update_logic(server: &mut ServerBase) {
     // Your update logic here
+    server.CallRecvFunction();
     server.Update();
 }
 
@@ -81,6 +82,11 @@ impl ServerBase {
             clientHandler: _clientHandler,
             numUser: 0
         }
+    }
+
+    pub fn CallRecvFunction(&mut self)
+    {
+        println!("Call Recv Function");
     }
 
     pub fn Update(&mut self)
