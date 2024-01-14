@@ -3,17 +3,21 @@ use Server::ServerBaseModule::ServerBase;
 use Server::MessageBufferModule::RecvMessageBuffer;
 use Server::MessageBufferModule::SendMessageBuffer;
 use std::sync::Mutex;
+use std::collections::HashMap;
 use std::{thread, time};
 use std::sync::{RwLock, Arc};
 
 extern crate lazy_static;
 use lazy_static::lazy_static;
 
+type ArenaEventAction = fn(String) -> i64;
+
 lazy_static! {
     static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); // 원자성을 띠고있는 값으로 바꾸든가 해야한다..
     static ref gRecvMessageBuffer: RecvMessageBuffer = RecvMessageBuffer::new();
     static ref gSendMessageBuffer: SendMessageBuffer = SendMessageBuffer::new();
     static ref gServer: Arc<RwLock<ServerBase>> = Arc::new(RwLock::new(ServerBase::new()));
+    static ref serverActionMap: Mutex<HashMap<i64, ArenaEventAction>> = Mutex::new(HashMap::new());
 }
 
 pub fn GetThreadSwitch() -> bool
