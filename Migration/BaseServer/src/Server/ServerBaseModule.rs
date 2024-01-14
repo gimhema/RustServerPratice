@@ -48,8 +48,8 @@ fn next(current: &mut Token) -> Token {
 
 pub fn update_logic(server: &mut ServerBase) {
     // Your update logic here
-    server.CallRecvFunction();
-    server.Update();
+    server.RecvMessageProcess();
+    server.UpdateProcess();
 }
 
 pub struct ServerBase {
@@ -86,7 +86,7 @@ impl ServerBase {
         }
     }
 
-    pub fn CallRecvFunction(&mut self)
+    pub fn RecvMessageProcess(&mut self)
     {
         println!("Call Recv Function");
 
@@ -94,12 +94,12 @@ impl ServerBase {
         {
             let mut _recvMsg = gRecvMessageBuffer.PopData();
 
-            println!("Received Message : {}", _recvMsg.unwrap().as_str());
+            self.CallRecvFunctionByMessage(_recvMsg);
         }
 
     }
 
-    pub fn Update(&mut self)
+    pub fn UpdateProcess(&mut self)
     {
         println!("Call Server Update");
     }
