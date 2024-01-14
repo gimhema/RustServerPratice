@@ -3,6 +3,7 @@ pub mod ServerFunctions;
 pub mod GamePacketModule;
 pub mod ConnetionHandleModule;
 pub mod MessageBufferModule;
+pub mod ServerFuncitonMap;
 
 use crate::{gRecvMessageBuffer, gSendMessageBuffer};
 
