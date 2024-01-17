@@ -24,11 +24,36 @@ impl ServerBase {
 
     pub fn CallRecvFunctionByMessage(&mut self, msg : Option<String>)
     {
-        println!("Received Message : {}", msg.unwrap().as_str());
+        let server_action_map = &*serverActionMap.lock().unwrap();
+
+        let mut _packet = self.GamePacketDeSerialize(msg.as_ref().unwrap().as_str());
+        let funcID = _packet.as_ref().unwrap().getFunctionHeader();
+        let funcParam = _packet.as_ref().unwrap().getFunctionParam();
+
+        if let Some(server_action) = server_action_map.get(funcID) {
+        let result = server_action(funcParam.clone());
+        println!("Result: {}", result);
+        } else {
+            println!("Function not found");
+        }
+        
     }
 
     // Write in Function Map
 
 }
 
+// pub fn CallServerAction(&mut self, userID : &i64, funcID : &i64, funcParam : &String ) {
+
+//     let server_action_map = &*serverActionMap.lock().unwrap();
+
+//     // call server_action_map[funcID](funcParam) 
+//     if let Some(server_action) = server_action_map.get(funcID) {
+//     let result = server_action(funcParam.clone());
+
+//     println!("Result: {}", result);
+//     } else {
+//         println!("Function not found");
+//     }
+// }
 

@@ -49,6 +49,7 @@ impl ServerBase {
     pub fn GamePacketDeSerialize(&mut self, data: &str) -> Result<GamePacket, serde_json::Error> {
         serde_json::from_str(data)
     }
+
 }
 
 pub struct PacketTestManager {

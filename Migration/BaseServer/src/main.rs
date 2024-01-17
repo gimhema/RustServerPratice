@@ -10,7 +10,7 @@ use std::sync::{RwLock, Arc};
 extern crate lazy_static;
 use lazy_static::lazy_static;
 
-type ArenaEventAction = fn(String) -> i64;
+type ArenaEventAction = fn(Vec<f64>) -> i64;
 
 lazy_static! {
     static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); // 원자성을 띠고있는 값으로 바꾸든가 해야한다..
