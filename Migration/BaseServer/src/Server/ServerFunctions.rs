@@ -40,10 +40,13 @@ impl ServerBase {
 
         let mut _packet = self.GamePacketDeSerialize(msg.as_ref().unwrap().as_str());
         let funcID = _packet.as_ref().unwrap().getFunctionHeader();
-        let funcParam = _packet.as_ref().unwrap().getFunctionParam();
+//        let funcParam = _packet.as_ref().unwrap().getFunctionParam();
+        let _fParamVec = _packet.as_ref().unwrap().getFunctionParam();
+        let _fStrParam = _packet.as_ref().unwrap().getFunctionStrParam();
+        let _functionParam = FunctionParam::new(_fParamVec.clone(), _fStrParam.clone());
 
         if let Some(server_action) = server_action_map.get(funcID) {
-        let result = server_action(funcParam.clone());
+        let result = server_action(_functionParam);
         println!("Result: {}", result);
         } else {
             println!("Function not found");
@@ -54,18 +57,3 @@ impl ServerBase {
     // Write in Function Map
 
 }
-
-// pub fn CallServerAction(&mut self, userID : &i64, funcID : &i64, funcParam : &String ) {
-
-//     let server_action_map = &*serverActionMap.lock().unwrap();
-
-//     // call server_action_map[funcID](funcParam) 
-//     if let Some(server_action) = server_action_map.get(funcID) {
-//     let result = server_action(funcParam.clone());
-
-//     println!("Result: {}", result);
-//     } else {
-//         println!("Function not found");
-//     }
-// }
-

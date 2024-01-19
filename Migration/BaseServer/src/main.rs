@@ -6,11 +6,12 @@ use std::sync::Mutex;
 use std::collections::HashMap;
 use std::{thread, time};
 use std::sync::{RwLock, Arc};
+use Server::ServerFunctions::FunctionParam;
 
 extern crate lazy_static;
 use lazy_static::lazy_static;
 
-type ArenaEventAction = fn(Vec<f64>) -> i64;
+type ArenaEventAction = fn(FunctionParam) -> i64;
 
 lazy_static! {
     static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); // 원자성을 띠고있는 값으로 바꾸든가 해야한다..
