@@ -5,6 +5,18 @@ use super::ServerFuncitonMap;
 
 // Server Functions . . .
 
+pub struct FunctionParam {
+    functionParam: Vec<f64>,
+    functionStrParam: String,
+}
+
+impl FunctionParam {
+    pub fn new (_param: Vec<f64>, _strParam: String) -> Self {
+        FunctionParam { functionParam: _param, functionStrParam: _strParam }
+    }
+}
+
+
 pub enum FunctionHeader {
     CHAT_MESSAGE_ALL,
     CHAT_MESSAGE_TO_ONE,    

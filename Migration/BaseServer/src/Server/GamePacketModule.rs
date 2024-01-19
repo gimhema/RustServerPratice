@@ -9,17 +9,19 @@ pub struct GamePacket {
     senderID: i64,
     targetID: i64,
     functionHeader: i64,
-    functionParam: Vec<f64>
+    functionParam: Vec<f64>,
+    functionStrParam: String,
 }
 
 impl GamePacket {
-    pub fn new(_sendID: i64, _targetID: i64, _fHeader: i64) -> Self {
+    pub fn new(_sendID: i64, _targetID: i64, _fHeader: i64, _fStr: String) -> Self {
         let mut _param = Vec::new();
         GamePacket {
             senderID : _sendID,
             targetID : _targetID,
             functionHeader : _fHeader,
-            functionParam : _param
+            functionParam : _param,
+            functionStrParam : _fStr,
         }
     }
 
@@ -37,6 +39,10 @@ impl GamePacket {
 
     pub fn getFunctionParam(&self) -> &Vec<f64> {
         &self.functionParam
+    }
+
+    pub fn getFunctionStrParam(&self) -> &String {
+        &self.functionStrParam
     }
 }
 
