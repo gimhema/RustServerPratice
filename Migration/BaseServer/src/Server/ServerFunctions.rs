@@ -32,6 +32,14 @@ impl ServerBase {
             FunctionHeader::CHAT_MESSAGE_ALL as i64,
             ServerAction_CHAT_MESSAGE_ALL);
 
+        serverActionMap.lock().unwrap().insert(
+            FunctionHeader::CHAT_MESSAGE_TO_ONE as i64,
+            ServerAction_CHAT_MESSAGE_TO_ONE);
+
+        serverActionMap.lock().unwrap().insert(
+            FunctionHeader::CHAT_MESSAGE_TO_GROUP as i64,
+            ServerAction_CHAT_MESSAGE_TO_GROUP);
+
     }
 
     pub fn CallRecvFunctionByMessage(&mut self, msg : Option<String>)
