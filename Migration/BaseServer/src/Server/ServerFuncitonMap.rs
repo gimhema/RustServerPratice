@@ -1,17 +1,17 @@
+use super::ServerFunctions::{FunctionParam, FunctionHeader};
 
 
+pub fn ServerAction_CHAT_MESSAGE_ALL(val : FunctionParam) -> i64 {
 
-pub fn ServerAction_CHAT_MESSAGE_ALL(val : String) -> i64 {
-    println!("{}",  val);
     0
 }
 
-pub fn ServerAction_CHAT_MESSAGE_TO_ONE(val : String) -> i64 {
-    println!("Message Test 2 {}",  val);
+pub fn ServerAction_CHAT_MESSAGE_TO_ONE(val : FunctionParam) -> i64 {
+
     0
 }
 
-pub fn ServerAction_CHAT_MESSAGE_TO_GROUP(val : String) -> i64 {
-    println!("Message Test 3 {}",  val);
+pub fn ServerAction_CHAT_MESSAGE_TO_GROUP(val : FunctionParam) -> i64 {
+
     0
 }
