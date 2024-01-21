@@ -1,3 +1,4 @@
+use std::hash::Hash;
 use std::io::Write;
 use std::sync::Mutex;
 use std::collections::VecDeque;
@@ -29,21 +30,45 @@ impl Connection
 pub struct ConnectionHandler 
 {
 //    connections: HashMap<i64, Token>
-    connections: HashMap<Token, Connection>
+    connections: HashMap<Token, Connection>,
+    tokenIdMap: HashMap<i64, Token>
 }
 
 impl ConnectionHandler
 {
     pub fn new() -> Self {
         let mut _connetions = HashMap::new();
+        let mut _tokenID = HashMap::new();
         ConnectionHandler{
-            connections : _connetions
+            connections : _connetions,
+            tokenIdMap : _tokenID
         }
     }
 
     pub fn GetConnections(&mut self) -> &HashMap<Token, Connection>
     {
         &self.connections
+    }
+
+    pub fn GetTokenIDMap(&mut self) -> &HashMap<i64, Token>
+    {
+        &self.tokenIdMap
+    }
+
+    pub fn AddNewTokenIDPair(&mut self, _id: i64, _token: Token)
+    {
+        self.tokenIdMap.insert(_id, _token);
+    }
+
+    pub fn GetTokenByID(&mut self, _id: i64) -> Option<&Token>
+    {
+        let ret = self.tokenIdMap.get(&_id);
+        ret
+    }
+
+    pub fn RemoveTokenPairByID(&mut self, _id: i64)
+    {
+        self.tokenIdMap.remove(&_id);
     }
 
     pub fn AddNewConnection(&mut self, id: i64, _tcpStream: TcpStream, _token: Token)

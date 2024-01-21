@@ -215,14 +215,32 @@ impl ServerBase {
             // 메세지용 클래스도 하나 필요하겠네..
             // for (key, value) in &mut connections
 
+            // while let Some(item) = shared_queue.pop_front() {
+            //     println!("{}", item);
+            // }
+//            if gSendMessageBuffer.GetNumElem() > 0 {
+//                while let Some(item) = gSendMessageBuffer.PopData() {
+//                    let mut send_data = gSendMessageBuffer.PopData();
+//                    let mut senderID = send_data.as_ref().unwrap().getSenderID();
+//                    let mut destination = send_data.as_ref().unwrap().getTargetID();
+//                    // let _targetID = value.getID();
+//                    // let _targetID = value.getID();
+//
+//                    // if let send_msg = serde_json::to_string(&send_data)? {
+//                    //     if destination == _targetID {
+//                    //         let serialized_msg = send_msg.as_bytes();
+//                    //         // value.getTcpStream().write(serialized_msg);
+//                    //     }
+//                    // }
+//                }
+//            }
 
-
+            // . . . .
             for (key, value) in self.clientHandler.GetConnections() {
                 // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
                 
                 if gSendMessageBuffer.GetNumElem() > 0 {
                     let mut send_data = gSendMessageBuffer.PopData();
-                    
                     let mut senderID = send_data.as_ref().unwrap().getSenderID();
                     let mut destination = send_data.as_ref().unwrap().getTargetID();
                     let _targetID = value.getID();
