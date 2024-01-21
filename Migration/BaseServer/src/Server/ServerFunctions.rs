@@ -14,6 +14,15 @@ impl FunctionParam {
     pub fn new (_param: Vec<f64>, _strParam: String) -> Self {
         FunctionParam { functionParam: _param, functionStrParam: _strParam }
     }
+
+    pub fn getFunctionParam(&self) -> &Vec<f64> {
+        &self.functionParam
+    }
+
+    pub fn getFunctionStrParam(&self) -> &String {
+        &self.functionStrParam
+    }
+
 }
 
 

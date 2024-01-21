@@ -181,6 +181,7 @@ impl ServerBase {
                     token => {
                        let done = if let Some(connection)  = self.GetConnetionByToken(token) 
                        {
+                            println!("Handle Connection Event");
                             handle_connection_event(poll.registry(), connection, event)?
                         } 
                         else 
@@ -236,9 +237,6 @@ impl ServerBase {
                 }
             }
         }
-
-        // recvMsgLogic.join().unwrap();
-        // updateLogic.join().unwrap();
     }
 
 
