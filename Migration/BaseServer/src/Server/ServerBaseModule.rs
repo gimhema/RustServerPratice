@@ -214,6 +214,9 @@ impl ServerBase {
             // 정해진 header로 메세지를 보낸다
             // 메세지용 클래스도 하나 필요하겠네..
             // for (key, value) in &mut connections
+
+
+
             for (key, value) in self.clientHandler.GetConnections() {
                 // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
                 
@@ -236,6 +239,10 @@ impl ServerBase {
                 
                 }
             }
+
+
+
+
         }
     }
 
