@@ -226,42 +226,42 @@ impl ServerBase {
                 while let Some(item) = gSendMessageBuffer.PopData() {
                     let mut send_data = gSendMessageBuffer.PopData();
                     let mut senderID = send_data.as_ref().unwrap().getSenderID();
-                    let mut destination = send_data.as_ref().unwrap().getTargetID();
+                    let mut destination = *send_data.as_ref().unwrap().getTargetID();
                     // let _targetID = value.get
 
-                    // let _targetToken = self.clientHandler.G
+                    let _targetToken = *self.clientHandler.GetTokenByID(destination).unwrap();
+                    let _connStream = self.clientHandler.GetConnetionByToken(_targetToken);
 
-                    // if let send_msg = serde_json::to_string(&send_data)? {
-                    //     if destination == _targetID {
-                    //         let serialized_msg = send_msg.as_bytes();
-                    //         // value.getTcpStream().write(serialized_msg);
-                    //     }
-                    // }
+                    if let send_msg = serde_json::to_string(&send_data)? {
+                        let serialized_msg = send_msg.as_bytes();
+                        // value.getTcpStream().write(serialized_msg);
+                        _connStream.unwrap().write(serialized_msg);
+                    }
                 }
             }
 
             // . . . .
-            for (key, value) in self.clientHandler.GetConnections() {
-                // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
-                
-                if gSendMessageBuffer.GetNumElem() > 0 {
-                    let mut send_data = gSendMessageBuffer.PopData();
-                    let mut senderID = send_data.as_ref().unwrap().getSenderID();
-                    let mut destination = send_data.as_ref().unwrap().getTargetID();
-                    let _targetID = value.getID();
-
-                    if let send_msg = serde_json::to_string(&send_data)? {
-                        if destination == _targetID {
-                            let serialized_msg = send_msg.as_bytes();
-                            value.getTcpStream().write(serialized_msg);
-                        }
-                    }
-                    else {
-                        // 실패
-                    }
-                
-                }
-            }
+            // for (key, value) in self.clientHandler.GetConnections() {
+            //     // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
+            //     
+            //     if gSendMessageBuffer.GetNumElem() > 0 {
+            //         let mut send_data = gSendMessageBuffer.PopData();
+            //         let mut senderID = send_data.as_ref().unwrap().getSenderID();
+            //         let mut destination = send_data.as_ref().unwrap().getTargetID();
+            //         let _targetID = value.getID();
+// 
+            //         if let send_msg = serde_json::to_string(&send_data)? {
+            //             if destination == _targetID {
+            //                 let serialized_msg = send_msg.as_bytes();
+            //                 value.getTcpStream().write(serialized_msg);
+            //             }
+            //         }
+            //         else {
+            //             // 실패
+            //         }
+            //     
+            //     }
+            // }
 
 
 
