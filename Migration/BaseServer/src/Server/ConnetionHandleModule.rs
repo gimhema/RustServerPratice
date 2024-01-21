@@ -86,6 +86,11 @@ impl ConnectionHandler
         }
     }
 
+    pub fn GetIDByConnection(&mut self, token: Token) -> i64
+    {
+        *self.connections.get(&token).unwrap().getID()
+    }
+
     pub fn RemoveConnectionByToken(&mut self, token: Token)
     {
         self.connections.remove(&token);
