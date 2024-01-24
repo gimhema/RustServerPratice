@@ -16,9 +16,7 @@ impl ServerBase {
     {
         println!("Function Map Initialize");
 
-//        serverActionMap.lock().unwrap().insert(
-//            MessageUnique::CONSOLE_WRITE_LINE as i64,
-//             ServerAction_ConsoleWriteLineTest);
+
 
     }
 

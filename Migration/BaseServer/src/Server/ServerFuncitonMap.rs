@@ -1,9 +1,5 @@
 
-
 use super::ServerBaseModule::ServerBase;
-
-
-
 
 
 pub fn ServerAction_CHAT_MESSAGE_ALL(server: &mut ServerBase, val : String) -> i64 {

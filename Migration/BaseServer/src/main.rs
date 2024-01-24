@@ -13,7 +13,7 @@ use lazy_static::lazy_static;
 type ArenaEventAction = fn(&mut ServerBase, Vec<f64>) -> i64;
 
 lazy_static! {
-    static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); // 원자성을 띠고있는 값으로 바꾸든가 해야한다..
+    static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); 
     static ref gRecvMessageBuffer: RecvMessageBuffer = RecvMessageBuffer::new();
     static ref gSendMessageBuffer: SendMessageBuffer = SendMessageBuffer::new();
     static ref gServer: Arc<RwLock<ServerBase>> = Arc::new(RwLock::new(ServerBase::new()));
