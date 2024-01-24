@@ -6,11 +6,12 @@ use std::sync::Mutex;
 use std::collections::HashMap;
 use std::{thread, time};
 use std::sync::{RwLock, Arc};
+use Server::GamePacketModule::GamePacket;
 
 extern crate lazy_static;
 use lazy_static::lazy_static;
 
-type ArenaEventAction = fn(&mut ServerBase, Vec<f64>) -> i64;
+type ArenaEventAction = fn(&mut ServerBase, GamePacket) -> i64;
 
 lazy_static! {
     static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); 

@@ -1,5 +1,5 @@
 
-use super::ServerBaseModule::ServerBase;
+use super::{GamePacketModule::GamePacket, ServerBaseModule::ServerBase};
 use crate::serverActionMap;
 use super::ServerFuncitonMap::*;
 
@@ -27,11 +27,18 @@ impl ServerBase {
         let server_action_map = &*serverActionMap.lock().unwrap();
 
         let mut _packet = self.GamePacketDeSerialize(msg.as_ref().unwrap().as_str());
-        let funcID = _packet.as_ref().unwrap().getFunctionHeader();
-        let funcParam = _packet.as_ref().unwrap().getFunctionParam();
+        
+        let pid = _packet.as_ref().unwrap().getSenderID().clone();
+        let targetID = _packet.as_ref().unwrap().getTargetID().clone();
+        let funcID = _packet.as_ref().unwrap().getFunctionHeader().clone();
+        let funcIDref = _packet.as_ref().unwrap().getFunctionHeader();
+        let funcParamVec = _packet.as_ref().unwrap().getFunctionParam().clone();
+        let funcStr = _packet.as_ref().unwrap().getFunctionStrParam().clone();
 
-        if let Some(server_action) = server_action_map.get(funcID) {
-        let result = server_action(self, funcParam.clone());
+        let actionParam = GamePacket::new(pid, targetID, funcID, funcParamVec, funcStr);
+
+        if let Some(server_action) = server_action_map.get(funcIDref) {
+        let result = server_action(self, actionParam);
         println!("Result: {}", result);
         } else {
             println!("Function not found");
