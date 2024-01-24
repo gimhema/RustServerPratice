@@ -171,16 +171,18 @@ impl ServerBase {
     
                         let mut sendConnect = connection;
                         sendConnect.write(DATA2);
-    
-                        userCount += 1;
-    
+        
                         // 유저의 카운트 수를 보고 컷을 해야한다.
-                        self.clientHandler.AddNewConnection(0, sendConnect, token );
+                        // 두 과정은 하나의 함수로 표현해야함
+                        self.clientHandler.AddNewConnection(userCount, sendConnect, token );
+                        self.clientHandler.AddNewTokenIDPair(userCount, token);
                         
+                        userCount += 1;                    
                     },
                     token => {
                        let done = if let Some(connection)  = self.GetConnetionByToken(token) 
                        {
+                            println!("Handle Connection Event");
                             handle_connection_event(poll.registry(), connection, event)?
                         } 
                         else 
@@ -194,7 +196,10 @@ impl ServerBase {
                             if let Some(mut connection)  = self.clientHandler.GetConnetionByToken(token)
                             {
                                 poll.registry().deregister(connection);
+                                let removeID = self.clientHandler.GetIDByConnection(token);
+                                // 두 과정은 하나의 함수로 표현해야함
                                 self.clientHandler.RemoveConnectionByToken(token);
+                                self.clientHandler.RemoveTokenPairByID(removeID);
                             }
                        }
                     }
@@ -213,32 +218,55 @@ impl ServerBase {
             // 정해진 header로 메세지를 보낸다
             // 메세지용 클래스도 하나 필요하겠네..
             // for (key, value) in &mut connections
-            for (key, value) in self.clientHandler.GetConnections() {
-                // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
-                
-                if gSendMessageBuffer.GetNumElem() > 0 {
+
+            // while let Some(item) = shared_queue.pop_front() {
+            //     println!("{}", item);
+            // }
+            if gSendMessageBuffer.GetNumElem() > 0 {
+                while let Some(item) = gSendMessageBuffer.PopData() {
                     let mut send_data = gSendMessageBuffer.PopData();
-                    
                     let mut senderID = send_data.as_ref().unwrap().getSenderID();
-                    let mut destination = send_data.as_ref().unwrap().getTargetID();
-                    let _targetID = value.getID();
+                    let mut destination = *send_data.as_ref().unwrap().getTargetID();
+                    // let _targetID = value.get
+
+                    let _targetToken = *self.clientHandler.GetTokenByID(destination).unwrap();
+                    let _connStream = self.clientHandler.GetConnetionByToken(_targetToken);
 
                     if let send_msg = serde_json::to_string(&send_data)? {
-                        if destination == _targetID {
-                            let serialized_msg = send_msg.as_bytes();
-                            value.getTcpStream().write(serialized_msg);
-                        }
+                        let serialized_msg = send_msg.as_bytes();
+                        // value.getTcpStream().write(serialized_msg);
+                        _connStream.unwrap().write(serialized_msg);
                     }
-                    else {
-                        // 실패
-                    }
-                
                 }
             }
-        }
 
-        // recvMsgLogic.join().unwrap();
-        // updateLogic.join().unwrap();
+            // . . . .
+            // for (key, value) in self.clientHandler.GetConnections() {
+            //     // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
+            //     
+            //     if gSendMessageBuffer.GetNumElem() > 0 {
+            //         let mut send_data = gSendMessageBuffer.PopData();
+            //         let mut senderID = send_data.as_ref().unwrap().getSenderID();
+            //         let mut destination = send_data.as_ref().unwrap().getTargetID();
+            //         let _targetID = value.getID();
+// 
+            //         if let send_msg = serde_json::to_string(&send_data)? {
+            //             if destination == _targetID {
+            //                 let serialized_msg = send_msg.as_bytes();
+            //                 value.getTcpStream().write(serialized_msg);
+            //             }
+            //         }
+            //         else {
+            //             // 실패
+            //         }
+            //     
+            //     }
+            // }
+
+
+
+
+        }
     }
 
 
