@@ -1,7 +1,7 @@
 
 use super::ServerBaseModule::ServerBase;
 use crate::serverActionMap;
-use super::ServerFuncitonMap;
+use super::ServerFuncitonMap::*;
 
 // Server Functions . . .
 
@@ -16,7 +16,9 @@ impl ServerBase {
     {
         println!("Function Map Initialize");
 
-
+        serverActionMap.lock().unwrap().insert(
+            FunctionHeader::CHAT_MESSAGE_ALL as i64,
+            ServerAction_CHAT_MESSAGE_ALL);
 
     }
 
