@@ -33,6 +33,11 @@ impl RecvMessageBuffer {
         RecvMessageBuffer { container: _recvMessageBuffer }
     }
 
+    pub fn GetContainer(&mut self) -> &Mutex<VecDeque<String>>
+    {
+        &self.container
+    }
+
     pub fn PushBackData(&self, recvMsg: String)
     {
         self.container.lock().unwrap().push_back(recvMsg);
@@ -61,6 +66,11 @@ impl SendMessageBuffer {
         SendMessageBuffer { container: _sendMessageBuffer }
     }
 
+    pub fn GetContainer(&mut self) -> &Mutex<VecDeque<GamePacket>>
+    {
+        &self.container
+    }
+
     pub fn PushBackData(&mut self, sendMsg: GamePacket)
     {
         self.container.lock().unwrap().push_back(sendMsg);
@@ -81,4 +91,3 @@ impl SendMessageBuffer {
         self.container.lock().unwrap().is_empty()
     }
 }
-
