@@ -31,7 +31,7 @@ impl ServerBase {
         let funcParam = _packet.as_ref().unwrap().getFunctionParam();
 
         if let Some(server_action) = server_action_map.get(funcID) {
-        let result = server_action(funcParam.clone());
+        let result = server_action(self, funcParam.clone());
         println!("Result: {}", result);
         } else {
             println!("Function not found");
