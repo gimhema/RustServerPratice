@@ -37,6 +37,7 @@ const DATA: &[u8] = b"Hello Unreal Im Rust Server ! ! !\n";
 const DATA2: &[u8] = b"Hi Unreal ! ! ! ! ! !\n";
 
 const BUFFER_SIZE_LIMIT: usize = 10000;
+const MAX_NUM_USER: i64 = 2;
 
 
 // Private
@@ -85,6 +86,30 @@ impl ServerBase {
             step: 0
         }
     }
+
+    pub fn GetNumUser(&mut self) -> &i64
+    {
+        &self.numUser
+    }
+
+    pub fn IncreaseNumUser(&mut self)
+    {
+        self.numUser += 1;
+        if (self.numUser >= MAX_NUM_USER)
+        {
+            self.numUser = MAX_NUM_USER;
+        }
+    }
+
+    pub fn DecreaseNumUser(&mut self )
+    {
+        self.numUser -= 1;
+        if (self.numUser <= 0)
+        {
+            self.numUser = 0;
+        }        
+    }
+        
 
     pub fn RecvMessageProcess(&mut self)
     {
@@ -174,10 +199,14 @@ impl ServerBase {
         
                         // 유저의 카운트 수를 보고 컷을 해야한다.
                         // 두 과정은 하나의 함수로 표현해야함
-                        self.clientHandler.AddNewConnection(userCount, sendConnect, token );
-                        self.clientHandler.AddNewTokenIDPair(userCount, token);
-                        
-                        userCount += 1;                    
+
+//                        self.clientHandler.AddNewConnection(userCount, sendConnect, token );
+                        self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
+//                       self.clientHandler.AddNewTokenIDPair(userCount, token);
+                        self.clientHandler.AddNewTokenIDPair(self.numUser, token);
+
+                        // userCount += 1;
+                        self.IncreaseNumUser();                    
                     },
                     token => {
                        let done = if let Some(connection)  = self.GetConnetionByToken(token) 
@@ -200,6 +229,7 @@ impl ServerBase {
                                 // 두 과정은 하나의 함수로 표현해야함
                                 self.clientHandler.RemoveConnectionByToken(token);
                                 self.clientHandler.RemoveTokenPairByID(removeID);
+                                self.DecreaseNumUser();
                             }
                        }
                     }
@@ -214,14 +244,6 @@ impl ServerBase {
 
             self.step += 1;
     
-            // sendBuffer에 저장되어 있는 메세지를 확인하고 있을때마다 
-            // 정해진 header로 메세지를 보낸다
-            // 메세지용 클래스도 하나 필요하겠네..
-            // for (key, value) in &mut connections
-
-            // while let Some(item) = shared_queue.pop_front() {
-            //     println!("{}", item);
-            // }
             if gSendMessageBuffer.GetNumElem() > 0 {
                 while let Some(item) = gSendMessageBuffer.PopData() {
                     let mut send_data = gSendMessageBuffer.PopData();
@@ -239,33 +261,6 @@ impl ServerBase {
                     }
                 }
             }
-
-            // . . . .
-            // for (key, value) in self.clientHandler.GetConnections() {
-            //     // let mut send_data_buffer = self.sendMessageBuffer.lock().unwrap();
-            //     
-            //     if gSendMessageBuffer.GetNumElem() > 0 {
-            //         let mut send_data = gSendMessageBuffer.PopData();
-            //         let mut senderID = send_data.as_ref().unwrap().getSenderID();
-            //         let mut destination = send_data.as_ref().unwrap().getTargetID();
-            //         let _targetID = value.getID();
-// 
-            //         if let send_msg = serde_json::to_string(&send_data)? {
-            //             if destination == _targetID {
-            //                 let serialized_msg = send_msg.as_bytes();
-            //                 value.getTcpStream().write(serialized_msg);
-            //             }
-            //         }
-            //         else {
-            //             // 실패
-            //         }
-            //     
-            //     }
-            // }
-
-
-
-
         }
     }
 
