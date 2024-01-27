@@ -71,7 +71,7 @@ impl SendMessageBuffer {
         &self.container
     }
 
-    pub fn PushBackData(&mut self, sendMsg: GamePacket)
+    pub fn PushBackData(&self, sendMsg: GamePacket)
     {
         self.container.lock().unwrap().push_back(sendMsg);
     }
