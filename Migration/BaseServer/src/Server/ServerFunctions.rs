@@ -4,6 +4,11 @@ use crate::serverActionMap;
 use super::ServerFuncitonMap::*;
 
 // Server Functions . . .
+// success
+pub enum FunctionCallResult {
+    FUNCTION_CALL_SUCCESS,
+    FUNCTION_CALL_FAIL,
+}
 
 pub enum FunctionHeader {
     CHAT_MESSAGE_ALL,
@@ -39,7 +44,7 @@ impl ServerBase {
 
         if let Some(server_action) = server_action_map.get(funcIDref) {
         let result = server_action(self, actionParam);
-        println!("Result: {}", result);
+        // println!("Result: {}", result);
         } else {
             println!("Function not found");
         }
