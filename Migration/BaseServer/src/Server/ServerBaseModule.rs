@@ -197,12 +197,8 @@ impl ServerBase {
                         let mut sendConnect = connection;
                         sendConnect.write(DATA2);
         
-                        // 유저의 카운트 수를 보고 컷을 해야한다.
-                        // 두 과정은 하나의 함수로 표현해야함
 
-//                        self.clientHandler.AddNewConnection(userCount, sendConnect, token );
                         self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
-//                       self.clientHandler.AddNewTokenIDPair(userCount, token);
                         self.clientHandler.AddNewTokenIDPair(self.numUser, token);
 
                         // userCount += 1;
