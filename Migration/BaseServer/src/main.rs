@@ -1,6 +1,7 @@
 mod Server;
 mod GameLogic;
 
+use GameLogic::GameLogicBaseModule::GameLogicBase;
 use Server::ServerBaseModule::ServerBase;
 use Server::MessageBufferModule::RecvMessageBuffer;
 use Server::MessageBufferModule::SendMessageBuffer;
@@ -10,6 +11,7 @@ use std::{thread, time};
 use std::sync::{RwLock, Arc};
 use Server::GamePacketModule::GamePacket;
 use Server::ServerFunctions::*;
+use GameLogic::GameLogicBaseModule;
 
 extern crate lazy_static;
 use lazy_static::lazy_static;
@@ -22,6 +24,7 @@ lazy_static! {
     static ref gSendMessageBuffer: SendMessageBuffer = SendMessageBuffer::new();
     static ref gServer: Arc<RwLock<ServerBase>> = Arc::new(RwLock::new(ServerBase::new()));
     static ref serverActionMap: Mutex<HashMap<i64, ArenaEventAction>> = Mutex::new(HashMap::new());
+    static ref gGameLogic: Arc<RwLock<GameLogicBase>> = Arc::new(RwLock::new(GameLogicBase::new()));
 }
 
 pub fn GetThreadSwitch() -> bool

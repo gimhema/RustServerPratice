@@ -3,7 +3,7 @@
 use crate::{gSendMessageBuffer, gRecvMessageBuffer, gServer};
 
 
-struct GameLogicBase {
+pub struct GameLogicBase {
 
 }
 
