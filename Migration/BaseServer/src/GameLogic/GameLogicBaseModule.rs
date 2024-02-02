@@ -1,6 +1,6 @@
 
 
-
+use crate::{gSendMessageBuffer, gRecvMessageBuffer, gServer};
 
 
 struct GameLogicBase {
@@ -8,6 +8,14 @@ struct GameLogicBase {
 }
 
 impl GameLogicBase {
+
+    pub fn new() -> Self {
+        GameLogicBase {  }
+    }
+
+    pub fn GameLogicUpate() {
+
+    }
 
 }
 
