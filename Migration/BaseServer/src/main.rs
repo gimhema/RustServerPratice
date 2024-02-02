@@ -1,4 +1,6 @@
 mod Server;
+mod GameLogic;
+
 use Server::ServerBaseModule::ServerBase;
 use Server::MessageBufferModule::RecvMessageBuffer;
 use Server::MessageBufferModule::SendMessageBuffer;

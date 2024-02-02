@@ -1,5 +1,4 @@
-pub mod GamePacketModule;
-
+pub mod GameLogicBaseModule;
 
 
 use crate::{gSendMessageBuffer, gRecvMessageBuffer, gServer};
