@@ -38,6 +38,16 @@ impl PromptClientMain {
 
     }
 
+    pub fn SendMessageToServer(&mut self, msg: &str) {
+        println!("Input: {}", msg);
+        // msg를 서버로 전송함
+    }
+
+    pub fn Exit(&mut self) {
+        println!("Exit Message Prompt.");
+        // 서버와의 연결을 종료함
+    }
+
     pub fn Wait(&mut self){
         println!("Wait . . . ");
     }
@@ -55,12 +65,12 @@ impl PromptClientMain {
             let input = input_buffer.trim();
             // 이스케이프 문자를 받았다면 프로그램을 종료
             if input == "exit" {
-                println!("Exit Message Prompt.");
+                self.Exit();
                 break;
             }
     
             // 입력을 출력합니다.
-            println!("Input: {}", input);
+            self.SendMessageToServer(input);
     
             // 버퍼를 다시 비웁니다.
             input_buffer.clear();
