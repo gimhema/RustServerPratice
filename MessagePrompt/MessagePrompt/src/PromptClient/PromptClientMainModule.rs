@@ -1,6 +1,6 @@
 
 
-
+use std::io::{self, Write};
 
 pub struct PromptClientMain {
     id: i64,
@@ -20,6 +20,8 @@ impl PromptClientMain {
     pub fn Start(&mut self) {
         // Connection 초기화 및 서버와 연결 시도
         println!("Prompt Client Start id : {}", self.id);
+
+        self.isConnect = true; // 테스트
 
         // 서버와 연결이 잘 됐다면
         if (true == self.isConnect)
@@ -41,7 +43,28 @@ impl PromptClientMain {
     }
 
     pub fn Run(&mut self) {
+        let mut input_buffer = String::new();
 
+        loop {
+            // 입력 대기
+            print!("Please Input Command : ");
+            io::stdout().flush().unwrap();
+
+            io::stdin().read_line(&mut input_buffer).expect("Input Error");
+
+            let input = input_buffer.trim();
+            // 이스케이프 문자를 받았다면 프로그램을 종료
+            if input == "exit" {
+                println!("Exit Message Prompt.");
+                break;
+            }
+    
+            // 입력을 출력합니다.
+            println!("Input: {}", input);
+    
+            // 버퍼를 다시 비웁니다.
+            input_buffer.clear();
+        }
     }
 
 }
