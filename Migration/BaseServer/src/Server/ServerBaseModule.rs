@@ -50,7 +50,7 @@ fn next(current: &mut Token) -> Token {
 pub fn update_logic(server: &mut ServerBase) {
     // Your update logic here
     server.RecvMessageProcess();
-    server.UpdateProcess();
+//    server.UpdateProcess(); 이건 게임 로직이 별도로 실행해줌
 }
 
 pub struct ServerBase {

@@ -49,7 +49,18 @@ pub fn SetThreadSwitch(val: bool)
 
 fn main() {
     println!("Start Server . . .");
-    
+
+    SetThreadSwitch(true);
+
+    let gLogic = gGameLogic.clone();
+    let gameUpdateHandle = thread::spawn(move || {
+        // 스레드에서 수행할 작업
+        let mut logic = gLogic.write().unwrap();
+        logic.GameLogicUpate();
+    });
+
     let mut server = gServer.write().unwrap();
     server.Start();
+
+    gameUpdateHandle.join().unwrap();
 }
