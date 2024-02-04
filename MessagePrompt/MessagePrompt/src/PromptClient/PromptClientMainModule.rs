@@ -1,18 +1,28 @@
 use std::io::{self, Write};
+use tokio::io::{self as other_io, AsyncWriteExt};
+use tokio::net::TcpStream;
+
+const SERVER_IP: &str = "127.0.0.1:8080";
 
 pub struct PromptClientMain {
     id: i64,
     isConnect: bool,
+    connectStream: Option<TcpStream>,
 }
 
 impl PromptClientMain {
     
     pub fn new(_id: i64) -> Self {
-
+        // let mut stream = TcpStream::connect(SERVER_IP).await.unwrap();
         PromptClientMain{
             id: _id,
-            isConnect: false
+            isConnect: false,
+            connectStream: None
         }
+    }
+
+    fn get_stream(&self) -> Option<&TcpStream> {
+        self.connectStream.as_ref()
     }
 
     pub fn Start(&mut self) {
@@ -32,9 +42,30 @@ impl PromptClientMain {
             // 대기중
             self.Wait();            
         }
-
-
     }
+
+    async fn set_stream(&mut self, address: &str) -> io::Result<()> {
+        if let Some(_) = &self.connectStream {
+            // 이미 설정된 경우 에러 처리 또는 덮어쓰기 등의 로직을 추가할 수 있습니다.
+            return Err(io::Error::new(io::ErrorKind::Other, "Stream already set"));
+        }
+
+        // TcpStream 생성 및 설정
+        let stream = TcpStream::connect(address).await?;
+        self.connectStream = Some(stream);
+        Ok(())
+    }    
+
+    async fn send_data(&mut self, data: &[u8]) -> io::Result<usize> {
+        if let Some(ref mut stream) = self.connectStream {
+            // Some(TcpStream)인 경우에만 데이터를 보낼 수 있도록 처리
+            stream.write_all(data).await?;
+            Ok(data.len())
+        } else {
+            // None인 경우 에러 처리
+            Err(io::Error::new(io::ErrorKind::Other, "Stream not set"))
+        }
+    }    
 
     pub fn SendMessageToServer(&mut self, msg: &str) {
         println!("Input: {}", msg);

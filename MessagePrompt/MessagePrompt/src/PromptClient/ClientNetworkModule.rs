@@ -6,9 +6,7 @@ use super::PromptClientMainModule::*;
 
 impl PromptClientMain {
 
-    pub fn Connect(&mut self) {
-        
-    }
+
 
 }
 
