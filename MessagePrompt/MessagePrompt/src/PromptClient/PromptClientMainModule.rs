@@ -1,5 +1,3 @@
-
-
 use std::io::{self, Write};
 
 pub struct PromptClientMain {
