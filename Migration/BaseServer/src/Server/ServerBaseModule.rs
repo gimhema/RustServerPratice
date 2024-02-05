@@ -51,7 +51,7 @@ fn next(current: &mut Token) -> Token {
 
 pub fn update_logic(server: &mut ServerBase) {
     // Your update logic here
-    server.RecvMessageProcess();
+//    server.RecvMessageProcess();
 //    server.UpdateProcess(); 이건 게임 로직이 별도로 실행해줌
 }
 
@@ -342,7 +342,8 @@ fn handle_connection_event(
                 
                 if( gRecvMessageBuffer.GetNumElem() < BUFFER_SIZE_LIMIT)
                 {
-                    gRecvMessageBuffer.PushBackData(recvMsg);
+                    GCallRecvFunctionByMessage(Some(recvMsg));
+                    // gRecvMessageBuffer.PushBackData(recvMsg);
                 }
                 
             } else {
