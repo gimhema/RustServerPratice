@@ -3,9 +3,11 @@ use super::ServerBaseModule::ServerBase;
 use super::GamePacketModule::GamePacket;
 use super::ServerFunctions::*;
 use super::MessageBufferModule::*;
-use crate::{gSendMessageBuffer};
+use super::GameLogic::GameLogicBaseModule::*;
+use crate::{gSendMessageBuffer, gGameLogic};
 
 
+// need ServerBaser -> GameLogic
 pub fn ServerAction_CHAT_MESSAGE_ALL(server: &mut ServerBase, val : GamePacket) -> FunctionCallResult {
     // println!("{}",  val);
     let mut result = FunctionCallResult::FUNCTION_CALL_FAIL;

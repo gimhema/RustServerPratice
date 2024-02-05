@@ -6,6 +6,7 @@ pub mod MessageBufferModule;
 pub mod ServerFuncitonMap;
 pub mod ServerFunctionHeaderConvert;
 
+use crate::{GameLogic};
 use crate::{gRecvMessageBuffer, gSendMessageBuffer};
 
 pub mod Server {
