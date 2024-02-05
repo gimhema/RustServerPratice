@@ -45,6 +45,16 @@ impl GamePacket {
     pub fn getFunctionStrParam(&self) -> &String {
         &self.functionStrParam
     }
+
+    pub fn GamePacketSerialize(packet: &GamePacket) -> Result<String, serde_json::Error> {
+        serde_json::to_string(packet)
+    }    
+
+    pub fn GamePacketDeSerialize(data: &str) -> Result<GamePacket, serde_json::Error> {
+        serde_json::from_str(data)
+    }
+
+
 }
 
 

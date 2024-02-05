@@ -24,6 +24,8 @@ use super::ConnetionHandleModule::ConnectionHandler;
 use super::MessageBufferModule::RecvMessageBuffer;
 use super::MessageBufferModule::SendMessageBuffer;
 
+use super::ServerFunctions::GCallRecvFunctionByMessage;
+
 use super::Server;
 
 use std::ops::{Deref};
@@ -119,7 +121,8 @@ impl ServerBase {
         {
             let mut _recvMsg = gRecvMessageBuffer.PopData();
 
-            self.CallRecvFunctionByMessage(_recvMsg);
+            // self.CallRecvFunctionByMessage(_recvMsg);
+            GCallRecvFunctionByMessage(_recvMsg);
         }
 
     }
