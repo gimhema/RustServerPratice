@@ -27,6 +27,14 @@ lazy_static! {
     static ref gGameLogic: Arc<RwLock<GameLogicBase>> = Arc::new(RwLock::new(GameLogicBase::new()));
 }
 
+pub fn GetGameServer() -> Arc<RwLock<ServerBase>> {
+    gServer.clone()
+}
+
+pub fn GetGameLogic() -> Arc<RwLock<GameLogicBase>> {
+    gGameLogic.clone()
+}
+
 pub fn GetThreadSwitch() -> bool
 {
     THREAD_SWITCH.lock().unwrap().clone()

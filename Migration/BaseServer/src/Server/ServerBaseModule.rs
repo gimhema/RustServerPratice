@@ -30,6 +30,7 @@ use super::Server;
 
 use std::ops::{Deref};
 
+use crate::GetGameLogic;
 use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
 use crate::{GetThreadSwitch, SetThreadSwitch};
 
@@ -96,20 +97,22 @@ impl ServerBase {
 
     pub fn IncreaseNumUser(&mut self)
     {
-        self.numUser += 1;
-        if (self.numUser >= MAX_NUM_USER)
-        {
-            self.numUser = MAX_NUM_USER;
-        }
+        // self.numUser += 1;
+        // if (self.numUser >= MAX_NUM_USER)
+        // {
+        //     self.numUser = MAX_NUM_USER;
+        // }
+        GetGameLogic().write().unwrap().IncreaseUserNum();
     }
 
     pub fn DecreaseNumUser(&mut self )
     {
-        self.numUser -= 1;
-        if (self.numUser <= 0)
-        {
-            self.numUser = 0;
-        }        
+        // self.numUser -= 1;
+        // if (self.numUser <= 0)
+        // {
+        //     self.numUser = 0;
+        // }
+        GetGameLogic().write().unwrap().DecreaseUserNum();        
     }
         
 

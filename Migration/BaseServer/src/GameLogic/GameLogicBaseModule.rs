@@ -5,6 +5,7 @@ use crate::{gSendMessageBuffer, gRecvMessageBuffer, gServer};
 use crate::{GetThreadSwitch, SetThreadSwitch};
 
 const GAME_LOGIC_UPDATE_TICK: u64 = 1000;
+const MAX_NUM_USER: i64 = 2;
 
 pub struct GameLogicBase {
     updateCount : i64,
@@ -19,6 +20,26 @@ impl GameLogicBase {
 
     pub fn GetUserNum(&mut self) -> &i64 {
         &self.userNum
+    }
+
+    pub fn IncreaseUserNum(&mut self) {
+        let mut _temp = self.userNum.clone() + 1;
+        if(_temp >= MAX_NUM_USER) {
+            self.userNum = MAX_NUM_USER;
+        }
+        else {
+            self.userNum = _temp;
+        }
+    }
+
+    pub fn DecreaseUserNum(&mut self) {
+        let mut _temp = self.userNum.clone() - 1;
+        if(_temp <= 0) {
+            self.userNum = 0;
+        }
+        else {
+            self.userNum = _temp;
+        }
     }
 
     pub fn GameLogicUpate(&mut self) {
