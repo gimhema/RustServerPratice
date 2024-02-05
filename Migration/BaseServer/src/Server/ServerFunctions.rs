@@ -39,7 +39,7 @@ pub fn GCallRecvFunctionByMessage(msg : Option<String>)
         
         let mut _server = gServer.write().unwrap();
         
-        let result = server_action(_server.borrow_mut(), actionParam);
+        let result = server_action(actionParam);
         // println!("Result: {}", result);
         } else {
             println!("Function not found");
@@ -82,7 +82,7 @@ impl ServerBase {
         let actionParam = GamePacket::new(pid, targetID, funcID, funcParamVec, funcStr);
 
         if let Some(server_action) = server_action_map.get(funcIDref) {
-        let result = server_action(self, actionParam);
+        let result = server_action(actionParam);
         // println!("Result: {}", result);
         } else {
             println!("Function not found");

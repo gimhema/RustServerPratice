@@ -8,10 +8,12 @@ use crate::{gSendMessageBuffer, gGameLogic};
 
 
 // need ServerBaser -> GameLogic
-pub fn ServerAction_CHAT_MESSAGE_ALL(server: &mut ServerBase, val : GamePacket) -> FunctionCallResult {
+pub fn ServerAction_CHAT_MESSAGE_ALL(val : GamePacket) -> FunctionCallResult {
     // println!("{}",  val);
     let mut result = FunctionCallResult::FUNCTION_CALL_FAIL;
-    let mut _numUser = server.GetNumUser().clone();
+
+    let mut _gameLogic = gGameLogic.write().unwrap();
+    let mut _numUser = _gameLogic.GetUserNum().clone();
 
     if (_numUser <= 0) {
         result = FunctionCallResult::FUNCTION_CALL_FAIL;
@@ -36,10 +38,11 @@ pub fn ServerAction_CHAT_MESSAGE_ALL(server: &mut ServerBase, val : GamePacket) 
     result
 }
 
-pub fn ServerAction_CHAT_MESSAGE_TO_ONE(server: &mut ServerBase, val : GamePacket) -> FunctionCallResult {
+pub fn ServerAction_CHAT_MESSAGE_TO_ONE(val : GamePacket) -> FunctionCallResult {
     // println!("Message Test 2 {}",  val);
     let mut result = FunctionCallResult::FUNCTION_CALL_FAIL;
-    let mut _numUser = server.GetNumUser().clone();
+    let mut _gameLogic = gGameLogic.write().unwrap();
+    let mut _numUser = _gameLogic.GetUserNum().clone();
 
     if (_numUser <= 0) {
         result = FunctionCallResult::FUNCTION_CALL_FAIL;
@@ -62,10 +65,11 @@ pub fn ServerAction_CHAT_MESSAGE_TO_ONE(server: &mut ServerBase, val : GamePacke
     result
 }
 
-pub fn ServerAction_CHAT_MESSAGE_TO_GROUP(server: &mut ServerBase, val : GamePacket) -> FunctionCallResult {
+pub fn ServerAction_CHAT_MESSAGE_TO_GROUP(val : GamePacket) -> FunctionCallResult {
     // println!("Message Test 3 {}",  val);
     let mut result = FunctionCallResult::FUNCTION_CALL_FAIL;
-    let mut _numUser = server.GetNumUser().clone();
+    let mut _gameLogic = gGameLogic.write().unwrap();
+    let mut _numUser = _gameLogic.GetUserNum().clone();
 
     if (_numUser <= 0) {
         result = FunctionCallResult::FUNCTION_CALL_FAIL;

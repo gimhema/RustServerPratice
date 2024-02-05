@@ -16,7 +16,7 @@ use GameLogic::GameLogicBaseModule;
 extern crate lazy_static;
 use lazy_static::lazy_static;
 
-type ArenaEventAction = fn(&mut ServerBase, GamePacket) -> FunctionCallResult;
+type ArenaEventAction = fn(GamePacket) -> FunctionCallResult;
 
 lazy_static! {
     static ref THREAD_SWITCH: Mutex<bool> = Mutex::new(false); 

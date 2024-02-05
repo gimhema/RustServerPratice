@@ -8,12 +8,17 @@ const GAME_LOGIC_UPDATE_TICK: u64 = 1000;
 
 pub struct GameLogicBase {
     updateCount : i64,
+    userNum : i64,
 }
 
 impl GameLogicBase {
 
     pub fn new() -> Self {
-        GameLogicBase { updateCount : 0 }
+        GameLogicBase { updateCount : 0, userNum : 0 }
+    }
+
+    pub fn GetUserNum(&mut self) -> &i64 {
+        &self.userNum
     }
 
     pub fn GameLogicUpate(&mut self) {
