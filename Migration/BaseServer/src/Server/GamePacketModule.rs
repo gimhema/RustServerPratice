@@ -3,8 +3,13 @@ use serde::{Serialize, Deserialize};
 use serde_json::{to_string, from_str};
 use super::ServerBaseModule::ServerBase;
 use super::ServerFunctions::*;
+use mio::net::{TcpListener, TcpStream};
+use mio::{Events, Interest, Poll, Registry, Token};
+use std::io::{self, Read, Write};
+use crate::{gServer};
 
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
+
 
 pub struct GamePacket {
     senderID: i64,
@@ -68,6 +73,40 @@ impl ServerBase {
     }
 
 }
+
+pub fn SendGamePacket(packet: Option<GamePacket>) {
+    let mut _server = gServer.write().unwrap();
+    let send_data = match &packet {
+        Some(data) => data,
+        None => {
+            // Handle the case when packet is None
+            return;
+        }
+    };
+
+    let destination = *send_data.getTargetID();
+
+    let mut _target = Token(0);
+    {
+        _target = match _server.GetTokenByID(destination) {
+            Some(token) => *token,
+            None => {
+                // Handle the case when GetTokenByID returns None
+                return;
+            }
+        };
+    }
+
+    if let Ok(send_msg) = serde_json::to_string(&send_data) {
+        let serialized_msg = send_msg.as_bytes();
+        if let Some(_targetConn) = _server.GetConnetionByToken(_target) {
+            _targetConn.write(serialized_msg);
+        }
+    }
+}
+
+
+
 
 pub struct PacketTestManager {
 

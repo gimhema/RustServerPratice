@@ -246,6 +246,7 @@ impl ServerBase {
 
             self.step += 1;
     
+            // pid 보는게 없다
             if gSendMessageBuffer.GetNumElem() > 0 {
                 while let Some(item) = gSendMessageBuffer.PopData() {
                     let mut send_data = gSendMessageBuffer.PopData();
