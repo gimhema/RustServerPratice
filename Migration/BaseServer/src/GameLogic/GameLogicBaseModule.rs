@@ -3,6 +3,8 @@ use std::{thread, time};
 use std::time::Duration;
 use crate::{gSendMessageBuffer, gRecvMessageBuffer, gServer};
 use crate::{GetThreadSwitch, SetThreadSwitch};
+use crate::Server::GamePacketModule::*;
+use crate::Server::ServerFunctions::*;
 
 const GAME_LOGIC_UPDATE_TICK: u64 = 1000;
 const MAX_NUM_USER: i64 = 2;
@@ -52,6 +54,15 @@ impl GameLogicBase {
             if(false == GetThreadSwitch()) {break;}
             println!("Game Logic Update . . . update count : {}", self.updateCount);
             self.updateCount += 1;
+
+            // TEST
+            // let _val = Vec<f64>;
+            let _somePacket = GamePacket::new(
+                0, 1,
+                 FunctionHeader::CHAT_MESSAGE_ALL as i64,
+                 vec![1.0, 2.5, 3.7] , "Hello All Clients!".to_string());
+
+            SendGamePacket(Some(_somePacket));
         }
     }
 
