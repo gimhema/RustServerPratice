@@ -46,13 +46,12 @@ impl GameLogicBase {
 
     // 게임로직 내부 전용 호출
     pub fn SendMessageToPerson(&mut self, _sendID : i64, _targetID : i64, _fHeader : FunctionHeader, _fVal : Vec<f64>, _fStr : String) {
-
-            let _somePacket = GamePacket::new(
-                _sendID, _targetID,
-                 _fHeader as i64,
-                 _fVal , _fStr.to_string() );
-
-            SendGamePacket(Some(_somePacket));
+        let _somePacket = GamePacket::new(
+            _sendID, _targetID,
+             _fHeader as i64,
+             _fVal , _fStr.to_string() );
+        
+        SendGamePacket(Some(_somePacket));
     }
 
     pub fn GameLogicUpate(&mut self) {

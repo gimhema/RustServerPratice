@@ -1,5 +1,5 @@
 pub mod GameLogicBaseModule;
-
+pub mod CharacterModule;
 
 
 
