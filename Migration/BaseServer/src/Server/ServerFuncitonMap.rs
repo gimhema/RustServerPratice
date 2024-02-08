@@ -1,4 +1,5 @@
 
+use super::GamePacketModule::SendGamePacket;
 use super::ServerBaseModule::ServerBase;
 use super::GamePacketModule::GamePacket;
 use super::ServerFunctions::*;
@@ -31,8 +32,8 @@ pub fn ServerAction_CHAT_MESSAGE_ALL(val : GamePacket) -> FunctionCallResult {
         // 벡터의 각 요소 출력
         let mut _packet = GamePacket::new(i, *_sendID,
             *_fHeader, _fParamVec.clone(), _fParamStr.clone() );
-
-        gSendMessageBuffer.PushBackData(_packet);
+        // gSendMessageBuffer.PushBackData(_packet);
+        SendGamePacket(Some(_packet)); // 푸시하지말고 바로 보낸다.
     }
 
     result
