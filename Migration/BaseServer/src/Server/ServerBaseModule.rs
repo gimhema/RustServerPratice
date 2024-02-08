@@ -246,24 +246,24 @@ impl ServerBase {
 
             self.step += 1;
     
-            // pid 보는게 없다
-            if gSendMessageBuffer.GetNumElem() > 0 {
-                while let Some(item) = gSendMessageBuffer.PopData() {
-                    let mut send_data = gSendMessageBuffer.PopData();
-                    let mut senderID = send_data.as_ref().unwrap().getSenderID();
-                    let mut destination = *send_data.as_ref().unwrap().getTargetID();
-                    // let _targetID = value.get
+            // 게임 로직에서 처리후 바로 Send하고있기때문에 필요없을수도있다.
+            // if gSendMessageBuffer.GetNumElem() > 0 {
+            //     while let Some(item) = gSendMessageBuffer.PopData() {
+            //         let mut send_data = gSendMessageBuffer.PopData();
+            //         let mut senderID = send_data.as_ref().unwrap().getSenderID();
+            //         let mut destination = *send_data.as_ref().unwrap().getTargetID();
+            //         // let _targetID = value.get
 
-                    let _targetToken = *self.clientHandler.GetTokenByID(destination).unwrap();
-                    let _connStream = self.clientHandler.GetConnetionByToken(_targetToken);
+            //         let _targetToken = *self.clientHandler.GetTokenByID(destination).unwrap();
+            //         let _connStream = self.clientHandler.GetConnetionByToken(_targetToken);
 
-                    if let send_msg = serde_json::to_string(&send_data)? {
-                        let serialized_msg = send_msg.as_bytes();
-                        // value.getTcpStream().write(serialized_msg);
-                        _connStream.unwrap().write(serialized_msg);
-                    }
-                }
-            }
+            //         if let send_msg = serde_json::to_string(&send_data)? {
+            //             let serialized_msg = send_msg.as_bytes();
+            //             // value.getTcpStream().write(serialized_msg);
+            //             _connStream.unwrap().write(serialized_msg);
+            //         }
+            //     }
+            // }
         }
     }
 

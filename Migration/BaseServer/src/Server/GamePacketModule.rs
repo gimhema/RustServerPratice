@@ -74,7 +74,6 @@ impl ServerBase {
 
 }
 
-// Game Logic에서 Send할때 사용한다.
 pub fn SendGamePacket(packet: Option<GamePacket>) {
     let mut _server = gServer.write().unwrap();
     let send_data = match &packet {
