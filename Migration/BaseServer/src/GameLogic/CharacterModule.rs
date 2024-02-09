@@ -32,6 +32,16 @@ impl CharacterManager {
     pub fn new() -> CharacterManager {
         CharacterManager { characterContainer: Vec::new() }
     }
+
+    pub fn AddNewCharacter(&mut self, newCharacter : Option<Character>) {
+        let _newCharacter = newCharacter.unwrap();
+        self.characterContainer.push(_newCharacter);
+    }
+
+    pub fn GetCharacterByID(&mut self, index : usize) -> &Character {
+        &self.characterContainer[index] 
+    }
+
 }
 
 impl Manager for CharacterManager {
