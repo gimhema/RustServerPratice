@@ -42,15 +42,27 @@ impl CharacterManager {
         &self.characterContainer[index] 
     }
 
+    pub fn RemoveCharacterByID(&mut self, index : usize) {
+        self.characterContainer.remove(index);
+    }
+
+    pub fn IsEmptyCharacterContainer(&mut self) -> bool {
+        let ret = self.characterContainer.is_empty();
+
+        ret
+    }
 }
 
 impl Manager for CharacterManager {
-    fn Initialize(&self)
+    fn Initialize(&mut self)
     {
 
     }
-    fn Update(&self)
+    fn Update(&mut self)
     {
-
+        if( false == self.IsEmptyCharacterContainer() )
+        {
+            
+        }    
     } 
 }
