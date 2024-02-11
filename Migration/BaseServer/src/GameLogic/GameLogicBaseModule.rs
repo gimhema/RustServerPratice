@@ -1,10 +1,12 @@
 
 use std::{thread, time};
 use std::time::Duration;
+use crate::GameCommon::Manager::Manager;
 use crate::{gSendMessageBuffer, gRecvMessageBuffer, gServer};
 use crate::{GetThreadSwitch, SetThreadSwitch};
 use crate::Server::GamePacketModule::*;
 use crate::Server::ServerFunctions::*;
+use crate::GameLogic::CharacterModule::*;
 
 const GAME_LOGIC_UPDATE_TICK: u64 = 1000;
 const MAX_NUM_USER: i64 = 2;
@@ -12,12 +14,14 @@ const MAX_NUM_USER: i64 = 2;
 pub struct GameLogicBase {
     updateCount : i64,
     userNum : i64,
+    characterManager : CharacterManager
 }
 
 impl GameLogicBase {
 
     pub fn new() -> Self {
-        GameLogicBase { updateCount : 0, userNum : 0 }
+        let mut _characterManager = CharacterManager::new();
+        GameLogicBase { updateCount : 0, userNum : 0, characterManager : _characterManager }
     }
 
     pub fn GetUserNum(&mut self) -> &i64 {
@@ -64,6 +68,8 @@ impl GameLogicBase {
             if(false == GetThreadSwitch()) {break;}
             println!("Game Logic Update . . . update count : {}", self.updateCount);
             self.updateCount += 1;
+
+            self.characterManager.Update();
 
         }
     }
