@@ -30,6 +30,7 @@ use super::Server;
 
 use std::ops::{Deref};
 
+use crate::GameLogic::CharacterModule::Character;
 use crate::GetGameLogic;
 use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
 use crate::{GetThreadSwitch, SetThreadSwitch};
@@ -102,7 +103,7 @@ impl ServerBase {
 
     pub fn AddNewPlayer(&mut self, pid : i64)
     {
-
+        GetGameLogic().write().unwrap().AddNewPlayer(pid);
     }
 
     pub fn DecreaseNumUser(&mut self )
@@ -112,7 +113,7 @@ impl ServerBase {
 
     pub fn RemovePlayerByID(&mut self, pid : i64)
     {
-
+        GetGameLogic().write().unwrap().RemovePlayerByID(pid);
     }
         
 

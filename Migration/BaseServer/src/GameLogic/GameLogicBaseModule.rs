@@ -38,6 +38,13 @@ impl GameLogicBase {
         }
     }
 
+    pub fn AddNewPlayer(&mut self, pid : i64)
+    {
+        let mut _newPlayer = Character::new();
+        _newPlayer.SetPID(pid);
+        self.characterManager.AddNewCharacter(Some(_newPlayer));
+    }
+
     pub fn DecreaseUserNum(&mut self) {
         let mut _temp = self.userNum.clone() - 1;
         if(_temp <= 0) {
@@ -46,6 +53,11 @@ impl GameLogicBase {
         else {
             self.userNum = _temp;
         }
+    }
+
+    pub fn RemovePlayerByID(&mut self, pid : i64)
+    {
+        self.characterManager.RemoveCharacterByID(pid as usize);
     }
 
     // 게임로직 내부 전용 호출
