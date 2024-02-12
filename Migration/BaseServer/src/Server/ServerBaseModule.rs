@@ -209,7 +209,9 @@ impl ServerBase {
                         self.clientHandler.AddNewTokenIDPair(self.numUser, token);
 
                         // userCount += 1;
-                        self.IncreaseNumUser();                    
+                        self.AddNewPlayer(self.numUser);
+                        self.IncreaseNumUser();
+
                     },
                     token => {
                        let done = if let Some(connection)  = self.GetConnetionByToken(token) 
@@ -232,6 +234,7 @@ impl ServerBase {
                                 // 두 과정은 하나의 함수로 표현해야함
                                 self.clientHandler.RemoveConnectionByToken(token);
                                 self.clientHandler.RemoveTokenPairByID(removeID);
+                                self.RemovePlayerByID(removeID);
                                 self.DecreaseNumUser();
                             }
                        }
