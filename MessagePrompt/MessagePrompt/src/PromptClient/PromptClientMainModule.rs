@@ -1,6 +1,7 @@
 use std::io::{self, Write};
 use tokio::io::{self as other_io, AsyncWriteExt};
 use tokio::net::TcpStream;
+use super::ClientCommandModule::*;
 
 const SERVER_IP: &str = "127.0.0.1:8080";
 
@@ -93,13 +94,17 @@ impl PromptClientMain {
 
             let input = input_buffer.trim();
             // 이스케이프 문자를 받았다면 프로그램을 종료
-            if input == "exit" {
-                self.Exit();
-                break;
-            }
+
+            // let command_from_str: &str = "exit";
+            let converted_command: PromptCommand = input.into();
+            self.ExecuteCommand(converted_command);
+            // if input == "exit" {
+            //     self.Exit();
+            //     break;
+            // }
     
             // 입력을 출력합니다.
-            self.SendMessageToServer(input);
+            // self.SendMessageToServer(input);
     
             // 버퍼를 다시 비웁니다.
             input_buffer.clear();
