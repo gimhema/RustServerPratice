@@ -100,9 +100,19 @@ impl ServerBase {
         GetGameLogic().write().unwrap().IncreaseUserNum();
     }
 
+    pub fn AddNewPlayer(&mut self)
+    {
+
+    }
+
     pub fn DecreaseNumUser(&mut self )
     {
         GetGameLogic().write().unwrap().DecreaseUserNum();        
+    }
+
+    pub fn RemovePlayerByID(&mut self)
+    {
+        
     }
         
 

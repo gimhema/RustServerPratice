@@ -25,29 +25,37 @@ impl Character {
 
 
 pub struct CharacterManager {
-    characterContainer : Vec<Character>
+    playerContainer : Vec<Character>,
+    npcContainer : Vec<Character>,
+    enemyContainer : Vec<Character>,
+    objContainer : Vec<Character>
 }
 
 impl CharacterManager {
     pub fn new() -> CharacterManager {
-        CharacterManager { characterContainer: Vec::new() }
+        CharacterManager { 
+            playerContainer: Vec::new(),
+            npcContainer: Vec::new(),
+            enemyContainer: Vec::new(),
+            objContainer : Vec::new()
+         }
     }
 
     pub fn AddNewCharacter(&mut self, newCharacter : Option<Character>) {
         let _newCharacter = newCharacter.unwrap();
-        self.characterContainer.push(_newCharacter);
+        self.playerContainer.push(_newCharacter);
     }
 
     pub fn GetCharacterByID(&mut self, index : usize) -> &Character {
-        &self.characterContainer[index] 
+        &self.playerContainer[index] 
     }
 
     pub fn RemoveCharacterByID(&mut self, index : usize) {
-        self.characterContainer.remove(index);
+        self.playerContainer.remove(index);
     }
 
-    pub fn IsEmptyCharacterContainer(&mut self) -> bool {
-        let ret = self.characterContainer.is_empty();
+    pub fn IsEmptyPlayerContainer(&mut self) -> bool {
+        let ret = self.playerContainer.is_empty();
 
         ret
     }
@@ -61,7 +69,7 @@ impl Manager for CharacterManager {
     fn Update(&mut self)
     {
         println!("Character Manager Update");
-        if( false == self.IsEmptyCharacterContainer() )
+        if( false == self.IsEmptyPlayerContainer() )
         {
             
         }    
