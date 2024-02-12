@@ -18,6 +18,38 @@ impl Character {
         Character { pid : -1, name : "".to_string(), location: _loc, rotation: _rot }
     }
 
+    pub fn GetPID(&mut self) -> &i64 {
+        &self.pid
+    }
+
+    pub fn GetName(&mut self) -> &String {
+        &self.name
+    }
+
+    pub fn GetWorldLocation(&mut self) -> &FLocation {
+        &self.location
+    }
+
+    pub fn GetWorldRotation(&mut self) -> &FRotation {
+        &self.rotation
+    }
+
+    pub fn SetPID(&mut self, _pid : i64) {
+        self.pid = _pid;
+    }
+
+    pub fn SetName(&mut self, _name : String) {
+        self.name = _name;
+    }
+
+    pub fn SetWorldLocation(&mut self, _location : FLocation) {
+        self.location = _location;
+    }
+
+    pub fn SetWorldRotation(&mut self, _rotation : FRotation) {
+        self.rotation = _rotation;
+    }
+
     pub fn Update(&mut self) {
 
     }
