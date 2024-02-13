@@ -24,7 +24,7 @@ use super::ConnetionHandleModule::ConnectionHandler;
 use super::MessageBufferModule::RecvMessageBuffer;
 use super::MessageBufferModule::SendMessageBuffer;
 
-use super::ServerFunctions::GCallRecvFunctionByMessage;
+
 
 use super::Server;
 
@@ -117,20 +117,6 @@ impl ServerBase {
         GetGameLogic().write().unwrap().RemovePlayerByID(pid);
     }
         
-
-    pub fn RecvMessageProcess(&mut self)
-    {
-        println!("Call Recv Function");
-
-        if (gRecvMessageBuffer.IsEmpty() == false)
-        {
-            let mut _recvMsg = gRecvMessageBuffer.PopData();
-
-            // self.CallRecvFunctionByMessage(_recvMsg);
-            GCallRecvFunctionByMessage(_recvMsg);
-        }
-
-    }
 
     pub fn UpdateProcess(&mut self)
     {
@@ -352,8 +338,6 @@ fn handle_connection_event(
                 if( gRecvMessageBuffer.GetNumElem() < BUFFER_SIZE_LIMIT)
                 {
                     CallServerActionByFunctionHeader(Some(recvMsg));
-                    // GCallRecvFunctionByMessage(Some(recvMsg));
-                    // gRecvMessageBuffer.PushBackData(recvMsg);
                 }
                 
             } else {
