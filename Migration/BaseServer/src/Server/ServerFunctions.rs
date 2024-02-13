@@ -13,10 +13,42 @@ pub enum FunctionCallResult {
 }
 
 pub enum FunctionHeader {
+    DEFAULT,
     CHAT_MESSAGE_ALL,
     CHAT_MESSAGE_TO_ONE,    
     CHAT_MESSAGE_TO_GROUP,
 } 
+
+impl FunctionHeader {
+    fn ServerActionByFunctionHeader(&self, val : GamePacket)
+    {
+        match self {
+            FunctionHeader::DEFAULT => {
+
+            }
+            FunctionHeader::CHAT_MESSAGE_ALL => {
+                ServerAction_CHAT_MESSAGE_ALL(val);
+            }
+            FunctionHeader::CHAT_MESSAGE_TO_GROUP => {
+                ServerAction_CHAT_MESSAGE_TO_GROUP(val);
+            }
+            FunctionHeader::CHAT_MESSAGE_TO_ONE => {
+                ServerAction_CHAT_MESSAGE_TO_ONE(val);
+            }
+        }
+    }
+}
+
+pub fn CallServerActionByFunctionHeader(msg : Option<String>) {
+
+    let mut _packet = GamePacket::GamePacketDeSerialize(msg.as_ref().unwrap().as_str());
+    let _funcID = _packet.as_ref().unwrap().getFunctionHeader().clone();
+    let _funcHeader : FunctionHeader = _funcID.into();
+    _funcHeader.ServerActionByFunctionHeader(_packet.unwrap());
+}
+
+
+
 
 pub fn GCallRecvFunctionByMessage(msg : Option<String>)
     {

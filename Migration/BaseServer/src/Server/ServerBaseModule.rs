@@ -30,6 +30,7 @@ use super::Server;
 
 use std::ops::{Deref};
 
+use crate::CallServerActionByFunctionHeader;
 use crate::GameLogic::CharacterModule::Character;
 use crate::GetGameLogic;
 use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
@@ -350,7 +351,8 @@ fn handle_connection_event(
                 
                 if( gRecvMessageBuffer.GetNumElem() < BUFFER_SIZE_LIMIT)
                 {
-                    GCallRecvFunctionByMessage(Some(recvMsg));
+                    CallServerActionByFunctionHeader(Some(recvMsg));
+                    // GCallRecvFunctionByMessage(Some(recvMsg));
                     // gRecvMessageBuffer.PushBackData(recvMsg);
                 }
                 
