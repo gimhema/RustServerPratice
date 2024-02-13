@@ -334,11 +334,9 @@ fn handle_connection_event(
                 // 받은 데이터 처리
                 // 데이터를 수신전용 버퍼에 추가한다.
                 let recvMsg = String::from(from_utf8(received_data).unwrap());
-                
-                if( gRecvMessageBuffer.GetNumElem() < BUFFER_SIZE_LIMIT)
-                {
-                    CallServerActionByFunctionHeader(Some(recvMsg));
-                }
+
+                CallServerActionByFunctionHeader(Some(recvMsg));
+
                 
             } else {
                 println!("Received (none UTF-8) data: {:?}", received_data);
