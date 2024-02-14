@@ -34,18 +34,14 @@ void AArenaServerConnector::Tick(float DeltaTime)
 
 void AArenaServerConnector::CreateSocket()
 {
-    if (SocketSubsystemPtr)
-    {
-        // 家南 积己
-//        TSharedRef<FInternetAddr> ServerAddress = SocketSubsystemPtr->CreateInternetAddr();
         bool bIsValid = true;
-//        ServerAddress->SetIp(*GameServerIP, bIsValid);
-//        ServerAddress->SetPort(GameServerPort);
 
         if (bIsValid)
         {
             // TCP 家南 积己
   //          Socket = SocketSubsystemPtr->CreateSocket(NAME_Stream, TEXT("YourSocketName"), false);
+
+            Socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(TEXT("Stream"), TEXT("Client Socket"));
 
             // 辑滚俊 楷搬
             TSharedRef<FInternetAddr> ServerAddress = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();;
@@ -81,11 +77,8 @@ void AArenaServerConnector::CreateSocket()
         {
             UE_LOG(LogTemp, Error, TEXT("This IP Address Invalid . . . "));
         }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("Failed Socket Subsystem"));
-    }
+    
+
 }
 
 void AArenaServerConnector::Start()

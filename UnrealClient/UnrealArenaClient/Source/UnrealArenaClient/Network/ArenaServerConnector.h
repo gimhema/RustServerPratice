@@ -75,6 +75,6 @@ public:
 	FString ReadDataAsString(TArray<uint8>& Message, int32 length);
 
 	UFUNCTION()
-		FArenaGameMessage ConvertDataToGameMessage(FString data);
+	FArenaGameMessage ConvertDataToGameMessage(FString data);
 
 };
