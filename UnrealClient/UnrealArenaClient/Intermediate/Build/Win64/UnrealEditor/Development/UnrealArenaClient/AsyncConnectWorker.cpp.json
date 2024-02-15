@@ -1,0 +1,14 @@
+{
+    "Version": "1.1",
+    "Data": {
+        "Source": "c:\\ws_git\\rustserverpratice\\unrealclient\\unrealarenaclient\\source\\unrealarenaclient\\network\\asyncconnectworker.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\ws_git\\rustserverpratice\\unrealclient\\unrealarenaclient\\intermediate\\build\\win64\\unrealarenaclienteditor\\development\\engine\\sharedpch.engine.shadowerrors.h.pch",
+        "Includes": [
+            "c:\\ws_git\\rustserverpratice\\unrealclient\\unrealarenaclient\\intermediate\\build\\win64\\unrealeditor\\development\\unrealarenaclient\\definitions.unrealarenaclient.h",
+            "c:\\ws_git\\rustserverpratice\\unrealclient\\unrealarenaclient\\source\\unrealarenaclient\\network\\asyncconnectworker.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
