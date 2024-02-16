@@ -10,6 +10,7 @@
 // #include "SocketSubsystemModule.h"
 #include "IPAddress.h"
 #include "ArenaGameMessage.h"
+#include "AsyncConnectWorker.h"
 #include "ArenaServerConnector.generated.h"
 
 
@@ -31,6 +32,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+
+
 	UPROPERTY()
 	AArenaGameMode* arenaGameMode;
 
@@ -39,12 +42,14 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int32 GameServerPort = 0;
 
-	
 	ISocketSubsystem* SocketSubsystemPtr;
+
 	FSocket* Socket;
 
 	bool isRun = false;
 
+
+	FAsyncConnectWorker* AsyncConnectWorker;
 public:
 	// Initialize
 	UFUNCTION(BlueprintCallable)
