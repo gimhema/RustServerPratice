@@ -65,3 +65,20 @@ void FAsyncConnectWorker::Stop()
 	// It will finish in <= 1 sec, due to the Sleep()
 	bRunThread = false;
 }
+
+
+void FAsyncConnectWorker::Start()
+{
+
+}
+
+void FAsyncConnectWorker::CreateSocket()
+{
+
+}
+
+void FAsyncConnectWorker::RecvMessageFromServer(TArray<uint8>& Message)
+{
+	
+}
+

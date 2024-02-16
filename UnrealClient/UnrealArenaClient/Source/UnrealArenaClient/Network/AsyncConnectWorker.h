@@ -38,4 +38,23 @@ private:
 	// Used to know when the thread should exit, changed in Stop(), read in Run()
 	bool bRunThread;
 	
+public:
+
+	UPROPERTY(BlueprintReadWrite)
+	FString GameServerIP = TEXT("");
+	UPROPERTY(BlueprintReadWrite)
+	int32 GameServerPort = 0;
+
+
+	ISocketSubsystem* SocketSubsystemPtr;
+	
+	FSocket* Socket;
+
+public:
+	void Start();
+
+	void CreateSocket();
+
+	void RecvMessageFromServer(TArray<uint8>& Message);
+
 };
