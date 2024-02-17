@@ -60,4 +60,6 @@ public:
 	void RecvMessageFromServer(TArray<uint8>& Message);
 
 	bool SendMessageToServer(const FString& Message);
+
+
 };

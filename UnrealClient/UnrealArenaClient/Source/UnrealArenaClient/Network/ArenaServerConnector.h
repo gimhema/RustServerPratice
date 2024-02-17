@@ -82,4 +82,18 @@ public:
 	UFUNCTION()
 	FArenaGameMessage ConvertDataToGameMessage(FString data);
 
+public:
+	// Async
+	UFUNCTION(BlueprintCallable)
+	void InitializeAsyncWorker();
+
+	UFUNCTION(BlueprintCallable)
+	void StartAsyncConnect();
+
+	UFUNCTION(BlueprintCallable)
+	void SetConnectInfo(FString ServerAddress, int32 ServerPort);
+
+	UFUNCTION(BlueprintCallable)
+	void DisConnectAsync();
+
 };

@@ -213,3 +213,37 @@ FArenaGameMessage AArenaServerConnector::ConvertDataToGameMessage(FString data)
     return msg;
 }
 
+void AArenaServerConnector::InitializeAsyncWorker()
+{
+    AsyncConnectWorker->Init();
+}
+
+void AArenaServerConnector::StartAsyncConnect()
+{
+    if (AsyncConnectWorker)
+    {
+        AsyncConnectWorker->CreateSocket();
+        AsyncConnectWorker->Run();
+    }
+}
+
+void AArenaServerConnector::SetConnectInfo(FString ServerAddress, int32 ServerPort)
+{
+    if (AsyncConnectWorker)
+    {
+        AsyncConnectWorker->GameServerIP = ServerAddress;
+        AsyncConnectWorker->GameServerPort = ServerPort;
+    }
+}
+
+void AArenaServerConnector::DisConnectAsync()
+{
+    if (AsyncConnectWorker)
+    {
+        AsyncConnectWorker->Stop();
+    }
+}
+
+
+
+

@@ -50,11 +50,12 @@ uint32 FAsyncConnectWorker::Run()
 {
 	// Peform your processor intensive task here. In this example, a neverending
 	// task is created, which will only end when Stop is called.
-	while (bRunThread)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("My custom thread is running!"))
-			FPlatformProcess::Sleep(1.0f);
-	}
+    Start();
+    // while (bRunThread)
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("My custom thread is running!"))
+	// 		FPlatformProcess::Sleep(1.0f);
+	// }
 
 	return 0;
 }
@@ -128,7 +129,7 @@ void FAsyncConnectWorker::CreateSocket()
 
 void FAsyncConnectWorker::Start()
 {
-    CreateSocket();
+    // CreateSocket();
 
     // Listen . . . 
 
