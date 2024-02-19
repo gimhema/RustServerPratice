@@ -151,10 +151,10 @@ impl ServerBase {
 
 
         loop {
-            println!("Set Poll Step : {}", self.step);
+            // println!("Set Poll Step : {}", self.step);
             poll.poll(&mut events, Some(Duration::from_millis(SERVER_TICK)))?;
     
-            println!("Iterate Event For Loop");
+            // println!("Iterate Event For Loop");
             for event in events.iter() {
                 if event.token() == Token(0) && event.is_writable() {
                     println!("Writeable Event . . .");
@@ -227,13 +227,13 @@ impl ServerBase {
                        }
                     }
                 }
-                println!("For Loop End");
+                // println!("For Loop End");
             }
-            println!("Calling update_logic");
+            // println!("Calling update_logic");
             update_logic(self);
-            println!("update_logic called");
+            // println!("update_logic called");
 
-            println!("Set Poll End");
+            // println!("Set Poll End");
 
             self.step += 1;
     

@@ -1,4 +1,6 @@
 
+use std::result;
+
 use super::GamePacketModule::SendGamePacket;
 use super::ServerBaseModule::ServerBase;
 use super::GamePacketModule::GamePacket;
@@ -79,6 +81,13 @@ pub fn ServerAction_CHAT_MESSAGE_TO_GROUP(val : GamePacket) -> FunctionCallResul
         result = FunctionCallResult::FUNCTION_CALL_SUCCESS;        
     }
 
+    result
+}
+
+pub fn ServerAction_MOVE_TO_LOCATION(val : GamePacket) -> FunctionCallResult {
+    let mut result = FunctionCallResult::FUNCTION_CALL_FAIL;
+
+    
 
     result
 }

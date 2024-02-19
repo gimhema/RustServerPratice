@@ -100,7 +100,7 @@ impl Manager for CharacterManager {
     }
     fn Update(&mut self)
     {
-        println!("Character Manager Update");
+        // println!("Character Manager Update");
         if( false == self.IsEmptyPlayerContainer() )
         {
             

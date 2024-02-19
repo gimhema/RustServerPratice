@@ -78,7 +78,7 @@ impl GameLogicBase {
         loop {
             thread::sleep(Duration::from_millis(GAME_LOGIC_UPDATE_TICK));
             if(false == GetThreadSwitch()) {break;}
-            println!("Game Logic Update . . . update count : {}", self.updateCount);
+            // println!("Game Logic Update . . . update count : {}", self.updateCount);
             self.updateCount += 1;
 
             self.characterManager.Update();

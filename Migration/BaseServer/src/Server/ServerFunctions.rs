@@ -17,6 +17,7 @@ pub enum FunctionHeader {
     CHAT_MESSAGE_ALL,
     CHAT_MESSAGE_TO_ONE,    
     CHAT_MESSAGE_TO_GROUP,
+    MOVE_TO_LOCATION,
 } 
 
 impl FunctionHeader {
@@ -34,6 +35,9 @@ impl FunctionHeader {
             }
             FunctionHeader::CHAT_MESSAGE_TO_ONE => {
                 ServerAction_CHAT_MESSAGE_TO_ONE(val);
+            }
+            FunctionHeader::MOVE_TO_LOCATION => {
+                ServerAction_MOVE_TO_LOCATION(val);
             }
         }
     }
