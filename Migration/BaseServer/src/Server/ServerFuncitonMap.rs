@@ -85,9 +85,34 @@ pub fn ServerAction_CHAT_MESSAGE_TO_GROUP(val : GamePacket) -> FunctionCallResul
 }
 
 pub fn ServerAction_MOVE_TO_LOCATION(val : GamePacket) -> FunctionCallResult {
-    let mut result = FunctionCallResult::FUNCTION_CALL_FAIL;
+    let mut result = FunctionCallResult::FUNCTION_CALL_SUCCESS;
+
+    let mut _gameLogic = gGameLogic.write().unwrap();
+    let mut _numUser = _gameLogic.GetUserNum().clone();
+
+    if (_numUser <= 0) {
+        result = FunctionCallResult::FUNCTION_CALL_FAIL;
+    }
+    else {
+        // 이동할 플레이어
+        let _moveCharacterId = val.getSenderID();
+        let _moveLocX = val.getFunctionParam()[0];
+        let _moveLocY = val.getFunctionParam()[1];
+        let _moveLocZ = val.getFunctionParam()[2];
+        
+        let _fHeader : i64 = FunctionHeader::MOVE_TO_LOCATION.into();
+        let _fParamVec = vec![_moveLocX, _moveLocY, _moveLocZ];
+        let _fParamStr = "".to_string();
+    
+        for i in 0.._numUser {
+            // 벡터의 각 요소 출력
+            let mut _packet = GamePacket::new(i, *_moveCharacterId,
+                _fHeader, _fParamVec.clone(), _fParamStr.clone() );
+            // gSendMessageBuffer.PushBackData(_packet);
+            SendGamePacket(Some(_packet)); // 푸시하지말고 바로 보낸다.
+        }    
+    }
 
     
-
     result
 }
