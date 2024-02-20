@@ -2,6 +2,7 @@ use crate::GameCommon::Manager::*;
 use crate::GameCommon::Math::*;
 use std::collections::VecDeque;
 
+#[derive(Clone)]
 pub struct Character {
     pid : i64,
     name : String,
@@ -73,12 +74,18 @@ impl CharacterManager {
          }
     }
 
+    pub fn SetWorldLocaitonByPID(&mut self, _pID: usize, _new_loc: FLocation) {
+        if let Some(player) = self.playerContainer.get_mut(_pID) {
+            player.SetWorldLocation(_new_loc);
+        }
+    }
+
     pub fn AddNewCharacter(&mut self, newCharacter : Option<Character>) {
         let _newCharacter = newCharacter.unwrap();
         self.playerContainer.push(_newCharacter);
     }
 
-    pub fn GetCharacterByID(&mut self, index : usize) -> &Character {
+    pub fn GetCharacterByID(&self, index : usize) -> &Character {
         &self.playerContainer[index] 
     }
 

@@ -1,5 +1,6 @@
 
 
+#[derive(Clone)]
 pub struct FLocation {
     x : f64,
     y : f64,
@@ -40,7 +41,7 @@ impl FLocation {
     }
 }
 
-
+#[derive(Clone)]
 pub struct FRotation {
     roll : f64,
     pitch : f64,

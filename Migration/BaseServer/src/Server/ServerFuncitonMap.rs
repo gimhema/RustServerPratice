@@ -105,6 +105,12 @@ pub fn ServerAction_MOVE_TO_LOCATION(val : GamePacket) -> FunctionCallResult {
         
         let _new_location = FLocation::MakeLocationByVec(vec![_moveLocX, _moveLocY, _moveLocZ]);
 
+        let mut _pID = *val.getSenderID() as usize; 
+        // let mut _character = _gameLogic.GetCharacterManager().GetCharacterByID(_pID);
+        // _character.SetWorldLocation(_new_location);
+        let _cm = _gameLogic.GetCharacterManager();
+        _cm.SetWorldLocaitonByPID(_pID, _new_location);
+
         let _fHeader : i64 = FunctionHeader::MOVE_TO_LOCATION.into();
         let _fParamVec = vec![_moveLocX, _moveLocY, _moveLocZ];
         let _fParamStr = "".to_string();

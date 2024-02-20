@@ -24,6 +24,10 @@ impl GameLogicBase {
         GameLogicBase { updateCount : 0, userNum : 0, characterManager : _characterManager }
     }
 
+    pub fn GetCharacterManager(&mut self) -> &mut CharacterManager {
+        &mut self.characterManager
+    }    
+
     pub fn GetUserNum(&mut self) -> &i64 {
         &self.userNum
     }
