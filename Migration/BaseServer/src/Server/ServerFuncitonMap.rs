@@ -7,6 +7,7 @@ use super::GamePacketModule::GamePacket;
 use super::ServerFunctions::*;
 use super::MessageBufferModule::*;
 use super::GameLogic::GameLogicBaseModule::*;
+use crate::GameCommon::Math::FLocation;
 use crate::{gSendMessageBuffer, gGameLogic};
 
 
@@ -99,7 +100,11 @@ pub fn ServerAction_MOVE_TO_LOCATION(val : GamePacket) -> FunctionCallResult {
         let _moveLocX = val.getFunctionParam()[0];
         let _moveLocY = val.getFunctionParam()[1];
         let _moveLocZ = val.getFunctionParam()[2];
+
+        // 캐릭터 위치 업데이트
         
+        let _new_location = FLocation::MakeLocationByVec(vec![_moveLocX, _moveLocY, _moveLocZ]);
+
         let _fHeader : i64 = FunctionHeader::MOVE_TO_LOCATION.into();
         let _fParamVec = vec![_moveLocX, _moveLocY, _moveLocZ];
         let _fParamStr = "".to_string();

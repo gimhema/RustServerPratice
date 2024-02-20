@@ -11,6 +11,10 @@ impl FLocation {
         FLocation { x: _x, y: _y, z: _z }
     }
 
+    pub fn MakeLocationByVec(_v : Vec<f64>) -> FLocation {
+        FLocation::new(_v[0], _v[1], _v[1])
+    }
+
     pub fn GetX(&mut self) -> &f64 {
         &self.x
     }
