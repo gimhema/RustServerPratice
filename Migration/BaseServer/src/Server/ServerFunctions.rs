@@ -18,6 +18,7 @@ pub enum FunctionHeader {
     CHAT_MESSAGE_TO_ONE,    
     CHAT_MESSAGE_TO_GROUP,
     MOVE_TO_LOCATION,
+    CONNECTION_SUCESSFUL,
 } 
 
 impl FunctionHeader {
@@ -38,6 +39,9 @@ impl FunctionHeader {
             }
             FunctionHeader::MOVE_TO_LOCATION => {
                 ServerAction_MOVE_TO_LOCATION(val);
+            }
+            FunctionHeader::CONNECTION_SUCESSFUL => {
+
             }
         }
     }
