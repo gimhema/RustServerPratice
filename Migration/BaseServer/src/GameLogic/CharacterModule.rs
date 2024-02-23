@@ -3,11 +3,21 @@ use crate::GameCommon::Math::*;
 use std::collections::VecDeque;
 
 #[derive(Clone)]
+pub enum CharacterType {
+    DEFAULT,
+    PLAYER,
+    ENEMY,
+    NPC,
+    OBJECT,
+}
+
+#[derive(Clone)]
 pub struct Character {
     pid : i64,
     name : String,
     location : FLocation,
-    rotation : FRotation
+    rotation : FRotation,
+    characterType : CharacterType
 }
 
 impl Character {
@@ -16,7 +26,7 @@ impl Character {
         let mut _rot = FRotation::new(0.0, 0.0, 0.0, 0.0, 0.0, 
         0.0, 0.0);
 
-        Character { pid : -1, name : "".to_string(), location: _loc, rotation: _rot }
+        Character { pid : -1, name : "".to_string(), location: _loc, rotation: _rot, characterType : CharacterType::DEFAULT }
     }
 
     pub fn GetPID(&mut self) -> &i64 {
