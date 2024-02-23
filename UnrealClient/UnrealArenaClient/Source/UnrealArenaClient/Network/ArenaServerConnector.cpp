@@ -22,7 +22,7 @@ void AArenaServerConnector::BeginPlay()
 {
 	Super::BeginPlay();
 	
-    InitArenaGameMode();
+    // InitArenaGameMode();
 }
 
 // Called every frame
@@ -215,15 +215,18 @@ FArenaGameMessage AArenaServerConnector::ConvertDataToGameMessage(FString data)
 
 void AArenaServerConnector::InitializeAsyncWorker()
 {
-    AsyncConnectWorker->Init();
+    AsyncConnectWorker = new FAsyncConnectWorker();
+
+
+    // AsyncConnectWorker->Init();
 }
 
 void AArenaServerConnector::StartAsyncConnect()
 {
     if (AsyncConnectWorker)
     {
-        AsyncConnectWorker->CreateSocket();
-        AsyncConnectWorker->Run();
+        // AsyncConnectWorker->CreateSocket();
+        // AsyncConnectWorker->Run();
     }
 }
 

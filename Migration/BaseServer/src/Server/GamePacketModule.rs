@@ -74,35 +74,70 @@ impl ServerBase {
 
 }
 
-pub fn SendGamePacket(packet: Option<GamePacket>) {
-    let mut _server = gServer.write().unwrap();
+pub fn SendGamePacketToConnect(packet: Option<GamePacket>, mut connecStream : TcpStream)
+{
+    println!("Send Game Message Call 1 1");
+
     let send_data = match &packet {
-        Some(data) => data,
+        Some(data) => {
+            println!("Send Game Message Valid");
+            data
+        },
         None => {
             // Handle the case when packet is None
+            println!("Send Game Message Exception 1");
             return;
         }
     };
 
-    let destination = *send_data.getTargetID();
+    if let Ok(send_msg) = serde_json::to_string(&send_data) {
+        let serialized_msg = send_msg.as_bytes();
+            println!("Send Game Message {}", send_msg);
+            connecStream.write(serialized_msg);
+    }
+    println!("Send Game Message Call 1 1 END");
+}
 
+pub fn SendGamePacket(packet: Option<GamePacket>) {
+    println!("Send Game Message Call");
+
+    let mut _server = gServer.write().unwrap();
+    // gServer.write().unwrap()
+    println!("Send Game Message Call : Set Server");
+    let send_data = match &packet {
+        Some(data) => {
+            println!("Send Game Message Valid");
+            data
+        },
+        None => {
+            // Handle the case when packet is None
+            println!("Send Game Message Exception 1");
+            return;
+        }
+    };
+    println!("Send Game Message Call 2");
+    let destination = *send_data.getTargetID();
+    println!("Send Game Message Call 3");
     let mut _target = Token(0);
     {
         _target = match _server.GetTokenByID(destination) {
             Some(token) => *token,
             None => {
                 // Handle the case when GetTokenByID returns None
+                println!("Send Game Message Exception 2");
                 return;
             }
         };
     }
-
+    println!("Send Game Message Call 4");
     if let Ok(send_msg) = serde_json::to_string(&send_data) {
         let serialized_msg = send_msg.as_bytes();
         if let Some(_targetConn) = _server.GetConnetionByToken(_target) {
+            println!("Send Game Message {}", send_msg);
             _targetConn.write(serialized_msg);
         }
     }
+    println!("Send Game Message Call End");
 }
 
 

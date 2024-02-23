@@ -34,6 +34,7 @@ use crate::CallServerActionByFunctionHeader;
 use crate::GameLogic::CharacterModule::Character;
 use crate::GetGameLogic;
 use crate::Server::GamePacketModule::SendGamePacket;
+use crate::Server::GamePacketModule::SendGamePacketToConnect;
 use crate::{gRecvMessageBuffer, gSendMessageBuffer, THREAD_SWITCH};
 use crate::{GetThreadSwitch, SetThreadSwitch};
 
@@ -189,23 +190,31 @@ impl ServerBase {
                             Interest::READABLE.add(Interest::WRITABLE),
                         )?;
 
-                        let mut sendConnect = connection;
-                        sendConnect.write(DATA2);
-    
-                        self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
-                        self.clientHandler.AddNewTokenIDPair(self.numUser, token);
+                        println!("Add New Player");
 
+                        let mut sendConnect = connection;
+                        // sendConnect.write(DATA2);
+    
+//                        self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
+                        println!("AddNewConnection");
+  //                      self.clientHandler.AddNewTokenIDPair(self.numUser, token);
+                        println!("AddNewTokenIDPair");
                         let welcome_packet = GamePacket::new(
                             -1,
                             self.numUser,
                             FunctionHeader::CONNECTION_SUCESSFUL.into(),
                             vec![0.0],
                             "Connection Check Message".to_string());
-                        SendGamePacket(Some(welcome_packet));
 
+                        // SendGamePacket(Some(welcome_packet));
+                        SendGamePacketToConnect(Some(welcome_packet), sendConnect);
+
+                        println!("SendGamePacket End");
                         // userCount += 1;
-                        self.AddNewPlayer(self.numUser);
-                        self.IncreaseNumUser();
+//                        self.AddNewPlayer(self.numUser);
+                        println!("AddNewPlayer");
+  //                      self.IncreaseNumUser();
+                        println!("Add New Player Step End");
 
                     },
                     token => {

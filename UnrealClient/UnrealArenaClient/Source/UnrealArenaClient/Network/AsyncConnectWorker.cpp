@@ -17,6 +17,7 @@ FAsyncConnectWorker::FAsyncConnectWorker(/* You can pass in inputs here */)
 {
 	// Constructs the actual thread object. It will begin execution immediately
 	// If you've passed in any inputs, set them up before calling this.
+    UE_LOG(LogTemp, Warning, TEXT("Create AsyncConnectWorker . . . ."));
 	Thread = FRunnableThread::Create(this, TEXT("Give your thread a good name"));
 }
 
@@ -50,6 +51,12 @@ uint32 FAsyncConnectWorker::Run()
 {
 	// Peform your processor intensive task here. In this example, a neverending
 	// task is created, which will only end when Stop is called.
+    UE_LOG(LogTemp, Warning, TEXT("AsyncConnectWorker Run . . . . 1"));
+    UE_LOG(LogTemp, Warning, TEXT("AsyncConnectWorker Run . . . . 2"));
+    UE_LOG(LogTemp, Warning, TEXT("AsyncConnectWorker Run . . . . 3"));
+    GameServerIP = "127.0.0.1";
+    GameServerPort = 9000;
+    CreateSocket();
     Start();
     // while (bRunThread)
 	// {
@@ -133,8 +140,12 @@ void FAsyncConnectWorker::Start()
 
     // Listen . . . 
 
+    UE_LOG(LogTemp, Warning, TEXT("Connect Start . . . ."));
+    isRun = true;
     while (isRun)
     {
+        UE_LOG(LogTemp, Warning, TEXT("Listen . . . ."));
+
         uint32 pendingDataSize = 0;
         TArray<uint8> recvedData;
 
@@ -145,11 +156,12 @@ void FAsyncConnectWorker::Start()
         uint8 _temp;
         if (!Socket->Recv(&_temp, 1, _read, ESocketReceiveFlags::Peek))
         {
+            UE_LOG(LogTemp, Warning, TEXT("Recv Failed"));
             isRun = false;
             continue;
         }
 
-        Socket->SetNonBlocking(false);
+        Socket->SetNonBlocking(true);
 
         while (isRun)
         {
@@ -164,6 +176,7 @@ void FAsyncConnectWorker::Start()
 
             if (!Socket->Recv(recvedData.GetData() + totalReadData, pendingDataSize, readData))
             {
+                UE_LOG(LogTemp, Warning, TEXT("Data Recve Fail"));
                 // Data Read Failed.
                 break;
             }
@@ -172,6 +185,7 @@ void FAsyncConnectWorker::Start()
 
         if (isRun && recvedData.Num() != 0)
         {
+            UE_LOG(LogTemp, Warning, TEXT("Recved Data . . . ."));
             // Recv Logic
             RecvMessageFromServer(recvedData);
         }
@@ -191,9 +205,9 @@ void FAsyncConnectWorker::RecvMessageFromServer(TArray<uint8>& Message)
     //     //        arenaGameMode->CallMessageFunctionByName();
     //     //        arenaGameMode->CallMessageFunctionByUnique();
     // }
-
+    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, TEXT("Data Received"));
     FString _data = ReadDataAsString(Message, Message.Num());
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, _data);
+    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _data);
     // GEngine->AddOnScreenDebugMessage
 
 }
