@@ -188,9 +188,40 @@ void FAsyncConnectWorker::RecvMessageFromServer(TArray<uint8>& Message)
 {
     // if (arenaGameMode)
     // {
-    //     FString _data = ReadDataAsString(Message, Message.Num());
     //     //        arenaGameMode->CallMessageFunctionByName();
     //     //        arenaGameMode->CallMessageFunctionByUnique();
     // }
+
+    FString _data = ReadDataAsString(Message, Message.Num());
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, _data);
+    // GEngine->AddOnScreenDebugMessage
+
 }
 
+FString FAsyncConnectWorker::ReadDataAsString(TArray<uint8>& Message, int32 length)
+{
+    if (length <= 0)
+    {
+        if (length < 0)
+        {
+
+        }
+        return FString("");
+    }
+    if (Message.Num() < length)
+    {
+        return FString("");
+    }
+
+    TArray<uint8> StringAsArray;
+    StringAsArray.Reserve(length);
+
+    for (int i = 0; i < length; i++)
+    {
+        StringAsArray.Add(Message[0]);
+        Message.RemoveAt(0);
+    }
+
+    std::string cstr(reinterpret_cast<const char*>(StringAsArray.GetData()), StringAsArray.Num());
+    return FString(UTF8_TO_TCHAR(cstr.c_str()));
+}

@@ -61,5 +61,5 @@ public:
 
 	bool SendMessageToServer(const FString& Message);
 
-
+	FString ReadDataAsString(TArray<uint8>& Message, int32 length);
 };
