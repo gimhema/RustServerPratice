@@ -95,7 +95,21 @@ impl CharacterManager {
 
     pub fn IsEmptyPlayerContainer(&mut self) -> bool {
         let ret = self.playerContainer.is_empty();
+        ret
+    }
 
+    pub fn IsEmptyNPCContainer(&mut self) -> bool {
+        let ret = self.npcContainer.is_empty();
+        ret
+    }
+
+    pub fn IsEmptyEnemyContainer(&mut self) -> bool {
+        let ret = self.enemyContainer.is_empty();
+        ret
+    }
+
+    pub fn IsEmptyObjContainer(&mut self) -> bool {
+        let ret = self.objContainer.is_empty();
         ret
     }
 }
@@ -111,6 +125,22 @@ impl Manager for CharacterManager {
         if( false == self.IsEmptyPlayerContainer() )
         {
             
-        }    
+        }
+        
+        if( false == self.IsEmptyNPCContainer() )
+        {
+            
+        }
+
+        if( false == self.IsEmptyEnemyContainer() )
+        {
+            
+        }
+
+        if( false == self.IsEmptyObjContainer() )
+        {
+            
+        }
+            
     } 
 }
