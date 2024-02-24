@@ -144,7 +144,8 @@ void FAsyncConnectWorker::Start()
     isRun = true;
     while (isRun)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Listen . . . ."));
+        FPlatformProcess::Sleep(1.0f);
+        // UE_LOG(LogTemp, Warning, TEXT("Listen . . . ."));
 
         uint32 pendingDataSize = 0;
         TArray<uint8> recvedData;

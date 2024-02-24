@@ -48,11 +48,11 @@ impl FunctionHeader {
 }
 
 pub fn CallServerActionByFunctionHeader(msg : Option<String>) {
-
-    let mut _packet = GamePacket::GamePacketDeSerialize(msg.as_ref().unwrap().as_str());
-    let _funcID = _packet.as_ref().unwrap().getFunctionHeader().clone();
-    let _funcHeader : FunctionHeader = _funcID.into();
-    _funcHeader.ServerActionByFunctionHeader(_packet.unwrap());
+    println!("CallServerActionByFunctionHeader");
+//    let mut _packet = GamePacket::GamePacketDeSerialize(msg.as_ref().unwrap().as_str());
+//    let _funcID = _packet.as_ref().unwrap().getFunctionHeader().clone();
+//    let _funcHeader : FunctionHeader = _funcID.into();
+//    _funcHeader.ServerActionByFunctionHeader(_packet.unwrap());
 }
 
 

@@ -195,9 +195,9 @@ impl ServerBase {
                         let mut sendConnect = connection;
                         // sendConnect.write(DATA2);
     
-//                        self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
+                        self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
                         println!("AddNewConnection");
-  //                      self.clientHandler.AddNewTokenIDPair(self.numUser, token);
+                        self.clientHandler.AddNewTokenIDPair(self.numUser, token);
                         println!("AddNewTokenIDPair");
                         let welcome_packet = GamePacket::new(
                             -1,
@@ -212,10 +212,10 @@ impl ServerBase {
 
                         println!("SendGamePacket End");
                         // userCount += 1;
-                        self.AddNewPlayer(self.numUser);
+//                        self.AddNewPlayer(self.numUser);
                         println!("AddNewPlayer");
-                        self.IncreaseNumUser();
-                        println!("Add New Player Step End");
+//                       self.IncreaseNumUser();
+                        println!("Add New Player Step End 123123");
 
                     },
                     token => {
