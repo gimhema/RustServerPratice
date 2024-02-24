@@ -207,13 +207,14 @@ impl ServerBase {
                             "Connection Check Message".to_string());
 
                         // SendGamePacket(Some(welcome_packet));
-                        SendGamePacketToConnect(Some(welcome_packet), sendConnect);
+                        self.SendGameMessage(Some(welcome_packet));
+                        // SendGamePacketToConnect(Some(welcome_packet), sendConnect);
 
                         println!("SendGamePacket End");
                         // userCount += 1;
-//                        self.AddNewPlayer(self.numUser);
+                        self.AddNewPlayer(self.numUser);
                         println!("AddNewPlayer");
-  //                      self.IncreaseNumUser();
+                        self.IncreaseNumUser();
                         println!("Add New Player Step End");
 
                     },
@@ -276,7 +277,44 @@ impl ServerBase {
     }
 
 
-    
+    pub fn SendGameMessage(&mut self, message: Option<GamePacket>) {
+        
+        let send_data = match &message {
+            Some(data) => {
+                println!("Send Game Message Valid");
+                data
+            },
+            None => {
+                // Handle the case when packet is None
+                println!("Send Game Message Exception 1");
+                return;
+            }
+        };
+        
+        println!("Send Game Message Call 2");
+    let destination = *send_data.getTargetID();
+    println!("Send Game Message Call 3");
+    let mut _target = Token(0);
+    {
+        _target = match self.GetTokenByID(destination) {
+            Some(token) => *token,
+            None => {
+                // Handle the case when GetTokenByID returns None
+                println!("Send Game Message Exception 2");
+                return;
+            }
+        };
+    }
+    println!("Send Game Message Call 4");
+    if let Ok(send_msg) = serde_json::to_string(&send_data) {
+        let serialized_msg = send_msg.as_bytes();
+        if let Some(_targetConn) = self.GetConnetionByToken(_target) {
+            println!("Send Game Message {}", send_msg);
+            _targetConn.write(serialized_msg);
+        }
+    }
+    println!("Send Game Message Call End");
+    }    
 
 
 
