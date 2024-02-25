@@ -208,6 +208,7 @@ void FAsyncConnectWorker::RecvMessageFromServer(TArray<uint8>& Message)
     // }
     GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, TEXT("Data Received"));
     FString _data = ReadDataAsString(Message, Message.Num());
+    ConvertDataToGameMessage(Message);
     GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _data);
     // GEngine->AddOnScreenDebugMessage
 
@@ -239,4 +240,11 @@ FString FAsyncConnectWorker::ReadDataAsString(TArray<uint8>& Message, int32 leng
 
     std::string cstr(reinterpret_cast<const char*>(StringAsArray.GetData()), StringAsArray.Num());
     return FString(UTF8_TO_TCHAR(cstr.c_str()));
+}
+
+FGameMessage FAsyncConnectWorker::ConvertDataToGameMessage(TArray<uint8>& Message)
+{
+    FGameMessage result;
+
+    return result;
 }

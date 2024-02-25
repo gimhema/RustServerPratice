@@ -12,6 +12,15 @@
  * 
  */
 
+struct FGameMessage
+{
+	int64 senderID;
+	int64 targetID;
+	int64 functionHeader;
+	TArray<float> functionParam;
+	FString functionStringParam;
+};
+
 class UNREALARENACLIENT_API FAsyncConnectWorker : public FRunnable
 {
 public:
@@ -62,4 +71,9 @@ public:
 	bool SendMessageToServer(const FString& Message);
 
 	FString ReadDataAsString(TArray<uint8>& Message, int32 length);
+
+public:
+	
+	FGameMessage ConvertDataToGameMessage(TArray<uint8>& Message);
+
 };

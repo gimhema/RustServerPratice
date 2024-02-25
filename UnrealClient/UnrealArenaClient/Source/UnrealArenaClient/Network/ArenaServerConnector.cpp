@@ -87,8 +87,12 @@ void AArenaServerConnector::Start()
 
     // Listen . . . 
 
+    isRun = true;
+
     while (isRun)
     {
+        FPlatformProcess::Sleep(1.0f);
+
         uint32 pendingDataSize = 0;
         TArray<uint8> recvedData;
 
@@ -146,12 +150,16 @@ bool AArenaServerConnector::SendMessageToServer(const FString& Message)
 
 void AArenaServerConnector::RecvMessageFromServer(TArray<uint8>& Message)
 {
-    if (arenaGameMode)
-    {
-        FString _data = ReadDataAsString(Message, Message.Num());
+    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, TEXT("Data Received"));
+    FString _data = ReadDataAsString(Message, Message.Num());
+    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _data);
+
+//    if (arenaGameMode)
+//    {
+//        FString _data = ReadDataAsString(Message, Message.Num());
 //        arenaGameMode->CallMessageFunctionByName();
 //        arenaGameMode->CallMessageFunctionByUnique();
-    }
+//    }
 }
 
 void AArenaServerConnector::DisConnect()
