@@ -208,10 +208,8 @@ void FAsyncConnectWorker::RecvMessageFromServer(TArray<uint8>& Message)
     // }
     GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, TEXT("Data Received"));
     FString _data = ReadDataAsString(Message, Message.Num());
-    ConvertDataToGameMessage(Message);
-    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _data);
-    // GEngine->AddOnScreenDebugMessage
 
+    PrintGameMessageAsDebugPrint( ConvertDataToGameMessage(Message) );
 }
 
 FString FAsyncConnectWorker::ReadDataAsString(TArray<uint8>& Message, int32 length)
@@ -248,3 +246,9 @@ FGameMessage FAsyncConnectWorker::ConvertDataToGameMessage(TArray<uint8>& Messag
 
     return result;
 }
+
+void FAsyncConnectWorker::PrintGameMessageAsDebugPrint(FGameMessage msg)
+{
+    // GEngine->AddOnScreenDebugMessage
+}
+

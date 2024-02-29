@@ -206,9 +206,8 @@ impl ServerBase {
                             vec![0.0],
                             "Connection Check Message".to_string());
 
-                        // SendGamePacket(Some(welcome_packet));
                         self.SendGameMessage(Some(welcome_packet));
-                        // SendGamePacketToConnect(Some(welcome_packet), sendConnect);
+
 
                         println!("SendGamePacket End");
                         // userCount += 1;

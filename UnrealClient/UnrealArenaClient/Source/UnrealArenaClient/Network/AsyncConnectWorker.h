@@ -75,5 +75,5 @@ public:
 public:
 	
 	FGameMessage ConvertDataToGameMessage(TArray<uint8>& Message);
-
+	void PrintGameMessageAsDebugPrint(FGameMessage msg);
 };
