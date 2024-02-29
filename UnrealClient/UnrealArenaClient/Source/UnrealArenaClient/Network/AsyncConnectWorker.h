@@ -74,6 +74,6 @@ public:
 
 public:
 	
-	FGameMessage ConvertDataToGameMessage(TArray<uint8>& Message);
+	FGameMessage ConvertDataToGameMessage(FString Message);
 	void PrintGameMessageAsDebugPrint(FGameMessage msg);
 };
