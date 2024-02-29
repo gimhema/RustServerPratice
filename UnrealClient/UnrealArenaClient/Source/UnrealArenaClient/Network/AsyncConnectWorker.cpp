@@ -209,7 +209,8 @@ void FAsyncConnectWorker::RecvMessageFromServer(TArray<uint8>& Message)
     GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, TEXT("Data Received"));
     FString _data = ReadDataAsString(Message, Message.Num());
 
-    PrintGameMessageAsDebugPrint( ConvertDataToGameMessage(_data) );
+    ConvertDataToGameMessage(_data);
+    // PrintGameMessageAsDebugPrint( ConvertDataToGameMessage(_data) );
 }
 
 FString FAsyncConnectWorker::ReadDataAsString(TArray<uint8>& Message, int32 length)
@@ -235,7 +236,7 @@ FString FAsyncConnectWorker::ReadDataAsString(TArray<uint8>& Message, int32 leng
         StringAsArray.Add(Message[0]);
         Message.RemoveAt(0);
     }
-
+//    StringAsArray.Add('}');
     std::string cstr(reinterpret_cast<const char*>(StringAsArray.GetData()), StringAsArray.Num());
     return FString(UTF8_TO_TCHAR(cstr.c_str()));
 }
@@ -243,6 +244,61 @@ FString FAsyncConnectWorker::ReadDataAsString(TArray<uint8>& Message, int32 leng
 FGameMessage FAsyncConnectWorker::ConvertDataToGameMessage(FString Message)
 {
     FGameMessage result;
+
+    // {"senderID":-1,"targetID":0,"functionHeader":5,"functionParam":[0.0],"functionStrParam":"Connection Check Message"}
+    TSharedRef<TJsonReader<TCHAR>> jsonReader = TJsonReaderFactory<TCHAR>::Create(Message);
+    TSharedPtr<FJsonObject> jsonObj = MakeShareable(new FJsonObject());
+
+    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, TEXT("==================== Parse START ===================="));
+    GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green, Message);
+
+    if (FJsonSerializer::Deserialize(jsonReader, jsonObj) && jsonObj.IsValid())
+    {
+        FString _senderID;
+        FString _targetID;
+        FString _functionHeader;
+        FString _functionParam;
+        FString _functionStrParam;
+        jsonObj->TryGetStringField(TEXT("senderID"), _senderID);
+        jsonObj->TryGetStringField(TEXT("targetID"), _targetID);
+        jsonObj->TryGetStringField(TEXT("functionHeader"), _functionHeader);
+        jsonObj->TryGetStringField(TEXT("functionParam"), _functionParam);
+        jsonObj->TryGetStringField(TEXT("functionStrParam"), _functionStrParam);
+
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, TEXT("==================== Parse Result ===================="));
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _senderID);
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _targetID);
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _functionHeader);
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _functionParam);
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, _functionStrParam);
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Blue, TEXT("==================== Parse Result ===================="));
+        // FString CharName;
+        // jsonObj->TryGetStringField(TEXT("name"), CharName);
+        // 
+        // int32 Level;
+        // jsonObj->TryGetNumberField(TEXT("level"), Level);
+        // 
+        // TArray<FItemData> ItemDatas;
+        // const TArray<TSharedPtr<FJsonValue>>* jsonItems;
+        // if (jsonObj->TryGetArrayField(TEXT("items"), jsonItems))
+        // {
+        //     for (int i = 0; i < jsonItems.Num(); i++)
+        //     {
+        //         TSharedPtr<FJsonObject> jsonItem = jsonItems[i]->AsObject();
+        //         FItemData AddData;
+        //         jsonItem->TryGetNumberField(TEXT("itemid"), AddData.ItemID);
+        //         jsonItem->TryGetNumberField(TEXT("count"), AddData.count);
+        //         ItemDatas.Add(AddData);
+        //     }
+        // }
+        // TArray<FString> Skills;
+        // jsonObj->TryGetStringArrayField(TEXT("skills"), Skills);
+    }
+    else
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("Parse Invalid"));
+    }
+
 
     return result;
 }
