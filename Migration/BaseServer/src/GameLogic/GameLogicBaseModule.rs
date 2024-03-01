@@ -8,7 +8,7 @@ use crate::Server::GamePacketModule::*;
 use crate::Server::ServerFunctions::*;
 use crate::GameLogic::CharacterModule::*;
 
-const GAME_LOGIC_UPDATE_TICK: u64 = 1000;
+const GAME_LOGIC_UPDATE_TICK: u64 = 3000;
 const MAX_NUM_USER: i64 = 2;
 
 pub struct GameLogicBase {
@@ -44,6 +44,7 @@ impl GameLogicBase {
 
     pub fn AddNewPlayer(&mut self, pid : i64)
     {
+        println!("Add New Player 2 . . ");
         let mut _newPlayer = Character::new();
         _newPlayer.SetPID(pid);
         self.characterManager.AddNewCharacter(Some(_newPlayer));
@@ -75,19 +76,20 @@ impl GameLogicBase {
     }
 
     pub fn GameLogicUpate(&mut self) {
-        println!("Game Logic Update Start ! ! !");
-
+        println!("Game Logic Update Test Call");
+        self.characterManager.Update();
         // 게임 진행에 필요한 로직들을 업데이트한다.
         // 클라에 반영되어야 하는 내용이 있다면 gSendMessageBuffer에 메세지를 저장한다.
-        loop {
-            thread::sleep(Duration::from_millis(GAME_LOGIC_UPDATE_TICK));
-            if(false == GetThreadSwitch()) {break;}
-            // println!("Game Logic Update . . . update count : {}", self.updateCount);
-            self.updateCount += 1;
-
-            self.characterManager.Update();
-
-        }
+        
+        // loop {
+        //     thread::sleep(Duration::from_millis(GAME_LOGIC_UPDATE_TICK));
+        //     if(false == GetThreadSwitch()) {break;}
+        //     
+        //     // self.characterManager.Update();
+// 
+        //     // drop(self);
+        //     
+        // }
     }
 
 }

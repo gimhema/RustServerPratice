@@ -30,6 +30,7 @@ use super::Server;
 
 use std::ops::{Deref};
 
+use crate::gGameLogic;
 use crate::CallServerActionByFunctionHeader;
 use crate::GameLogic::CharacterModule::Character;
 use crate::GetGameLogic;
@@ -106,7 +107,33 @@ impl ServerBase {
 
     pub fn AddNewPlayer(&mut self, pid : i64)
     {
-        GetGameLogic().write().unwrap().AddNewPlayer(pid);
+        println!("Add New Player 1 1 1  ");
+        // GetGameLogic().write().unwrap().AddNewPlayer(pid);
+        let gLogic = gGameLogic.clone();
+        println!("Add New Player 1 1 2  ");
+
+        // Spawn a new thread to perform a task
+        let handle = thread::spawn(move || {
+            // Acquire a write lock
+            if let Ok(mut write_guard) = gLogic.write() {
+                // Perform the task on the write-locked instance
+                println!("Get Guard OK");
+                write_guard.AddNewPlayer(pid);
+                // The write lock is automatically released when 'write_guard' goes out of scope
+            }
+        });
+        println!("Add New Player 1 1 3  ");
+        // let mut logic = gLogic.write().unwrap();
+        // println!("Add New Player 1 1 3  ");
+        // logic.AddNewPlayer(pid);
+
+        handle.join().unwrap();
+        println!("Add New Player 1 1 4  ");
+
+        // gGameLogic.write().unwrap().AddNewPlayer(pid);
+        // gGameLogic.clone().write().unwrap().AddNewPlayer(pid);
+
+
     }
 
     pub fn DecreaseNumUser(&mut self )
@@ -211,9 +238,9 @@ impl ServerBase {
 
                         println!("SendGamePacket End");
                         // userCount += 1;
-//                        self.AddNewPlayer(self.numUser);
+                        self.AddNewPlayer(self.numUser);
                         println!("AddNewPlayer");
-//                       self.IncreaseNumUser();
+                        self.IncreaseNumUser();
                         println!("Add New Player Step End 123123");
 
                     },

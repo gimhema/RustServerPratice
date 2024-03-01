@@ -8,8 +8,9 @@ use Server::MessageBufferModule::RecvMessageBuffer;
 use Server::MessageBufferModule::SendMessageBuffer;
 use std::sync::Mutex;
 use std::collections::HashMap;
+use std::time::Duration;
 use std::{thread, time};
-use std::sync::{RwLock, Arc};
+use std::sync::{RwLock, Arc, RwLockReadGuard};
 use Server::GamePacketModule::GamePacket;
 use Server::ServerFunctions::*;
 use GameLogic::GameLogicBaseModule;
@@ -17,6 +18,8 @@ use GameLogic::GameLogicBaseModule;
 
 extern crate lazy_static;
 use lazy_static::lazy_static;
+
+use crate::GameCommon::Manager::Manager;
 
 type ArenaEventAction = fn(GamePacket) -> FunctionCallResult;
 
@@ -34,8 +37,14 @@ pub fn GetGameServer() -> Arc<RwLock<ServerBase>> {
 }
 
 pub fn GetGameLogic() -> Arc<RwLock<GameLogicBase>> {
+    println!("Get Game Logic");
     gGameLogic.clone()
 }
+
+// std::sync::RwLockReadGuard<'_, GameLogicBase>
+// pub fn GetGameLogicRef() -> Arc<RwLockReadGuard<GameLogicBase>>{
+//     gGameLogic.read().unwrap()
+// }
 
 pub fn GetThreadSwitch() -> bool
 {
@@ -63,13 +72,25 @@ fn main() {
     SetThreadSwitch(true);
 
     let gLogic = gGameLogic.clone();
+
     let gameUpdateHandle = thread::spawn(move || {
         // 스레드에서 수행할 작업
+        println!("Create Update Thread");
         let mut logic = gLogic.write().unwrap();
-        logic.GameLogicUpate();
+        // logic.GameLogicUpate();
+        loop {
+            println!("Update New Logic . . . .");
+            logic.GameLogicUpate();
+            drop(logic);
+            thread::sleep(Duration::from_secs(1));
+            println!("Update New Logic ! ! !");
+            logic = gLogic.write().unwrap();
+        }
+
     });
 
     let mut server = gServer.write().unwrap();
+    println!("Start Server ! ! !");
     server.Start();
 
     gameUpdateHandle.join().unwrap();
