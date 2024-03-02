@@ -51,7 +51,7 @@ impl GameLogicBase {
         }
     }
 
-    pub fn AddNewPlayer(&mut self, _tcpStream : TcpStream, _token: Token)
+    pub fn AddNewPlayer(&mut self, _tcpStream : TcpStream, _token: Token) -> i64
     {
         println!("Add New Connetcion Step ");
         // let mut conn = Connection::new(pid, _tcpStream);
@@ -64,7 +64,8 @@ impl GameLogicBase {
         let mut _newPlayer = Character::new();
         _newPlayer.SetPID(_newPID as i64);
         self.characterManager.AddNewCharacter(Some(_newPlayer));
-        
+
+        _newPID as i64
     }
 
     pub fn DecreaseUserNum(&mut self) {
@@ -93,7 +94,7 @@ impl GameLogicBase {
     }
 
     pub fn GameLogicUpate(&mut self) {
-        println!("Game Logic Update Test Call");
+        // println!("Game Logic Update Test Call");
         self.characterManager.Update();
         // 게임 진행에 필요한 로직들을 업데이트한다.
         // 클라에 반영되어야 하는 내용이 있다면 gSendMessageBuffer에 메세지를 저장한다.
@@ -107,6 +108,11 @@ impl GameLogicBase {
         //     // drop(self);
         //     
         // }
+    }
+
+    pub fn GetUserTokenByID(&mut self, _id : i64) -> Option<&Token>
+    {
+        self.logicClientHandler.GetTokenByID(_id)
     }
 
     pub fn GetUserConnectionsByToken(&mut self, token: Token) -> Option<&mut TcpStream>

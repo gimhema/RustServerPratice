@@ -124,7 +124,7 @@ pub fn SendGamePacket(packet: Option<GamePacket>) {
             Some(token) => *token,
             None => {
                 // Handle the case when GetTokenByID returns None
-                println!("Send Game Message Exception 2");
+                // println!("Send Game Message Exception 2");
                 return;
             }
         };

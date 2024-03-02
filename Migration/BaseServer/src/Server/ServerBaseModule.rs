@@ -109,14 +109,14 @@ impl ServerBase {
     {
         println!("Add New Player 1 1 1  ");
         let gLogic = gGameLogic.clone();
-
+        let mut _newID = 0 as i64;
         // Spawn a new thread to perform a task
         let handle = thread::spawn(move || {
             // Acquire a write lock
             if let Ok(mut write_guard) = gLogic.write() {
                 // Perform the task on the write-locked instance
                 println!("Get Guard OK");
-                write_guard.AddNewPlayer(_tcpStream, _token);
+                _newID = write_guard.AddNewPlayer(_tcpStream, _token);
                 // The write lock is automatically released when 'write_guard' goes out of scope
             }
         });
@@ -124,6 +124,15 @@ impl ServerBase {
 
         handle.join().unwrap();
         println!("Add New Player 1 1 4  ");
+
+        let welcome_packet = GamePacket::new(
+            -1,
+            _newID,
+            FunctionHeader::CONNECTION_SUCESSFUL.into(),
+            vec![0.0],
+            "Connection Check Message".to_string());
+        
+        self.SendGameMessage(Some(welcome_packet));
     }
 
     pub fn GetConnetionByToken(&mut self, token: Token) -> Option<&mut TcpStream>
@@ -222,40 +231,43 @@ impl ServerBase {
                         
                         self.AddNewPlayer(sendConnect, token);                        
                         
-                        let welcome_packet = GamePacket::new(
-                            -1,
-                            self.numUser,
-                            FunctionHeader::CONNECTION_SUCESSFUL.into(),
-                            vec![0.0],
-                            "Connection Check Message".to_string());
+                        // let welcome_packet = GamePacket::new(
+                        //     -1,
+                        //     self.numUser,
+                        //     FunctionHeader::CONNECTION_SUCESSFUL.into(),
+                        //     vec![0.0],
+                        //     "Connection Check Message".to_string());
 
-                        self.SendGameMessage(Some(welcome_packet));
+                        // self.SendGameMessage(Some(welcome_packet));
 
                         println!("SendGamePacket End");
                     },
                     token => {
-                       let done = if let Some(connection)  = self.GetConnetionByToken(token) 
+                       let done = if let Some(connection)  = GetGameLogic().write().unwrap().GetUserConnectionsByToken(token) 
                         {
                             println!("Handle Connection Event");
                             handle_connection_event(poll.registry(), connection, event)?
                         } 
                         else 
                         {
+                            // println!("User Disconnected . . 2 2");
                             // Sporadic events happen, we can safely ignore them.
                             false
                         };
     
                        if done {
-
-                            if let Some(mut connection)  = self.clientHandler.GetConnetionByToken(token)
+                            //  GetGameLogic().write().unwrap()
+                            // self.clientHandler.GetConnetionByToken(token)
+                            if let Some(mut connection)  = GetGameLogic().write().unwrap().GetUserConnectionsByToken(token)
                             {
                                 poll.registry().deregister(connection);
                                 let removeID = self.clientHandler.GetIDByConnection(token);
                                 // 두 과정은 하나의 함수로 표현해야함
-                                self.clientHandler.RemoveConnectionByToken(token);
-                                self.clientHandler.RemoveTokenPairByID(removeID);
-                                self.RemovePlayerByID(removeID);
-                                self.DecreaseNumUser();
+                                println!("User Disconnected . . ");
+                                // self.clientHandler.RemoveConnectionByToken(token);
+                                // self.clientHandler.RemoveTokenPairByID(removeID);
+                                // self.RemovePlayerByID(removeID);
+                                // self.DecreaseNumUser();
                             }
                        }
                     }
@@ -263,7 +275,7 @@ impl ServerBase {
                 // println!("For Loop End");
             }
             // println!("Calling update_logic");
-            update_logic(self);
+            // update_logic(self);
             // println!("update_logic called");
 
             // println!("Set Poll End");
@@ -311,7 +323,8 @@ impl ServerBase {
     println!("Send Game Message Call 3");
     let mut _target = Token(0);
     {
-        _target = match self.GetTokenByID(destination) {
+        // _target = match self.GetTokenByID(destination) {
+        _target = match GetGameLogic().write().unwrap().GetUserTokenByID(destination) {
             Some(token) => *token,
             None => {
                 // Handle the case when GetTokenByID returns None
