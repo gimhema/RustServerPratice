@@ -7,21 +7,30 @@ use crate::{GetThreadSwitch, SetThreadSwitch};
 use crate::Server::GamePacketModule::*;
 use crate::Server::ServerFunctions::*;
 use crate::GameLogic::CharacterModule::*;
+use crate::Server::ConnetionHandleModule::*;
+use mio::net::{TcpListener, TcpStream};
+use mio::Token;
 
 const GAME_LOGIC_UPDATE_TICK: u64 = 3000;
 const MAX_NUM_USER: i64 = 2;
 
+// 일단.. clienthandler를 game logic에도 추가해놓고
+// 나중에 서버에있는 clienthandler를 삭제하는 방향으로
+
 pub struct GameLogicBase {
     updateCount : i64,
     userNum : i64,
-    characterManager : CharacterManager
+    characterManager : CharacterManager,
+    logicClientHandler : ConnectionHandler // Server Client 대체용
 }
 
 impl GameLogicBase {
 
     pub fn new() -> Self {
         let mut _characterManager = CharacterManager::new();
-        GameLogicBase { updateCount : 0, userNum : 0, characterManager : _characterManager }
+        let mut _clientHandler = ConnectionHandler::new();
+
+        GameLogicBase { updateCount : 0, userNum : 0, characterManager : _characterManager, logicClientHandler : _clientHandler }
     }
 
     pub fn GetCharacterManager(&mut self) -> &mut CharacterManager {
@@ -42,12 +51,18 @@ impl GameLogicBase {
         }
     }
 
-    pub fn AddNewPlayer(&mut self, pid : i64)
+    pub fn AddNewPlayer(&mut self, pid : i64, _tcpStream : TcpStream, _token: Token)
     {
-        println!("Add New Player 2 . . ");
+        println!("Add New Connetcion Step ");
+        // let mut conn = Connection::new(pid, _tcpStream);
+
+        self.logicClientHandler.AddNewConnection(pid, _tcpStream, _token);
+
+        println!("Add New Player Step ");        
         let mut _newPlayer = Character::new();
         _newPlayer.SetPID(pid);
         self.characterManager.AddNewCharacter(Some(_newPlayer));
+        
     }
 
     pub fn DecreaseUserNum(&mut self) {

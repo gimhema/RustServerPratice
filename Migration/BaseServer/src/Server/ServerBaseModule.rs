@@ -105,12 +105,10 @@ impl ServerBase {
         GetGameLogic().write().unwrap().IncreaseUserNum();
     }
 
-    pub fn AddNewPlayer(&mut self, pid : i64)
+    pub fn AddNewPlayer(&mut self, pid : i64, _tcpStream : TcpStream, _token: Token)
     {
         println!("Add New Player 1 1 1  ");
-        // GetGameLogic().write().unwrap().AddNewPlayer(pid);
         let gLogic = gGameLogic.clone();
-        println!("Add New Player 1 1 2  ");
 
         // Spawn a new thread to perform a task
         let handle = thread::spawn(move || {
@@ -118,22 +116,14 @@ impl ServerBase {
             if let Ok(mut write_guard) = gLogic.write() {
                 // Perform the task on the write-locked instance
                 println!("Get Guard OK");
-                write_guard.AddNewPlayer(pid);
+                write_guard.AddNewPlayer(pid, _tcpStream, _token);
                 // The write lock is automatically released when 'write_guard' goes out of scope
             }
         });
         println!("Add New Player 1 1 3  ");
-        // let mut logic = gLogic.write().unwrap();
-        // println!("Add New Player 1 1 3  ");
-        // logic.AddNewPlayer(pid);
 
         handle.join().unwrap();
         println!("Add New Player 1 1 4  ");
-
-        // gGameLogic.write().unwrap().AddNewPlayer(pid);
-        // gGameLogic.clone().write().unwrap().AddNewPlayer(pid);
-
-
     }
 
     pub fn DecreaseNumUser(&mut self )
@@ -220,6 +210,7 @@ impl ServerBase {
                         println!("Add New Player");
 
                         let mut sendConnect = connection;
+
                         // sendConnect.write(DATA2);
     
                         self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
@@ -235,10 +226,9 @@ impl ServerBase {
 
                         self.SendGameMessage(Some(welcome_packet));
 
-
                         println!("SendGamePacket End");
                         // userCount += 1;
-                        self.AddNewPlayer(self.numUser);
+                        // self.AddNewPlayer(self.numUser);
                         println!("AddNewPlayer");
                         self.IncreaseNumUser();
                         println!("Add New Player Step End 123123");
@@ -354,7 +344,7 @@ fn handle_connection_event(
     event: &Event,
 ) -> io::Result<bool> {
     println!("Handle Connection Event Start . . ");
-    
+
     if event.is_readable() {
         let mut connection_closed = false;
         let mut received_data = vec![0; 4096];
