@@ -221,24 +221,9 @@ impl ServerBase {
                         println!("Add New Player");
 
                         let mut sendConnect = connection;
-
-                        // sendConnect.write(DATA2);
-    
-                        // self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
-                        // println!("AddNewConnection");
-                        // self.clientHandler.AddNewTokenIDPair(self.numUser, token);
-                        // println!("AddNewTokenIDPair");
                         
                         self.AddNewPlayer(sendConnect, token);                        
-                        
-                        // let welcome_packet = GamePacket::new(
-                        //     -1,
-                        //     self.numUser,
-                        //     FunctionHeader::CONNECTION_SUCESSFUL.into(),
-                        //     vec![0.0],
-                        //     "Connection Check Message".to_string());
-
-                        // self.SendGameMessage(Some(welcome_packet));
+                    
 
                         println!("SendGamePacket End");
                     },
@@ -258,12 +243,14 @@ impl ServerBase {
                        if done {
                             //  GetGameLogic().write().unwrap()
                             // self.clientHandler.GetConnetionByToken(token)
+                            println!("Disconn search . . .");
                             if let Some(mut connection)  = GetGameLogic().write().unwrap().GetUserConnectionsByToken(token)
                             {
+                                println!("User Disconnected . . 1");
                                 poll.registry().deregister(connection);
                                 let removeID = self.clientHandler.GetIDByConnection(token);
                                 // 두 과정은 하나의 함수로 표현해야함
-                                println!("User Disconnected . . ");
+                                println!("User Disconnected . . 2");
                                 // self.clientHandler.RemoveConnectionByToken(token);
                                 // self.clientHandler.RemoveTokenPairByID(removeID);
                                 // self.RemovePlayerByID(removeID);
