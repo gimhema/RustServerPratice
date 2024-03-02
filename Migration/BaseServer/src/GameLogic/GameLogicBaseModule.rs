@@ -109,5 +109,11 @@ impl GameLogicBase {
         // }
     }
 
+    pub fn GetUserConnectionsByToken(&mut self, token: Token) -> Option<&mut TcpStream>
+    {
+        // GetGameLogic().write().unwrap().Get
+        self.logicClientHandler.GetConnetionByToken(token)
+    }
+
 }
 

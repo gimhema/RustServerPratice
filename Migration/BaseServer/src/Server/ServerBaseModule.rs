@@ -105,7 +105,7 @@ impl ServerBase {
         GetGameLogic().write().unwrap().IncreaseUserNum();
     }
 
-    pub fn AddNewPlayer(&mut self, pid : i64, _tcpStream : TcpStream, _token: Token)
+    pub fn AddNewPlayer(&mut self, _tcpStream : TcpStream, _token: Token)
     {
         println!("Add New Player 1 1 1  ");
         let gLogic = gGameLogic.clone();
@@ -126,6 +126,11 @@ impl ServerBase {
         println!("Add New Player 1 1 4  ");
     }
 
+    pub fn GetConnetionByToken(&mut self, token: Token) -> Option<&mut TcpStream>
+    {
+        self.clientHandler.GetConnetionByToken(token)
+    }
+
     pub fn DecreaseNumUser(&mut self )
     {
         GetGameLogic().write().unwrap().DecreaseUserNum();        
@@ -144,10 +149,7 @@ impl ServerBase {
 
     // self.clientHandler.GetConnetionByToken(token)
 
-    pub fn GetConnetionByToken(&mut self, token: Token) -> Option<&mut TcpStream>
-    {
-        self.clientHandler.GetConnetionByToken(token)
-    }
+    
 
     pub fn Start(&mut self) -> io::Result<()> 
     {
@@ -213,10 +215,13 @@ impl ServerBase {
 
                         // sendConnect.write(DATA2);
     
-                        self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
-                        println!("AddNewConnection");
-                        self.clientHandler.AddNewTokenIDPair(self.numUser, token);
-                        println!("AddNewTokenIDPair");
+                        // self.clientHandler.AddNewConnection(self.numUser, sendConnect, token );
+                        // println!("AddNewConnection");
+                        // self.clientHandler.AddNewTokenIDPair(self.numUser, token);
+                        // println!("AddNewTokenIDPair");
+                        
+                        self.AddNewPlayer(sendConnect, token);                        
+                        
                         let welcome_packet = GamePacket::new(
                             -1,
                             self.numUser,
@@ -227,12 +232,6 @@ impl ServerBase {
                         self.SendGameMessage(Some(welcome_packet));
 
                         println!("SendGamePacket End");
-                        // userCount += 1;
-                        // self.AddNewPlayer(self.numUser);
-                        println!("AddNewPlayer");
-                        self.IncreaseNumUser();
-                        println!("Add New Player Step End 123123");
-
                     },
                     token => {
                        let done = if let Some(connection)  = self.GetConnetionByToken(token) 
@@ -324,7 +323,7 @@ impl ServerBase {
     println!("Send Game Message Call 4");
     if let Ok(send_msg) = serde_json::to_string(&send_data) {
         let serialized_msg = send_msg.as_bytes();
-        if let Some(_targetConn) = self.GetConnetionByToken(_target) {
+        if let Some(_targetConn) = GetGameLogic().write().unwrap().GetUserConnectionsByToken(_target) {
             println!("Send Game Message {}", send_msg);
             _targetConn.write(serialized_msg);
         }
