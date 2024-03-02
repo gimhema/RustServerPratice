@@ -308,3 +308,12 @@ void FAsyncConnectWorker::PrintGameMessageAsDebugPrint(FGameMessage msg)
     // GEngine->AddOnScreenDebugMessage
 }
 
+void FAsyncConnectWorker::DisConnect()
+{
+    if (Socket)
+    {
+        Socket->Close();
+    }
+}
+
+

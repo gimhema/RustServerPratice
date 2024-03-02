@@ -17,6 +17,11 @@ AArenaServerConnector::AArenaServerConnector()
 
 }
 
+AArenaServerConnector::~AArenaServerConnector()
+{
+    DisConnectAsync();
+}
+
 // Called when the game starts or when spawned
 void AArenaServerConnector::BeginPlay()
 {
@@ -251,6 +256,7 @@ void AArenaServerConnector::DisConnectAsync()
 {
     if (AsyncConnectWorker)
     {
+        AsyncConnectWorker->DisConnect();
         AsyncConnectWorker->Stop();
     }
 }

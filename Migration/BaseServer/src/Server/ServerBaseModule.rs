@@ -247,8 +247,8 @@ impl ServerBase {
                             if let Some(mut connection)  = GetGameLogic().write().unwrap().GetUserConnectionsByToken(token)
                             {
                                 println!("User Disconnected . . 1");
-                                poll.registry().deregister(connection);
-                                let removeID = self.clientHandler.GetIDByConnection(token);
+                                // poll.registry().deregister(connection);
+                                // let removeID = self.clientHandler.GetIDByConnection(token);
                                 // 두 과정은 하나의 함수로 표현해야함
                                 println!("User Disconnected . . 2");
                                 // self.clientHandler.RemoveConnectionByToken(token);

@@ -72,6 +72,8 @@ public:
 
 	FString ReadDataAsString(TArray<uint8>& Message, int32 length);
 
+	void DisConnect();
+
 public:
 	
 	FGameMessage ConvertDataToGameMessage(FString Message);

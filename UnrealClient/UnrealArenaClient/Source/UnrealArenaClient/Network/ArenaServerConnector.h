@@ -24,6 +24,7 @@ class UNREALARENACLIENT_API AArenaServerConnector : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AArenaServerConnector();
+	~AArenaServerConnector();
 
 protected:
 	// Called when the game starts or when spawned
