@@ -75,15 +75,12 @@ fn main() {
 
     let gameUpdateHandle = thread::spawn(move || {
         // 스레드에서 수행할 작업
-        println!("Create Update Thread");
         let mut logic = gLogic.write().unwrap();
         // logic.GameLogicUpate();
         loop {
-            println!("Update New Logic . . . .");
             logic.GameLogicUpate();
             drop(logic);
             thread::sleep(Duration::from_secs(1));
-            println!("Update New Logic ! ! !");
             logic = gLogic.write().unwrap();
         }
 
