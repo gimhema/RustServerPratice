@@ -55,6 +55,11 @@ impl ConnectionHandler
         &self.tokenIdMap
     }
 
+    pub fn GetNumConnections(&mut self) -> usize 
+    {
+        self.connections.len().clone()
+    }
+
     pub fn AddNewTokenIDPair(&mut self, _id: i64, _token: Token)
     {
         self.tokenIdMap.insert(_id, _token);

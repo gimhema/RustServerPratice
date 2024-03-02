@@ -116,7 +116,7 @@ impl ServerBase {
             if let Ok(mut write_guard) = gLogic.write() {
                 // Perform the task on the write-locked instance
                 println!("Get Guard OK");
-                write_guard.AddNewPlayer(pid, _tcpStream, _token);
+                write_guard.AddNewPlayer(_tcpStream, _token);
                 // The write lock is automatically released when 'write_guard' goes out of scope
             }
         });

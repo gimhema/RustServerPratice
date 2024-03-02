@@ -51,16 +51,18 @@ impl GameLogicBase {
         }
     }
 
-    pub fn AddNewPlayer(&mut self, pid : i64, _tcpStream : TcpStream, _token: Token)
+    pub fn AddNewPlayer(&mut self, _tcpStream : TcpStream, _token: Token)
     {
         println!("Add New Connetcion Step ");
         // let mut conn = Connection::new(pid, _tcpStream);
+        let _newPID = self.logicClientHandler.GetNumConnections();
 
-        self.logicClientHandler.AddNewConnection(pid, _tcpStream, _token);
+        self.logicClientHandler.AddNewConnection(_newPID as i64, _tcpStream, _token);
+        self.logicClientHandler.AddNewTokenIDPair(_newPID as i64, _token);
 
         println!("Add New Player Step ");        
         let mut _newPlayer = Character::new();
-        _newPlayer.SetPID(pid);
+        _newPlayer.SetPID(_newPID as i64);
         self.characterManager.AddNewCharacter(Some(_newPlayer));
         
     }
