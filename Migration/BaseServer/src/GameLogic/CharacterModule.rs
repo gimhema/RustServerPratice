@@ -1,6 +1,7 @@
 use crate::GameCommon::Manager::*;
 use crate::GameCommon::Math::*;
 use std::collections::VecDeque;
+use nalgebra::{Vector3, Quaternion, UnitQuaternion};
 
 #[derive(Clone)]
 pub enum CharacterType {
@@ -23,8 +24,10 @@ pub struct Character {
 impl Character {
     pub fn new() -> Character {
         let mut _loc = FLocation::new(0.0, 0.0, 0.0);
-        let mut _rot = FRotation::new(0.0, 0.0, 0.0, 0.0, 0.0, 
-        0.0, 0.0);
+        let mut _rot = FRotation::new(
+            Vector3::new(0.0, 0.0, 0.0),          
+            Quaternion::new(0.0, 0.0, 0.0, 0.0), 
+        );
 
         Character { pid : -1, name : "".to_string(), location: _loc, rotation: _rot, characterType : CharacterType::DEFAULT }
     }

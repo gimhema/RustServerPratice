@@ -305,29 +305,29 @@ impl ServerBase {
             }
         };
         
-        println!("Send Game Message Call 2");
+
     let destination = *send_data.getTargetID();
-    println!("Send Game Message Call 3");
+
     let mut _target = Token(0);
     {
-        // _target = match self.GetTokenByID(destination) {
         _target = match GetGameLogic().write().unwrap().GetUserTokenByID(destination) {
             Some(token) => *token,
             None => {
                 // Handle the case when GetTokenByID returns None
-                println!("Send Game Message Exception 2");
+                println!("Find Token Failed : Invalid Player ID");
                 return;
             }
         };
     }
-    println!("Send Game Message Call 4");
+
     if let Ok(send_msg) = serde_json::to_string(&send_data) {
         let serialized_msg = send_msg.as_bytes();
         if let Some(_targetConn) = GetGameLogic().write().unwrap().GetUserConnectionsByToken(_target) {
-            println!("Send Game Message {}", send_msg);
+
             _targetConn.write(serialized_msg);
         }
     }
+
     println!("Send Game Message Call End");
     }    
 
