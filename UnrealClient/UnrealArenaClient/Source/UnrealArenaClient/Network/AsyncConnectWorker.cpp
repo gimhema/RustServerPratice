@@ -87,6 +87,42 @@ bool FAsyncConnectWorker::SendMessageToServer(const FString& Message)
     return Socket->Send((uint8*)TCHAR_TO_UTF8(*Message), Message.Len(), BytesSent);
 }
 
+// {"senderID":-1,"targetID":0,"functionHeader":5,"functionParam":[0.0],"functionStrParam":"Connection Check Message"}
+
+bool FAsyncConnectWorker::SendJsonMessageToServer(int32 _senderID, int32 _targetId,
+    int32 _functionHeader, TArray<float> _functionParam,
+    FString _functionStrParam)
+{
+    // 메세지 전송
+//    const FString& Message = "";
+    int32 BytesSent = 0;
+
+    TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
+
+    // 필드 추가
+    JsonObject->SetNumberField("senderID", _senderID);
+    JsonObject->SetNumberField("targetID", _targetId);
+    JsonObject->SetNumberField("functionHeader", _functionHeader);
+
+    TArray<TSharedPtr<FJsonValue>> JsonArray;
+    for (float Param : _functionParam)
+    {
+        JsonArray.Add(MakeShareable(new FJsonValueNumber(Param)));
+    }
+
+    JsonObject->SetArrayField("functionParam", JsonArray);
+    JsonObject->SetStringField("functionStrParam", _functionStrParam);
+
+    // JSON 문자열로 변환
+    FString JsonString;
+    TSharedRef<TJsonWriter<TCHAR>> Writer = TJsonWriterFactory<TCHAR>::Create(&JsonString);
+    FJsonSerializer::Serialize(JsonObject.ToSharedRef(), Writer);
+
+
+    return Socket->Send((uint8*)TCHAR_TO_UTF8(*JsonString), JsonString.Len(), BytesSent);
+}
+
+
 void FAsyncConnectWorker::CreateSocket()
 {
     bool bIsValid = true;
@@ -110,7 +146,10 @@ void FAsyncConnectWorker::CreateSocket()
         {
             // 메세지 전송
             int32 BytesSent = 0;
-            bool bSuccess = SendMessageToServer("Hello RL Server . . . ");
+
+            // bool bSuccess = SendMessageToServer("Hello RL Server . . . ");
+            // {"senderID":-1,"targetID":0,"functionHeader":5,"functionParam":[0.0],"functionStrParam":"Connection Check Message"}
+            bool bSuccess = SendJsonMessageToServer(0, 0, 5, {0.0}, "Unreal Client Connect OK");
 
             if (bSuccess)
             {

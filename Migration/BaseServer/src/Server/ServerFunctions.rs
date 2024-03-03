@@ -41,7 +41,7 @@ impl FunctionHeader {
                 ServerAction_MOVE_TO_LOCATION(val);
             }
             FunctionHeader::CONNECTION_SUCESSFUL => {
-
+                ServerAction_CONNECTION_SUCESSFUL(val);
             }
         }
     }

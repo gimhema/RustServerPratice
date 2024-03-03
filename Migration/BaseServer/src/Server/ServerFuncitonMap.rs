@@ -10,6 +10,14 @@ use super::GameLogic::GameLogicBaseModule::*;
 use crate::GameCommon::Math::FLocation;
 use crate::{gSendMessageBuffer, gGameLogic};
 
+pub fn ServerAction_CONNECTION_SUCESSFUL(val : GamePacket) -> FunctionCallResult {
+    let mut result = FunctionCallResult::FUNCTION_CALL_FAIL;
+
+    println!("Call Func ServerAction_CONNECTION_SUCESSFUL : Connect Successful ! ! !");
+
+    result
+}
+
 
 // need ServerBaser -> GameLogic
 pub fn ServerAction_CHAT_MESSAGE_ALL(val : GamePacket) -> FunctionCallResult {

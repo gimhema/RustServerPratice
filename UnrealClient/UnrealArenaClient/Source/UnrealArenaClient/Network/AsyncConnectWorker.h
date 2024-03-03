@@ -70,6 +70,10 @@ public:
 
 	bool SendMessageToServer(const FString& Message);
 
+	bool SendJsonMessageToServer(int32 _senderID, int32 _targetId,
+		int32 _functionHeader, TArray<float> _functionParam,
+		FString _functionStrParam);
+
 	FString ReadDataAsString(TArray<uint8>& Message, int32 length);
 
 	void DisConnect();
