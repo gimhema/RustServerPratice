@@ -7,7 +7,7 @@ use mio::net::{TcpListener, TcpStream};
 use mio::{Events, Interest, Poll, Registry, Token};
 use std::io::{self, Read, Write};
 use crate::{gServer};
-
+use crate::GetGameLogic;
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 
 
@@ -99,11 +99,6 @@ pub fn SendGamePacketToConnect(packet: Option<GamePacket>, mut connecStream : Tc
 }
 
 pub fn SendGamePacket(packet: Option<GamePacket>) {
-    println!("Send Game Message Call");
-
-    let mut _server = gServer.write().unwrap();
-    // gServer.write().unwrap()
-    println!("Send Game Message Call : Set Server");
     let send_data = match &packet {
         Some(data) => {
             println!("Send Game Message Valid");
@@ -115,12 +110,12 @@ pub fn SendGamePacket(packet: Option<GamePacket>) {
             return;
         }
     };
-    println!("Send Game Message Call 2");
+
     let destination = *send_data.getTargetID();
-    println!("Send Game Message Call 3");
+
     let mut _target = Token(0);
     {
-        _target = match _server.GetTokenByID(destination) {
+        _target = match GetGameLogic().write().unwrap().GetUserTokenByID(destination) {
             Some(token) => *token,
             None => {
                 // Handle the case when GetTokenByID returns None
@@ -129,15 +124,45 @@ pub fn SendGamePacket(packet: Option<GamePacket>) {
             }
         };
     }
-    println!("Send Game Message Call 4");
+
     if let Ok(send_msg) = serde_json::to_string(&send_data) {
         let serialized_msg = send_msg.as_bytes();
-        if let Some(_targetConn) = _server.GetConnetionByToken(_target) {
+        if let Some(_targetConn) = GetGameLogic().write().unwrap().GetUserConnectionsByToken(_target) {
             println!("Send Game Message {}", send_msg);
             _targetConn.write(serialized_msg);
         }
     }
+
     println!("Send Game Message Call End");
 }
+
+pub fn SendGamePacketAllUser(packet : Option<GamePacket>) {
+    let send_data = match &packet {
+        Some(data) => {
+            println!("Send Game Message Valid");
+            data
+        },
+        None => {
+            // Handle the case when packet is None
+            println!("Send Game Message Exception 1");
+            return;
+        }
+    };
+
+    for (key, value) in GetGameLogic().write().unwrap().GetUserTokenMap() {
+
+        if let Ok(send_msg) = serde_json::to_string(&send_data) {
+            let serialized_msg = send_msg.as_bytes();
+            if let Some(_targetConn) = GetGameLogic().write().unwrap().GetUserConnectionsByToken(*value) {
+                println!("Send Game Message {}", send_msg);
+                _targetConn.write(serialized_msg);
+            }
+        }
+
+    }
+
+    
+}
+
 
 

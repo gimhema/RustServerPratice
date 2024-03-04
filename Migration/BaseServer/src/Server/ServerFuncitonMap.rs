@@ -11,9 +11,24 @@ use crate::GameCommon::Math::FLocation;
 use crate::{gSendMessageBuffer, gGameLogic};
 
 pub fn ServerAction_CONNECTION_SUCESSFUL(val : GamePacket) -> FunctionCallResult {
-    let mut result = FunctionCallResult::FUNCTION_CALL_FAIL;
+    let mut result = FunctionCallResult::FUNCTION_CALL_SUCCESS;
+
+    
 
     println!("Call Func ServerAction_CONNECTION_SUCESSFUL : Connect Successful ! ! !");
+
+    let mut _gameLogic = gGameLogic.write().unwrap();
+    let mut _numUser = _gameLogic.GetUserNum().clone();
+    
+    for i in 0.._numUser {
+        // 벡터의 각 요소 출력
+        let mut _packet = GamePacket::new(i, 0,
+            FunctionHeader::CONNECTION_SUCESSFUL as i64,
+            vec![0.0],
+              "Hi Unreal Clients ! !".to_string() );
+        // gSendMessageBuffer.PushBackData(_packet);
+        SendGamePacket(Some(_packet)); // 푸시하지말고 바로 보낸다.
+    }
 
     result
 }

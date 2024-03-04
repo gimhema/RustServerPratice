@@ -290,19 +290,19 @@ impl ServerBase {
     }
 
 
-    pub fn SendGameMessage(&mut self, message: Option<GamePacket>) {
+pub fn SendGameMessage(&mut self, message: Option<GamePacket>) {
         
-        let send_data = match &message {
-            Some(data) => {
-                println!("Send Game Message Valid");
-                data
-            },
-            None => {
-                // Handle the case when packet is None
-                println!("Send Game Message Exception 1");
-                return;
-            }
-        };
+    let send_data = match &message {
+        Some(data) => {
+            println!("Send Game Message Valid");
+            data
+        },
+        None => {
+            // Handle the case when packet is None
+            println!("Send Game Message Exception 1");
+            return;
+        }
+    };
         
 
     let destination = *send_data.getTargetID();
@@ -328,7 +328,7 @@ impl ServerBase {
     }
 
     println!("Send Game Message Call End");
-    }    
+}    
 
 
 

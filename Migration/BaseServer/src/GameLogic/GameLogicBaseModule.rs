@@ -1,5 +1,6 @@
 
 use std::{thread, time};
+use std::collections::HashMap;
 use std::time::Duration;
 use crate::GameCommon::Manager::Manager;
 use crate::{gSendMessageBuffer, gRecvMessageBuffer, gServer};
@@ -121,5 +122,19 @@ impl GameLogicBase {
         self.logicClientHandler.GetConnetionByToken(token)
     }
 
+    pub fn GetUserConnectionHandler(&mut self) -> &ConnectionHandler
+    {
+        &self.logicClientHandler
+    }
+
+    pub fn GetUserConnection(&mut self) -> &HashMap<Token, Connection>
+    {
+        &self.logicClientHandler.GetConnections()
+    }
+
+    pub fn GetUserTokenMap(&mut self) -> &HashMap<i64, Token>
+    {
+        &self.logicClientHandler.GetTokenIDMap()
+    }
 }
 
