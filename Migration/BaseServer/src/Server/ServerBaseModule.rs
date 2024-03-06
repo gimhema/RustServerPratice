@@ -107,7 +107,6 @@ impl ServerBase {
 
     pub fn AddNewPlayer(&mut self, _tcpStream : TcpStream, _token: Token)
     {
-        println!("Add New Player 1 1 1  ");
         let gLogic = gGameLogic.clone();
         let mut _newID = 0 as i64;
         // Spawn a new thread to perform a task
@@ -120,10 +119,8 @@ impl ServerBase {
                 // The write lock is automatically released when 'write_guard' goes out of scope
             }
         });
-        println!("Add New Player 1 1 3  ");
 
         handle.join().unwrap();
-        println!("Add New Player 1 1 4  ");
 
         let welcome_packet = GamePacket::new(
             -1,

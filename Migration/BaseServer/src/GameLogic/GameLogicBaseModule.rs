@@ -22,7 +22,8 @@ pub struct GameLogicBase {
     updateCount : i64,
     userNum : i64,
     characterManager : CharacterManager,
-    logicClientHandler : ConnectionHandler // Server Client 대체용
+    logicClientHandler : ConnectionHandler, // Server Client 대체용
+    pidCount : i64
 }
 
 impl GameLogicBase {
@@ -31,7 +32,7 @@ impl GameLogicBase {
         let mut _characterManager = CharacterManager::new();
         let mut _clientHandler = ConnectionHandler::new();
 
-        GameLogicBase { updateCount : 0, userNum : 0, characterManager : _characterManager, logicClientHandler : _clientHandler }
+        GameLogicBase { updateCount : 0, userNum : 0, characterManager : _characterManager, logicClientHandler : _clientHandler, pidCount : 0 }
     }
 
     pub fn GetCharacterManager(&mut self) -> &mut CharacterManager {
@@ -56,7 +57,8 @@ impl GameLogicBase {
     {
         println!("Add New Connetcion Step ");
         // let mut conn = Connection::new(pid, _tcpStream);
-        let _newPID = self.logicClientHandler.GetNumConnections();
+        // let _newPID = self.logicClientHandler.GetNumConnections();
+        let _newPID = self.GetPIDCount();
 
         self.logicClientHandler.AddNewConnection(_newPID as i64, _tcpStream, _token);
         self.logicClientHandler.AddNewTokenIDPair(_newPID as i64, _token);
@@ -65,7 +67,9 @@ impl GameLogicBase {
         let mut _newPlayer = Character::new();
         _newPlayer.SetPID(_newPID as i64);
         self.characterManager.AddNewCharacter(Some(_newPlayer));
-
+        
+        self.IncreasePIDCount();
+        
         _newPID as i64
     }
 
@@ -77,6 +81,14 @@ impl GameLogicBase {
         else {
             self.userNum = _temp;
         }
+    }
+
+    pub fn IncreasePIDCount(&mut self) {
+        self.pidCount += 1
+    }
+
+    pub fn GetPIDCount(&mut self) -> i64 {
+        self.pidCount.clone()
     }
 
     pub fn RemovePlayerByID(&mut self, pid : i64)
