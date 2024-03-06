@@ -78,7 +78,7 @@ fn main() {
         let mut logic = gLogic.write().unwrap();
         // logic.GameLogicUpate();
         loop {
-            logic.GameLogicUpate();
+            logic.GameLogicPlayerUpate();
             drop(logic);
             thread::sleep(Duration::from_secs(1));
             logic = gLogic.write().unwrap();

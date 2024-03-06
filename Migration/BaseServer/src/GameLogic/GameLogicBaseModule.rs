@@ -69,7 +69,7 @@ impl GameLogicBase {
         self.characterManager.AddNewCharacter(Some(_newPlayer));
         
         self.IncreasePIDCount();
-        
+
         _newPID as i64
     }
 
@@ -106,21 +106,8 @@ impl GameLogicBase {
         SendGamePacket(Some(_somePacket));
     }
 
-    pub fn GameLogicUpate(&mut self) {
-        // println!("Game Logic Update Test Call");
+    pub fn GameLogicPlayerUpate(&mut self) {
         self.characterManager.Update();
-        // 게임 진행에 필요한 로직들을 업데이트한다.
-        // 클라에 반영되어야 하는 내용이 있다면 gSendMessageBuffer에 메세지를 저장한다.
-        
-        // loop {
-        //     thread::sleep(Duration::from_millis(GAME_LOGIC_UPDATE_TICK));
-        //     if(false == GetThreadSwitch()) {break;}
-        //     
-        //     // self.characterManager.Update();
-// 
-        //     // drop(self);
-        //     
-        // }
     }
 
     pub fn GetUserTokenByID(&mut self, _id : i64) -> Option<&Token>
@@ -130,7 +117,6 @@ impl GameLogicBase {
 
     pub fn GetUserConnectionsByToken(&mut self, token: Token) -> Option<&mut TcpStream>
     {
-        // GetGameLogic().write().unwrap().Get
         self.logicClientHandler.GetConnetionByToken(token)
     }
 

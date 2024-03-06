@@ -69,7 +69,7 @@ impl Character {
     }
 
     pub fn Update(&mut self) {
-        println!("Player Update . . .")
+        println!("Player Update . . .");
 
         self.UpdateTransformation();
     }
@@ -146,22 +146,6 @@ impl Manager for CharacterManager {
             for player in &mut self.playerContainer {
                 player.Update();
             }
-        }
-        
-        if( false == self.IsEmptyNPCContainer() )
-        {
-            
-        }
-
-        if( false == self.IsEmptyEnemyContainer() )
-        {
-            
-        }
-
-        if( false == self.IsEmptyObjContainer() )
-        {
-            
-        }
-            
+        }   
     } 
 }
