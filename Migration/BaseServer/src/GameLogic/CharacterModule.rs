@@ -18,7 +18,8 @@ pub struct Character {
     name : String,
     location : FLocation,
     rotation : FRotation,
-    characterType : CharacterType
+    characterType : CharacterType,
+    updateSwitch : bool
 }
 
 impl Character {
@@ -29,7 +30,11 @@ impl Character {
             Quaternion::new(0.0, 0.0, 0.0, 0.0), 
         );
 
-        Character { pid : -1, name : "".to_string(), location: _loc, rotation: _rot, characterType : CharacterType::DEFAULT }
+        Character { pid : -1, name : "".to_string(), location: _loc, rotation: _rot, characterType : CharacterType::DEFAULT, updateSwitch : false }
+    }
+
+    pub fn IsUpdated(&mut self) -> bool {
+        self.updateSwitch.clone()
     }
 
     pub fn GetPID(&mut self) -> &i64 {
@@ -72,6 +77,8 @@ impl Character {
         println!("Player Update . . .");
 
         self.UpdateTransformation();
+
+        self.updateSwitch = false;
     }
 }
 
@@ -144,7 +151,10 @@ impl Manager for CharacterManager {
         if( false == self.IsEmptyPlayerContainer() )
         {
             for player in &mut self.playerContainer {
-                player.Update();
+                if(player.IsUpdated())
+                {
+                    player.Update();
+                }
             }
         }   
     } 
