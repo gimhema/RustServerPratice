@@ -64,8 +64,14 @@ impl Character {
         self.rotation = _rotation;
     }
 
-    pub fn Update(&mut self) {
+    pub fn UpdateTransformation(&mut self) {
 
+    }
+
+    pub fn Update(&mut self) {
+        println!("Player Update . . .")
+
+        self.UpdateTransformation();
     }
 }
 
@@ -137,7 +143,9 @@ impl Manager for CharacterManager {
         println!("Character Manager Update");
         if( false == self.IsEmptyPlayerContainer() )
         {
-            
+            for player in &mut self.playerContainer {
+                player.Update();
+            }
         }
         
         if( false == self.IsEmptyNPCContainer() )
