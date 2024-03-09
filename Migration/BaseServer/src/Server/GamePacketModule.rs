@@ -1,3 +1,7 @@
+extern crate packet;
+use packet::builder::Builder;
+use packet::icmp;
+use packet::Packet;
 
 use serde::{Serialize, Deserialize};
 use serde_json::{to_string, from_str};
@@ -8,9 +12,9 @@ use mio::{Events, Interest, Poll, Registry, Token};
 use std::io::{self, Read, Write};
 use crate::{gServer};
 use crate::GetGameLogic;
+
+
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
-
-
 pub struct GamePacket {
     senderID: i64,
     targetID: i64,
@@ -160,9 +164,11 @@ pub fn SendGamePacketAllUser(packet : Option<GamePacket>) {
         }
 
     }
-
-    
 }
 
 
+pub struct GamePacketLW 
+{
+
+}
 
