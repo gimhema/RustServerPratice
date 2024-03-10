@@ -12,6 +12,8 @@ pub struct Connection
     tcpStream: TcpStream
 }
 
+
+// TEST comment
 impl Connection
 {
     pub fn new(_id: i64, _connStream: TcpStream) -> Self {
