@@ -1,8 +1,3 @@
-extern crate packet;
-use packet::builder::Builder;
-use packet::icmp;
-use packet::Packet;
-
 use serde::{Serialize, Deserialize};
 use serde_json::{to_string, from_str};
 use super::ServerBaseModule::ServerBase;
@@ -164,11 +159,5 @@ pub fn SendGamePacketAllUser(packet : Option<GamePacket>) {
         }
 
     }
-}
-
-
-pub struct GamePacketLW 
-{
-
 }
 

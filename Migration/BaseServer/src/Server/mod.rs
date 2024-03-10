@@ -5,6 +5,7 @@ pub mod ConnetionHandleModule;
 pub mod MessageBufferModule;
 pub mod ServerFuncitonMap;
 pub mod ServerFunctionHeaderConvert;
+pub mod GamePacketLW;
 
 use crate::{GameLogic};
 use crate::{GameCommon};
