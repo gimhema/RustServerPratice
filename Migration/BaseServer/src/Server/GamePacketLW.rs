@@ -23,6 +23,7 @@ where
     buffer
 }
 
+
 macro_rules! packet_build {
     ($packet:expr, $T:ty) => {{
         let start_serialization = Instant::now();

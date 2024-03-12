@@ -1,61 +1,30 @@
-use rand::Rng;
-use std::mem;
-use std::time::Instant;
+use bincode::{config, Decode, Encode};
 
-const DATA_SIZE: usize = 1400; // 1MB 데이터 크기로 가정
-
-// 패킷 정의
-#[repr(C)]
-#[derive(Debug, Copy, Clone)]
-struct GamePacket {
-    opcode: u16,
-    player_id: u32,
-    pos_x: f32,
-    pos_y: f32,
+#[derive(Encode, Decode, PartialEq, Debug)]
+struct Entity {
+    x: f32,
+    y: f32,
 }
 
+#[derive(Encode, Decode, PartialEq, Debug)]
+struct World(Vec<Entity>);
+
 fn main() {
-    // 서버에서 클라이언트로 보낼 패킷 생성
-    let packet_to_send = GamePacket {
-        opcode: 1001,
-        player_id: 123,
-        pos_x: 10.5,
-        pos_y: 20.0,
-    };
+    let config = config::standard();
 
-    // 패킷을 바이트 배열로 변환 및 시간 측정
-    let start_serialization = Instant::now();
-    let buffer: [u8; mem::size_of::<GamePacket>()] =
-        unsafe { mem::transmute_copy(&packet_to_send) };
-    let end_serialization = Instant::now();
+    let world = World(vec![Entity { x: 0.0, y: 4.0 }, Entity { x: 10.0, y: 20.5 }]);
 
-    // 네트워크를 통해 패킷 전송 (여기서는 간단하게 화면에 출력으로 대체)
-    let start_deserialization = Instant::now();
-    let received_packet: GamePacket =
-        unsafe { mem::transmute_copy(&buffer) };
-    let end_deserialization = Instant::now();
+    let encoded: Vec<u8> = bincode::encode_to_vec(&world, config).unwrap();
 
-    // 전송된 실제 데이터의 크기
-    let actual_data_size = buffer.len();
+    // The length of the vector is encoded as a varint u64, which in this case gets collapsed to a single byte
+    // See the documentation on varint for more info for that.
+    // The 4 floats are encoded in 4 bytes each.
+    assert_eq!(encoded.len(), 1 + 4 * 4);
 
-    println!("Packet Sent:");
-    println!("Opcode: {}", packet_to_send.opcode);
-    println!("Player ID: {}", packet_to_send.player_id);
-    println!("Position: ({}, {})", packet_to_send.pos_x, packet_to_send.pos_y);
-    println!("Actual Data Size: {} bytes", actual_data_size);
-    println!(
-        "Serialization Time: {} seconds",
-        (end_serialization - start_serialization).as_secs_f64()
-    );
+    println!("Encoded Bytes: {:?}", encoded);
 
-    // 클라이언트에서 서버로부터 수신한 패킷 처리
-    println!("\nPacket Received:");
-    println!("Opcode: {}", received_packet.opcode);
-    println!("Player ID: {}", received_packet.player_id);
-    println!("Position: ({}, {})", received_packet.pos_x, received_packet.pos_y);
-    println!("Actual Data Size: {} bytes", actual_data_size);
-    println!(
-        "Deserialization Time: {} seconds",
-        (end_deserialization - start_deserialization).as_secs_f64()
-    );
+    let (decoded, len): (World, usize) = bincode::decode_from_slice(&encoded[..], config).unwrap();
+
+    println!("Decoded World: {:?}", decoded);
+    println!("Bytes Consumed: {}", len);
 }
