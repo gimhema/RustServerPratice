@@ -4,6 +4,24 @@ use std::time::Instant;
 
 const DATA_SIZE: usize = 1400; // 1MB 데이터 크기로 가정
 
+pub fn build_packet<T>(packet: &[T], _size: usize) -> Vec<u8>
+where
+    T: Copy,
+{
+    let mut buffer = Vec::with_capacity(_size);
+
+    // Check if the buffer has enough capacity
+    assert!(_size <= packet.len() * mem::size_of::<T>());
+
+    // Use copy_from_slice for a safe copy
+    unsafe {
+        buffer.set_len(_size);
+        let src_slice = std::slice::from_raw_parts(packet.as_ptr() as *const u8, _size);
+        buffer.copy_from_slice(src_slice);
+    }
+
+    buffer
+}
 
 macro_rules! packet_build {
     ($packet:expr, $T:ty) => {{
