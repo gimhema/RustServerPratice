@@ -1,6 +1,7 @@
 use nalgebra::{Vector3, Quaternion, UnitQuaternion};
+use bincode::{config, Decode, Encode};
 
-#[derive(Clone)]
+#[derive(Clone, Encode, Decode, PartialEq, Debug)]
 pub struct FLocation {
     x : f64,
     y : f64,

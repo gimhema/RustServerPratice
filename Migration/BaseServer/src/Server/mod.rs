@@ -6,6 +6,8 @@ pub mod MessageBufferModule;
 pub mod ServerFuncitonMap;
 pub mod ServerFunctionHeaderConvert;
 pub mod GamePacketLW;
+pub mod GamePacketBinary;
+pub mod GamePacketBuilder;
 
 use crate::{GameLogic};
 use crate::{GameCommon};
