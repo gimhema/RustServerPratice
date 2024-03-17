@@ -42,14 +42,44 @@ impl FLocation {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Encode, Decode, PartialEq, Debug)]
+pub struct FEuler
+{
+    roll : f64,
+    pitch : f64,
+    yaw : f64
+}
+
+impl FEuler {
+    pub fn new(roll : f64, pitch : f64, yaw : f64) -> Self {
+        Self { roll, pitch, yaw }
+    }
+}
+
+#[derive(Clone, Encode, Decode, PartialEq, Debug)]
+pub struct FQuaternion
+{
+    x : f64,
+    y : f64,
+    z : f64,
+    w : f64
+}
+
+impl FQuaternion {
+    pub fn new (x : f64, y : f64, z : f64, w : f64) -> Self {
+        Self{ x, y, z, w }
+    }
+}
+
+
+#[derive(Clone, Encode, Decode, PartialEq, Debug)]
 pub struct FRotation {
-    euler_angles: Vector3<f64>,          // 오일러 각 (Roll, Pitch, Yaw)
-    quaternion_angles: Quaternion<f64>,  // 사원수 각    
+    euler_angles: FEuler,          // 오일러 각 (Roll, Pitch, Yaw)
+    quaternion_angles: FQuaternion,  // 사원수 각    
 }
 
 impl FRotation {
-    pub fn new(euler_angles: Vector3<f64>, quaternion_angles: Quaternion<f64>) -> Self {
+    pub fn new(euler_angles: FEuler, quaternion_angles: FQuaternion) -> Self {
         Self { euler_angles, quaternion_angles }
     }
 

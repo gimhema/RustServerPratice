@@ -7,5 +7,5 @@ pub struct PacketPlayerTransformation
 {
     id : i64,
     location : FLocation,
-//    rotation : FRotation, 회전 구조체는 나중에 재정의
+    rotation : FRotation, 
 }
