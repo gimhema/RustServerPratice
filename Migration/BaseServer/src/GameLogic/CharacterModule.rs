@@ -1,7 +1,11 @@
 use crate::GameCommon::Manager::*;
 use crate::GameCommon::Math::*;
+use crate::Server::GamePacketBuilder;
 use std::collections::VecDeque;
 use nalgebra::{Vector3, Quaternion, UnitQuaternion};
+use crate::Server::GamePacketBinary::*;
+use crate::encode_packet;
+use bincode::{config, Decode, Encode};
 
 #[derive(Clone)]
 pub enum CharacterType {
@@ -70,7 +74,11 @@ impl Character {
     }
 
     pub fn UpdateTransformation(&mut self) {
-
+        //  업데이트 후 전송한다.
+        let config = config::standard();
+        let _charTransform = PacketPlayerTransformation::new(
+            self.GetPID().clone(), self.GetWorldLocation().clone(), self.GetWorldRotation().clone());
+        let send_packet = encode_packet!(_charTransform, config);
     }
 
     pub fn Update(&mut self) {

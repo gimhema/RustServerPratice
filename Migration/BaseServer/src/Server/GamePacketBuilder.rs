@@ -2,6 +2,7 @@ use bincode::{config, Decode, Encode};
 
 
 // Struct -> Binary Packet
+#[macro_export]
 macro_rules! encode_packet {
     ($packet:expr, $config:expr) => {
         {
@@ -12,6 +13,7 @@ macro_rules! encode_packet {
 
 
 // Binary Packet -> Struct
+#[macro_export]
 macro_rules! decode_packet {
     ($encoded:expr, $Type: expr ,$config:expr) => {
         {

@@ -10,4 +10,9 @@ pub struct PacketPlayerTransformation
     rotation : FRotation, 
 }
 
+impl PacketPlayerTransformation {
+    pub fn new(_id : i64, _location : FLocation, _rotation : FRotation) -> PacketPlayerTransformation {
+        PacketPlayerTransformation{id : _id, location : _location, rotation : _rotation}
+    }
+}
 
