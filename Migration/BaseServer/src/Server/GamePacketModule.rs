@@ -190,6 +190,12 @@ pub fn SendGamePacketBinary(targetId : i64, packet: Vec<u8>) {
 
 pub fn SendGamePacketBinaryAll(packet : Vec<u8>) {
     
+    let send_data: &[u8] = &packet;
+
+    for _conn in GetGameLogic().write().unwrap().GetUserConnection() {
+        _conn.1.getTcpStream().write(send_data);
+    }
+
 }
 
 
