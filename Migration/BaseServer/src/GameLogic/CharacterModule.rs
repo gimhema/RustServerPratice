@@ -1,6 +1,7 @@
 use crate::GameCommon::Manager::*;
 use crate::GameCommon::Math::*;
 use crate::Server::GamePacketBuilder;
+use crate::Server::GamePacketModule::*;
 use std::collections::VecDeque;
 use nalgebra::{Vector3, Quaternion, UnitQuaternion};
 use crate::Server::GamePacketBinary::*;
@@ -79,6 +80,7 @@ impl Character {
         let _charTransform = PacketPlayerTransformation::new(
             self.GetPID().clone(), self.GetWorldLocation().clone(), self.GetWorldRotation().clone());
         let send_packet = encode_packet!(_charTransform, config);
+        SendGamePacketBinaryAll(send_packet);
     }
 
     pub fn Update(&mut self) {

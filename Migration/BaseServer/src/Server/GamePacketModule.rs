@@ -161,3 +161,35 @@ pub fn SendGamePacketAllUser(packet : Option<GamePacket>) {
     }
 }
 
+
+
+
+pub fn SendGamePacketBinary(targetId : i64, packet: Vec<u8>) {
+    // let destination = *send_data.getTargetID();
+
+    // let mut _target = Token(0);
+    // {
+    //     _target = match GetGameLogic().write().unwrap().GetUserTokenByID(destination) {
+    //         Some(token) => *token,
+    //         None => {
+    //             // Handle the case when GetTokenByID returns None
+    //             // println!("Send Game Message Exception 2");
+    //             return;
+    //         }
+    //     };
+    // }
+
+    // if let Ok(send_msg) = serde_json::to_string(&send_data) {
+    //     let serialized_msg = send_msg.as_bytes();
+    //     if let Some(_targetConn) = GetGameLogic().write().unwrap().GetUserConnectionsByToken(_target) {
+    //         println!("Send Game Message {}", send_msg);
+    //         _targetConn.write(serialized_msg);
+    //     }
+    // }
+}
+
+pub fn SendGamePacketBinaryAll(packet : Vec<u8>) {
+    
+}
+
+
