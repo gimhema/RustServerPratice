@@ -10,6 +10,22 @@ struct Entity {
     float y;
 };
 
+void printEntity(const char* buf) {
+    // Check if buffer size is at least the size of Entity struct
+    if (strlen(buf) < sizeof(Entity)) {
+        std::cerr << "Buffer size is smaller than the size of Entity struct." << std::endl;
+        return;
+    }
+
+    // Copy the memory from buffer to Entity struct
+    Entity entity;
+    std::memcpy(&entity, buf, sizeof(Entity));
+
+    // Print the values of x and y
+    std::cout << "Entity x: " << entity.x << std::endl;
+    std::cout << "Entity y: " << entity.y << std::endl;
+}
+
 int main() {
     // Server information
     std::string serverIP = "127.0.0.1";
@@ -65,10 +81,11 @@ int main() {
         }
 
         // Print received response
+        printEntity(buf);
+        // std::cout << "Received message from server(raw): " << buf << std::endl;
         std::cout << "Received message from server: " << std::string(buf, bytesReceived) << std::endl;
     }
 
-    // Close socket
     close(sock);
 
     return 0;
