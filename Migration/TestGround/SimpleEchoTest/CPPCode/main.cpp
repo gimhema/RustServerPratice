@@ -26,6 +26,10 @@ void printEntity(const char* buf) {
     std::cout << "Entity y: " << entity.y << std::endl;
 }
 
+const void *entity_to_void_ptr(const struct Entity *entity) {
+    return (const void *)entity;
+}
+
 int main() {
     // Server information
     std::string serverIP = "127.0.0.1";
@@ -63,11 +67,25 @@ int main() {
             break;
         }
 
-        // Send message to server
-        if (send(sock, msg.c_str(), msg.size(), 0) == -1) {
-            std::cerr << "Failed to send message!" << std::endl;
-            close(sock);
-            return -1;
+        if (msg == "entity") {
+            // Send binary message to server
+            struct Entity entity = {3.4, 7.7};
+            const void *void_ptr = entity_to_void_ptr(&entity);
+
+            if (send(sock, void_ptr, sizeof(struct Entity), 0) == -1) {
+                std::cerr << "Failed to send message!" << std::endl;
+                close(sock);
+                return -1;
+            }
+        }
+        else
+        {
+            // Send message to server
+            if (send(sock, msg.c_str(), msg.size(), 0) == -1) {
+                std::cerr << "Failed to send message!" << std::endl;
+                close(sock);
+                return -1;
+            }
         }
 
         // Receive response from server
