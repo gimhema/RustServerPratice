@@ -20,6 +20,7 @@ struct Person {
 
 fn handle_client(mut stream: TcpStream) -> std::io::Result<()> {
     println!("Connected Client");
+    let config = config::standard();
 
     loop {
         let mut buffer = [0; 512];
@@ -29,9 +30,19 @@ fn handle_client(mut stream: TcpStream) -> std::io::Result<()> {
             return Ok(());
         }
 
-        println!("Message from Client: {}", String::from_utf8_lossy(&buffer[..bytes_read]));
+        // println!("Message from Client: {}", String::from_utf8_lossy(&buffer[..bytes_read]));
+        let (decoded_person, len_person) : (Entity, usize) = bincode::decode_from_slice(&buffer, config).unwrap();
+        println!("Decoded Person : {:?}", decoded_person);
+        println!("Bytes Consumed: {}", len_person);
 
-        stream.write_all(b"Server Response")?;
+        let entity: Entity = Entity{x : 1.2, y : 3.3};
+        let encoded_entity = bincode::encode_to_vec(&entity, config).unwrap();
+        let test_packet: &[u8] = &encoded_entity;
+
+
+
+        stream.write_all(test_packet)?;
+        // stream.write_all(b"Server Response")?;
     }
 }
 
