@@ -42,7 +42,7 @@ impl FLocation {
     }
 }
 
-#[derive(Clone, Encode, Decode, PartialEq, Debug)]
+#[derive(Copy, Clone, Encode, Decode, PartialEq, Debug)]
 pub struct FEuler
 {
     roll : f64,
@@ -56,7 +56,7 @@ impl FEuler {
     }
 }
 
-#[derive(Clone, Encode, Decode, PartialEq, Debug)]
+#[derive(Copy, Clone, Encode, Decode, PartialEq, Debug)]
 pub struct FQuaternion
 {
     x : f64,
@@ -68,6 +68,11 @@ pub struct FQuaternion
 impl FQuaternion {
     pub fn new (x : f64, y : f64, z : f64, w : f64) -> Self {
         Self{ x, y, z, w }
+    }
+
+    pub fn euler_to_quaternion(euler: FEuler) -> Self {
+        // euler 기반으로 계산
+        FQuaternion::new(0.0, 0.0, 0.0, 0.0)
     }
 }
 
@@ -82,6 +87,13 @@ impl FRotation {
     pub fn new(euler_angles: FEuler, quaternion_angles: FQuaternion) -> Self {
         Self { euler_angles, quaternion_angles }
     }
+
+    pub fn new_by_euler(euler: FEuler) -> Self {
+        let converted_quaternion = FQuaternion::euler_to_quaternion(euler);
+        Self{euler_angles : euler.clone(), quaternion_angles : converted_quaternion}
+    }
+
+
 
 }
 

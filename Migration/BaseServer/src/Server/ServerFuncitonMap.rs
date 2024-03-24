@@ -150,3 +150,33 @@ pub fn ServerAction_MOVE_TO_LOCATION(val : GamePacket) -> FunctionCallResult {
     
     result
 }
+
+pub fn ServerAction_INIT_TRANSFORM(val : GamePacket) -> FunctionCallResult {
+    let mut result = FunctionCallResult::FUNCTION_CALL_SUCCESS;
+
+    // 다시 응답하지는않고 초기의 캐릭터 트랜스폼 정보를 초기화함
+
+    let mut _gameLogic = gGameLogic.write().unwrap();
+    let mut _numUser = _gameLogic.GetUserNum().clone();
+
+    if (_numUser <= 0) {
+        result = FunctionCallResult::FUNCTION_CALL_FAIL;
+    }
+    else {
+        
+        let _moveCharacterId = val.getSenderID();
+        let locX = val.getFunctionParam()[0];
+        let locY = val.getFunctionParam()[1];
+        let locZ = val.getFunctionParam()[2];
+        let roll = val.getFunctionParam()[3];
+        let pitch = val.getFunctionParam()[4];
+        let yaw = val.getFunctionParam()[5];
+        
+
+
+    }
+
+
+
+    result
+}

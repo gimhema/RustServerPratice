@@ -87,8 +87,6 @@ impl Character {
         println!("Player Update . . .");
 
         self.UpdateTransformation();
-
-        self.updateSwitch = false;
     }
 }
 
