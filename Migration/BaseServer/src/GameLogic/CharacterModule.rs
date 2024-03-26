@@ -108,9 +108,22 @@ impl CharacterManager {
          }
     }
 
+    pub fn SetWorldTransfromByPID (&mut self, _pID: usize, _new_loc: FLocation, _new_rot: FRotation) {
+        if let Some(player) = self.playerContainer.get_mut(_pID) {
+            player.SetWorldLocation(_new_loc);
+            player.SetWorldRotation(_new_rot);
+        }
+    }
+
     pub fn SetWorldLocaitonByPID(&mut self, _pID: usize, _new_loc: FLocation) {
         if let Some(player) = self.playerContainer.get_mut(_pID) {
             player.SetWorldLocation(_new_loc);
+        }
+    }
+
+    pub fn SetWorldRotationByPID(&mut self, _pID: usize, _new_rot: FRotation) {
+        if let Some(player) = self.playerContainer.get_mut(_pID) {
+            player.SetWorldRotation(_new_rot);
         }
     }
 
@@ -120,7 +133,7 @@ impl CharacterManager {
     }
 
     pub fn GetCharacterByID(&self, index : usize) -> &Character {
-        &self.playerContainer[index] 
+        &self.playerContainer[index]
     }
 
     pub fn RemoveCharacterByID(&mut self, index : usize) {

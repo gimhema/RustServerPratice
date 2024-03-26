@@ -7,7 +7,9 @@ use super::GamePacketModule::GamePacket;
 use super::ServerFunctions::*;
 use super::MessageBufferModule::*;
 use super::GameLogic::GameLogicBaseModule::*;
+use crate::GameCommon::Math::FEuler;
 use crate::GameCommon::Math::FLocation;
+use crate::GameCommon::Math::FRotation;
 use crate::{gSendMessageBuffer, gGameLogic};
 
 pub fn ServerAction_CONNECTION_SUCESSFUL(val : GamePacket) -> FunctionCallResult {
@@ -172,7 +174,10 @@ pub fn ServerAction_INIT_TRANSFORM(val : GamePacket) -> FunctionCallResult {
         let pitch = val.getFunctionParam()[4];
         let yaw = val.getFunctionParam()[5];
         
-
+        let _location = FLocation::new(locX, locY, locZ);
+        let _rotation = FRotation::new_by_euler(FEuler::new(roll, pitch, yaw));
+        
+        _gameLogic.GetCharacterManager().SetWorldTransfromByPID(_moveCharacterId.clone() as usize, _location, _rotation);
 
     }
 
