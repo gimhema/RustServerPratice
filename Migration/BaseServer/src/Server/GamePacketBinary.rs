@@ -1,6 +1,13 @@
 use super::GameCommon::Math::*;
 use bincode::{config, Decode, Encode};
 
+#[derive(Encode, Decode, PartialEq, Debug)]
+pub struct GamePacketBinary
+{
+    gid : i64,
+    data : Vec<u8>
+}
+
 
 #[derive(Encode, Decode, PartialEq, Debug)]
 pub struct PacketPlayerTransformation

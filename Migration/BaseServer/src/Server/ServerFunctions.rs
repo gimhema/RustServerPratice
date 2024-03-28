@@ -55,7 +55,9 @@ pub fn CallServerActionByFunctionHeader(msg : Option<String>) {
     _funcHeader.ServerActionByFunctionHeader(_packet.unwrap());
 }
 
+pub fn CallServerActionByGamePacketBinary() {
 
+}
 
 
 
